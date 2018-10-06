@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">HowMuch</string>
+
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <string name="myprof">My Profile</string>
+    <string name="sett">Settings</string>
+    <string name="editprof">Edit Profile</string>
+
+    <!-- nav labels -->
+    <string name="off">Descontos</string>
+    <string name="new_list">Nova Lista de Compras</string>
+    <string name="my_buy">Minhas Compras</string>
+    <string name="my_nfe">Minhas NFe</string>
+    <string name="send_nfe">Enviar NFe (QRCode)</string>
+    <string name="logout">Sair</string>
+
+    <string name="nav_header_title">Hu Bo Song</string>
+    <string name="nav_header_subtitle">hubosong@hu.com</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <!-- inputText edittext -->
+    <string name="err_msg_name">Error</string>
+
+</resources>

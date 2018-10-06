@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#a8acb1</color>
+
+    <!-- colors template -->
+    <color name="toolbar_status">#242a31</color>
+    <color name="searchview_status">#757575</color>
+    <color name="text_color">#ffffff</color>
+    <color name="hint_nav_login">#a8acb1</color>
+    <color name="nav_color">#2d353c</color>
+    <color name="icons_btns">#34a503</color>
+
+
+</resources>
