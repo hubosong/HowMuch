@@ -37,17 +37,20 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMediumPrice, txtDate, txtPrice, txtOption;
-        ImageView imageView;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption;
+        //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtMediumPrice = itemView.findViewById(R.id.txtMediumPrice);
+            txtMarket = itemView.findViewById(R.id.txtMarket);
             txtDate = itemView.findViewById(R.id.txtDate);
+            txtMediumPrice = itemView.findViewById(R.id.txtMediumPrice);
+            txtOff = itemView.findViewById(R.id.txtOff);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
-            imageView = itemView.findViewById(R.id.imageView);
+            //imageView = itemView.findViewById(R.id.imageView);
+
         }
     }
 
@@ -63,26 +66,26 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        /*
-        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-        holder.txtTitle.setText(prodBelowAverage.getDescricao_produto());
-        holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-        holder.txtDate.setText(prodBelowAverage.getData());
-        holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
-        */
-
         if(prodBelowAverage.getValor() >= prodBelowAverage.getValor_medio()){
+            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
+            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
+            holder.txtDate.setText(prodBelowAverage.getData());
+            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
+            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
             holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto());
-            holder.txtDate.setText(prodBelowAverage.getData());
+
+
         } else {
+            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
+            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
+            holder.txtDate.setText(prodBelowAverage.getData());
+            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
+            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
             holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto());
-            holder.txtDate.setText(prodBelowAverage.getData());
+
+
 
         }
 
