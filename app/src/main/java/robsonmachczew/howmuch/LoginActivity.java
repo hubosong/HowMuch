@@ -2,9 +2,11 @@ package robsonmachczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -57,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
         edtEmail = findViewById(R.id.edtEmail);
         edtPass = findViewById(R.id.edtPass);
+
         //when clicked feito or enter on keyboard call btnlogin method
         edtPass.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -64,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_DPAD_CENTER:
                         case KeyEvent.KEYCODE_ENTER:
-                            //validate login
                             btnLogin(edtPass);
                             return true;
                         default:
@@ -102,12 +104,23 @@ public class LoginActivity extends AppCompatActivity {
         final String email = edtEmail.getText().toString();
         final String senha = edtPass.getText().toString();
         //mínimos de dígitos em cada campo
-        if (email.length() < 3 || senha.length() < 6) {
+        if (email.length() < 2 || senha.length() < 2) {
             Toast t = Toast.makeText(this, R.string.toast_login, Toast.LENGTH_SHORT);
             t.setGravity(Gravity.CENTER, 0, 50);
             t.show();
             return;
         }
+
+        //using for test
+        if(email.equals("aaa") && senha.equals("aaa")){
+            Intent content = new Intent(LoginActivity.this, OffActivity.class);
+            content.putExtra("nome", "hubosong");
+            content.putExtra("email", "hu@bo.song");
+            startActivity(content);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        }
+
         new AsyncTask<String, Void, Usuario>() {
             @Override
             protected void onPreExecute() {

@@ -3,9 +3,11 @@ package robsonmachczew.howmuch;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -87,6 +89,7 @@ public class OffActivity extends NavActivity {
         searchView();
 
 
+        /*
         //login - information of user
         Usuario usuario = (Usuario) getIntent().getSerializableExtra("usuario");
         View headerView = navigationView.getHeaderView(0);
@@ -107,6 +110,25 @@ public class OffActivity extends NavActivity {
                 finish();
             }
         });
+        */
+
+        //user receive for teste
+        View headerView = navigationView.getHeaderView(0);
+        TextView navEmail = headerView.findViewById(R.id.txtEmail);
+        TextView navNome = headerView.findViewById(R.id.txtNome);
+        String nome = getIntent().getStringExtra("nome");
+        String email = getIntent().getStringExtra("email");
+        if (nome != null && email != null) {
+            navNome.setText(nome);
+            navEmail.setText(email);
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("nome", nome);
+            editor.putString("email", email);
+            editor.apply();
+        }
+
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

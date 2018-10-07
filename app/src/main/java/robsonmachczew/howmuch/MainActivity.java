@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Robson Machczew", Toast.LENGTH_SHORT).show();
     }
     public void phone(View view) {
-        Toast.makeText(this, "55 9 9199 3356", Toast.LENGTH_SHORT).show();
+        //gerar um sair do app 哈哈
+        Intent user = new Intent(this, NavActivity.class);
+        finish();
     }
 
     @Override
