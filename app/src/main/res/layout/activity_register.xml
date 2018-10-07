@@ -54,7 +54,7 @@
                 android:drawableLeft="@drawable/ic_person"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="@string/edt_hint_name"
                 android:textColorHint="@color/nav_color"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
@@ -72,7 +72,7 @@
                 android:drawableLeft="@drawable/ic_email"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="E-mail"
+                android:hint="@string/edt_hint_email"
                 android:textColorHint="@color/nav_color"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
@@ -89,7 +89,7 @@
                 android:drawableLeft="@drawable/ic_password"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Password"
+                android:hint="@string/edt_hint_pass"
                 android:textColorHint="@color/nav_color"
                 android:inputType="textPassword"
                 android:singleLine="true"
@@ -109,21 +109,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:background="@drawable/buttons_login"
-                    android:drawableLeft="@drawable/ic_search"
+                    android:drawableLeft="@drawable/ic_camera"
                     android:drawableTint="@color/nav_color"
                     android:drawablePadding="5dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="15dp"
-                    android:text="Buscar"
+                    android:text="@string/btn_search_image"
                     android:textColor="@color/nav_color"/>
 
                 <TextView
                     android:id="@+id/editTextName"
-                    android:hint="Nome da imagem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:hint="@string/txt_image_name" />
 
             </LinearLayout>
 
@@ -140,7 +140,7 @@
                     android:paddingBottom="10dp"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
-                    android:text="C a d a s t r a r"
+                    android:text="@string/btn_register"
                     android:onClick="btnRegisterUser"
                     android:textColor="@color/text_color"
                     android:background="@drawable/buttons_login"

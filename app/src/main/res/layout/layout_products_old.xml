@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/imageView"
-                android:text="Product Name"
+                android:text="@string/txt_product_name"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/text_color"
                 android:textStyle="bold" />
@@ -46,7 +46,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/imageView"
-                android:text="P.M.: "
+                android:text="@string/txt_desc_medium_price"
                 android:textSize="12sp"
                 android:textColor="@color/hint_nav_login" />
 
@@ -58,7 +58,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="3dp"
                 android:layout_toRightOf="@id/txtMediumPriceDescription"
-                android:text="R$ 0,00"
+                android:text="@string/txt_medium_price"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/hint_nav_login" />
 
@@ -70,7 +70,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@id/imageView"
-                android:text="10/09/2018 00:00:00"
+                android:text="@string/txt_date"
                 android:textSize="12sp"
                 android:textColor="@color/hint_nav_login" />
 
@@ -88,7 +88,7 @@
                     android:id="@+id/txtPriceDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="P.A.:"
+                    android:text="@string/txt_desc_price"
                     android:textSize="12sp"
                     android:textColor="@color/hint_nav_login" />
 
@@ -96,7 +96,7 @@
                     android:id="@+id/txtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0,00"
+                    android:text="@string/txt_price"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                     android:textColor="@color/icons_btns"
                     android:textStyle="bold" />

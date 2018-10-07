@@ -80,6 +80,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-        Toast.makeText(this, "Até logo!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_got_out, Toast.LENGTH_SHORT).show();
     }
 }

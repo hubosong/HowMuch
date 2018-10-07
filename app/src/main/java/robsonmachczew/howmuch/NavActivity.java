@@ -85,7 +85,7 @@ public class NavActivity extends AppCompatActivity {
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -165,7 +165,7 @@ public class NavActivity extends AppCompatActivity {
                 startActivity(readQRcode);
                 drawerLayout.closeDrawers();
             } else {
-                Toast.makeText(activity, "Read Canceled!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
                 drawerLayout.closeDrawers();
             }
         } else {

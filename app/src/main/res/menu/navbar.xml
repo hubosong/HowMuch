@@ -7,30 +7,30 @@
         <item
             android:id="@+id/nav_off"
             android:icon="@drawable/ic_pie_chart"
-            android:title="@string/off" />
+            android:title="@string/nav_off" />
         <item
             android:id="@+id/nav_new_list"
             android:icon="@drawable/ic_shopping"
-            android:title="@string/new_list" />
+            android:title="@string/nav_new_list" />
         <item
             android:id="@+id/nav_my_buy"
             android:icon="@drawable/ic_graphic"
-            android:title="@string/my_buy" />
+            android:title="@string/nav_my_buy" />
         <item
             android:id="@+id/nav_my_nfe"
             android:icon="@drawable/ic_menu_send"
-            android:title="@string/my_nfe" />
+            android:title="@string/nav_my_nfe" />
         <item
             android:id="@+id/nav_send_nfe"
             android:icon="@drawable/ic_focus"
-            android:title="@string/send_nfe" />
+            android:title="@string/nav_send_nfe" />
     </group>
 
     <group android:id="@+id/two">
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit"
-            android:title="@string/logout" />
+            android:title="@string/nav_logout" />
     </group>
 
 </menu>

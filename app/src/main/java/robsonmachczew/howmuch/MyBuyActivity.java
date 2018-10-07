@@ -25,7 +25,7 @@ public class MyBuyActivity extends NavActivity {
         navigationView.getMenu().getItem(2).setChecked(true);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Minhas Compras");
+        getSupportActionBar().setTitle(R.string.bar_my_buys);
 
     }
 

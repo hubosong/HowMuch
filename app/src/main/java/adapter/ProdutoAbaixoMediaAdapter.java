@@ -103,7 +103,8 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.option1:
-                                Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option2:
                                 Toast.makeText(mCtx, "option2", Toast.LENGTH_SHORT).show();

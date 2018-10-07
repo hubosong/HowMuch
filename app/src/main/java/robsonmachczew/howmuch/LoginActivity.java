@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.bar);
-        toolbar.setTitle("Login");
+        toolbar.setTitle(R.string.bar_login);
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_bg));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         getWindow().setStatusBarColor(this.getResources().getColor(R.color.toolbar_status));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
 
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
@@ -81,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         txtForgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Ops! Talk with administrator.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -91,23 +90,20 @@ public class LoginActivity extends AppCompatActivity {
     //logar
     @SuppressLint("StaticFieldLeak")
     public void btnLogin(View view) {
-
         //clear focus --> created edittext Vazio
         EditText edt = findViewById(R.id.edtVazio);
         edtPass.clearFocus();
         edt.requestFocus();
 
-
         //hidden keyboard
         InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-
 
         final String email = edtEmail.getText().toString();
         final String senha = edtPass.getText().toString();
         //mínimos de dígitos em cada campo
         if (email.length() < 3 || senha.length() < 6) {
-            Toast t = Toast.makeText(this, "Enter with your login and pass!", Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(this, R.string.toast_login, Toast.LENGTH_SHORT);
             t.setGravity(Gravity.CENTER, 0, 50);
             t.show();
             return;
@@ -154,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                 progWait.setVisibility(View.GONE);
                 txtWait.setVisibility(View.GONE);
                 if(usuario == null){
-                    Toast.makeText(LoginActivity.this, "Email or Password invalidates!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.toast_invalidade_login, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent content = new Intent(LoginActivity.this, OffActivity.class);

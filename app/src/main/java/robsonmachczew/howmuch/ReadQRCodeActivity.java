@@ -53,7 +53,7 @@ public class ReadQRCodeActivity extends NavActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("NFe");
+        getSupportActionBar().setTitle(R.string.bar_qrcode);
 
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);

@@ -20,12 +20,12 @@ public class EditRegisterActivity extends NavActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         //basic config
-        getSupportActionBar().setTitle("Alterar Cadastro");
+        getSupportActionBar().setTitle(R.string.bar_edit_register);
 
     }
 
     public void btnEditRegisterUser(View view) {
-        Toast.makeText(this, "Alteração concluída!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_successfull_change, Toast.LENGTH_SHORT).show();
     }
 
     //onBack

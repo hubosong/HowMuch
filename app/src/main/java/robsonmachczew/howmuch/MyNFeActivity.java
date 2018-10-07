@@ -47,7 +47,7 @@ public class MyNFeActivity extends NavActivity {
         navigationView.getMenu().getItem(3).setChecked(true);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Minhas NFe");
+        getSupportActionBar().setTitle(R.string.bar_my_nfe);
 
     }
 

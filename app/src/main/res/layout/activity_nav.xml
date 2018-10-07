@@ -57,7 +57,7 @@
             app:theme="@style/NavigationViewStyle"
             app:itemIconTint="@color/icons_btns"
             app:itemTextColor="@drawable/nav_item_selected"
-            app:headerLayout="@layout/navigation_header"
+            app:headerLayout="@layout/nav_header"
             app:menu="@menu/navbar"/>
 
     </android.support.v4.widget.DrawerLayout>

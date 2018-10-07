@@ -28,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         //toolbar
         Toolbar  toolbar = (Toolbar) findViewById(R.id.bar);
-        toolbar.setTitle("Cadastrar");
+        toolbar.setTitle(R.string.bar_register);
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_bg));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void btnRegisterUser(View view) {
-        Toast.makeText(this, "User register successful!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_successfull_register, Toast.LENGTH_SHORT).show();
     }
 
 }

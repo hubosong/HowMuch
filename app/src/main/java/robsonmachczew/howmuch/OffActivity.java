@@ -72,7 +72,7 @@ public class OffActivity extends NavActivity {
         navigationView.getMenu().getItem(0).setChecked(true);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Descontos");
+        getSupportActionBar().setTitle(R.string.bar_off);
 
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
@@ -123,7 +123,7 @@ public class OffActivity extends NavActivity {
     public void searchView() {
         searchView.setEllipsize(true);
         searchView.setAnimationDuration(700);
-        searchView.setHint("Pesquisar..");
+        searchView.setHint("Consultar Produto..");
         searchView.setHintTextColor(R.color.hint_nav_login);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override

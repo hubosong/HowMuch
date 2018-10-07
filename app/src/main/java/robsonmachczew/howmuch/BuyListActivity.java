@@ -50,7 +50,7 @@ public class BuyListActivity extends NavActivity {
 
         //basic config
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        getSupportActionBar().setTitle("Lista de Compras");
+        getSupportActionBar().setTitle(R.string.bar_buy_list);
 
         txtNomeLista = findViewById(R.id.txtNomeLista);
         txtNomeLista.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +91,7 @@ public class BuyListActivity extends NavActivity {
             protected void onPreExecute() {
                 layoutProdutos.removeAllViews();
                 TextView txtCarregando = new TextView(BuyListActivity.this);
-                txtCarregando.setText("Carregando..");
+                txtCarregando.setText(R.string.txt_progress);
                 txtCarregando.setTextSize(16);
                 txtCarregando.setTextColor(Color.parseColor("#ffffff"));
                 layoutProdutos.addView(txtCarregando);

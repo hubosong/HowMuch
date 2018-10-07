@@ -1,34 +1,88 @@
 <resources>
     <string name="app_name">HowMuch</string>
 
+    <!-- layouts -->
+    <!-- main -->
+    <string name="btn_access">Acessar</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_contact">Contato</string>
+    <string name="toast_got_out">Até Logo!</string>
 
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <!-- login, register adn edit register-->
+        <!-- xml -->
+    <string name="edt_hint_email">E-mail</string>
+    <string name="edt_hint_pass">Password</string>
+    <string name="edt_hint_name">Nome</string>
+    <string name="btn_logon">L o g i n</string>
+    <string name="btn_search_image">Buscar</string>
+    <string name="btn_register">C a d a s t r a r</string>
+    <string name="btn_change">A l t e r a r</string>
+    <string name="txt_forgot_pass">Forgot Password?</string>
+    <string name="txt_image_name">Nome da imagem</string>
+        <!-- java -->
+    <string name="bar_login">Login</string>
+    <string name="bar_register">Cadastro</string>
+    <string name="bar_edit_register">Listar/Alterar</string>
+    <string name="toast_login">Entre com o seu login e senha.</string>
+    <string name="toast_invalidade_login">E-mail e/ou Password errado(s).</string>
+    <string name="toast_successfull_register">Usuário registrado com sucesso.</string>
+    <string name="toast_successfull_change">Alteração realizada com sucesso.</string>
 
-    <string name="open">Open</string>
-    <string name="close">Close</string>
-
-    <string name="myprof">My Profile</string>
-    <string name="sett">Settings</string>
-    <string name="editprof">Edit Profile</string>
-
-    <!-- nav labels -->
-    <string name="off">Descontos</string>
-    <string name="new_list">Nova Lista de Compras</string>
-    <string name="my_buy">Minhas Compras</string>
-    <string name="my_nfe">Minhas NFe</string>
-    <string name="send_nfe">Enviar NFe (QRCode)</string>
-    <string name="logout">Sair</string>
-
+    <!-- nav (menu) -->
+    <string name="nav_off">Descontos</string>
+    <string name="nav_new_list">Nova Lista de Compras</string>
+    <string name="nav_my_buy">Minhas Compras</string>
+    <string name="nav_my_nfe">Minhas NFe</string>
+    <string name="nav_send_nfe">Enviar NFe (QRCode)</string>
+    <string name="nav_logout">Sair</string>
+    <!-- nav (header) -->
+    <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_title">Hu Bo Song</string>
     <string name="nav_header_subtitle">hubosong@hu.com</string>
+    <!-- nav java -->
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <!-- off -->
+    <string name="bar_off">Descontos</string>
+    <string name="search_hint">Consultar Produto..</string> <!-- não funciona -->
+    <string name="toast_off_options1">P.M. = Preço Médio\nP.A. =  Preço Atual</string>
 
-    <!-- inputText edittext -->
-    <string name="err_msg_name">Error</string>
+    <!-- read qrcode -->
+    <string name="txt_qrcode">QRCode</string>
+    <string name="toast_cancel_read_qrcode">Leitura do QRCode cancelada.</string>
+    <string name="bar_qrcode">Envio de NFe</string>
+
+    <!-- products -->
+    <string name="txt_product_name">Produto</string>
+    <string name="txt_market_name">Mercado</string>
+    <string name="txt_date">10/09/2018 00:00:00</string>
+    <string name="txt_desc_medium_price">P.M.: </string>
+    <string name="txt_medium_price">R$ 0,00</string>
+    <string name="txt_desc_off_price">Desconto: </string>
+    <string name="txt_off_price">R$ 0,00</string>
+    <string name="txt_desc_price">P.A.: </string>
+    <string name="txt_price">R$ 0,00</string>
+
+    <!-- buy list -->
+    <string name="edt_list_name">Nome da Lista</string>
+    <string name="txt_list_name">Lista</string>
+    <string name="edt_search_product">Consultar Produtos..</string>
+    <string name="bar_buy_list">Lista de Compras</string>
+
+    <!-- my buy -->
+    <string name="txt_my_buys">Minhas Compras</string>
+    <string name="bar_my_buys">Minhas Compras</string>
+
+    <!-- my nfe -->
+    <string name="txt_my_nfe">Minhas NFe Enviadas</string>
+    <string name="bar_my_nfe">Minhas NFe</string>
+
+
+
+    <!-- global -->
+    <string name="txt_progress">Carregando..</string>
+    <string name="toast_error">Ops! Contate o Desenvolvedor do APP.</string>
+
 
 </resources>

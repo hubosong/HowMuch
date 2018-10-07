@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/option1"
-        android:title="Option_1" />
+        android:title="Informações" />
     <item
         android:id="@+id/option2"
         android:title="Option_2" />

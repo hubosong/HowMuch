@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="Product Name"
+                android:text="@string/txt_product_name"
                 android:ems="11"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/text_color"
@@ -39,7 +39,7 @@
                 android:layout_below="@id/txtTitle"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="Maket Name"
+                android:text="@string/txt_market_name"
                 android:maxLines="1"
                 android:ems="15"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
@@ -53,7 +53,7 @@
                 android:layout_below="@id/txtMarket"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="10/09/2018 00:00:00"
+                android:text="@string/txt_date"
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
@@ -64,7 +64,7 @@
                 android:layout_below="@id/txtDate"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="P.M.: "
+                android:text="@string/txt_desc_medium_price"
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
@@ -76,7 +76,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="6dp"
                 android:layout_toEndOf="@id/txtMediumPriceDescription"
-                android:text="R$ 0,00"
+                android:text="@string/txt_medium_price"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/hint_nav_login" />
 
@@ -87,7 +87,7 @@
                 android:layout_below="@id/txtMediumPriceDescription"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="Desconto: "
+                android:text="@string/txt_desc_off_price"
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
@@ -99,7 +99,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="3dp"
                 android:layout_toEndOf="@id/txtOffDescription"
-                android:text="R$ 0,00"
+                android:text="@string/txt_off_price"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/hint_nav_login" />
 
@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="P.A.:"
+                    android:text="@string/txt_desc_price"
                     android:textColor="@color/hint_nav_login"
                     android:textSize="12sp" />
 
@@ -146,7 +146,7 @@
                     android:id="@+id/txtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0,00"
+                    android:text="@string/txt_price"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                     android:textColor="@color/icons_btns"
                     android:textStyle="bold"/>
