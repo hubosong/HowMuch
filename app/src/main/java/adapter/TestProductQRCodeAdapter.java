@@ -18,14 +18,14 @@ import java.util.List;
 import robsonmachczew.howmuch.ProductQRCode;
 import robsonmachczew.howmuch.R;
 
-public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdapter.ProductViewHolder> {
+public class TestProductQRCodeAdapter extends RecyclerView.Adapter<TestProductQRCodeAdapter.ProductViewHolder> {
 
     //this context we will use to inflate the layout
     private Context mCtx;
     //we are storing all the products in a list
     private List<ProductQRCode> productList;
     //getting the context and product list with constructor
-    public ProductQRCodeAdapter(Context mCtx, List<ProductQRCode> productList) {
+    public TestProductQRCodeAdapter(Context mCtx, List<ProductQRCode> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
@@ -34,12 +34,12 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_products, null);
+        View view = inflater.inflate(R.layout.layout_qrcode_products, null);
         return new ProductViewHolder(view);
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
         ImageView imageView;
 
         public ProductViewHolder(View itemView) {
@@ -52,6 +52,8 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
             imageView = itemView.findViewById(R.id.imageView);
+
+            txtDescOff = itemView.findViewById(R.id.txtOffDescription);
 
         }
 
@@ -84,18 +86,17 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
 
         if(productQRCode.getPrice() >= productQRCode.getMediumprice()){
             holder.txtTitle.setText(productQRCode.getTitle().toUpperCase());
-            holder.txtMarket.setText(productQRCode.getMarket().toUpperCase());
-            holder.txtDate.setText(productQRCode.getDate());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
             holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
+            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
         } else {
             holder.txtTitle.setText(productQRCode.getTitle().toUpperCase());
-            holder.txtMarket.setText(productQRCode.getMarket().toUpperCase());
-            holder.txtDate.setText(productQRCode.getDate());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
             holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
+            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
+            holder.txtDescOff.setText("Acrescimo");
             holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
 

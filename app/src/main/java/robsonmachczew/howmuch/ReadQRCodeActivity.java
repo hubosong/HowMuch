@@ -30,13 +30,14 @@ import java.util.List;
 
 import adapter.ProductQRCodeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
+import adapter.TestProductQRCodeAdapter;
 import entidade.NFe;
 import entidade.ProdutoAbaixoMedia;
 
 public class ReadQRCodeActivity extends NavActivity {
 
     private ProgressBar progWait;
-    private TextView txtResult, txtWait;
+    private TextView txtQRCode, txtWait;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
     private final Activity activity = this;
@@ -60,8 +61,7 @@ public class ReadQRCodeActivity extends NavActivity {
 
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
-        txtResult = findViewById(R.id.txtResult);
-        txtResult.setVisibility(View.GONE);
+        txtQRCode = findViewById(R.id.txtQRCode);
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -73,15 +73,22 @@ public class ReadQRCodeActivity extends NavActivity {
         String code = getIntent().getStringExtra("code");
         //postHttpQRCode(code);
 
-        rvlistTeste();
+        rvlistQRTeste(code);
 
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void rvlistTeste(){
+    public void rvlistQRTeste(final String code){
         new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
             @Override
             protected ArrayList<ProductQRCode> doInBackground(String... strings) {
+
+                txtQRCode.setText(code);
+                TextView txtMarket = findViewById(R.id.txtMarket);
+                TextView txtDate = findViewById(R.id.txtDate);
+                txtMarket.setText("Mercado Hu");
+                txtDate.setText("10/09/2018 00:00:00");
+
                 ArrayList<ProductQRCode>productList = new ArrayList<>();
                 productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
                 productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
@@ -91,7 +98,7 @@ public class ReadQRCodeActivity extends NavActivity {
                 productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
                 productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour));
 
-                ProductQRCodeAdapter adapter = new ProductQRCodeAdapter(ReadQRCodeActivity.this, productList);
+                TestProductQRCodeAdapter adapter = new TestProductQRCodeAdapter(ReadQRCodeActivity.this, productList);
                 recyclerView.setAdapter(adapter);
 
                 //hide floating button when scroll

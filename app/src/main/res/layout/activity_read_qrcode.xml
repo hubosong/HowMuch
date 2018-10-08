@@ -30,31 +30,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:id="@+id/txtResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_qrcode"
-        android:textColor="@color/text_color"
-        android:layout_margin="30dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        android:elevation="15dp"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        android:scrollbarSize="2sp"
-        android:scrollbarThumbVertical="@drawable/gradient_list"/>
+        android:gravity="center|top"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
 
+        <TextView
+            android:id="@+id/txtQRCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_qrcode"
+            android:textColor="@color/text_color"
+            android:textSize="12sp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/txtMarket"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_market_name"
+            android:textColor="@color/text_color"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            style="@style/Base.TextAppearance.AppCompat.Large"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_date"
+            android:textColor="@color/text_color"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="15dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:scrollbarSize="2sp"
+            android:layout_marginTop="10dp"
+            android:scrollbarThumbVertical="@drawable/gradient_list"/>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
