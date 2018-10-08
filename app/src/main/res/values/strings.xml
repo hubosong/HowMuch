@@ -51,7 +51,7 @@
     <!-- read qrcode -->
     <string name="txt_qrcode">QRCode</string>
     <string name="toast_cancel_read_qrcode">Leitura do QRCode cancelada.</string>
-    <string name="bar_qrcode">Envio de NFe</string>
+    <string name="bar_qrcode">NFe Enviada</string>
 
     <!-- products -->
     <string name="txt_product_name">Produto</string>

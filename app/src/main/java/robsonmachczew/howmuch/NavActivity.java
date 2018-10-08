@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -58,6 +59,8 @@ public class NavActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
     private TextView navNome, navEmail;
+    private String prefs_user_name, prefs_user_email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +117,23 @@ public class NavActivity extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
-        String nome = prefs.getString("nome", "--");
-        String email = prefs.getString("email", "--@--");
-        navNome.setText(nome);
-        navEmail.setText(email);
+        prefs_user_name = prefs.getString("nome", "--");
+        prefs_user_email = prefs.getString("email", "--@--");
+        navNome.setText(prefs_user_name);
+        navEmail.setText(prefs_user_email);
+
+        //Toast.makeText(activity, navNome.getText(), Toast.LENGTH_SHORT).show();
+
+        /*
+        Menu nav_menu = navigationView.getMenu();
+        if(navNome.getText() == ("--")){
+            Toast.makeText(activity, navNome.getText() + " two", Toast.LENGTH_SHORT).show();
+            //nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
+            //nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
+
+            navigationView.getMenu().findItem(R.id.nav_my_buy).setVisible(false);
+        }
+        */
 
     }
 
@@ -201,6 +217,7 @@ public class NavActivity extends AppCompatActivity {
                 readQRcode.putExtra("code", code);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(readQRcode);
+                finish();
                 drawerLayout.closeDrawers();
             } else {
                 Toast.makeText(activity, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();

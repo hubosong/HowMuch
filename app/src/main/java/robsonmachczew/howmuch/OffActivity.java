@@ -136,7 +136,8 @@ public class OffActivity extends NavActivity {
         recyclerView.setAdapter(tmp_adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        rvListStart();
+        //rvListStart();
+        rvlistTeste();
 
     }
 
@@ -182,6 +183,42 @@ public class OffActivity extends NavActivity {
                 fab.startAnimation(alpha_in);
             }
         });
+    }
+
+
+    @SuppressLint("StaticFieldLeak")
+    public void rvlistTeste(){
+        new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
+            @Override
+            protected ArrayList<ProductQRCode> doInBackground(String... strings) {
+                ArrayList<ProductQRCode>productList = new ArrayList<>();
+                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour));
+
+                ProductQRCodeAdapter adapter = new ProductQRCodeAdapter(OffActivity.this, productList);
+                recyclerView.setAdapter(adapter);
+
+                //hide floating button when scroll
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                            fab.hide();
+                        } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                            fab.show();
+                        }
+                    }
+                });
+
+                return null;
+            }
+        }.execute();
     }
 
     //recyclerview list off == Descontos

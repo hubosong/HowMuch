@@ -71,13 +71,57 @@ public class ReadQRCodeActivity extends NavActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         String code = getIntent().getStringExtra("code");
-        postHttpQRCode(code);
+        //postHttpQRCode(code);
 
+        rvlistTeste();
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void rvlistTeste(){
+        new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
+            @Override
+            protected ArrayList<ProductQRCode> doInBackground(String... strings) {
+                ArrayList<ProductQRCode>productList = new ArrayList<>();
+                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour));
+
+                ProductQRCodeAdapter adapter = new ProductQRCodeAdapter(ReadQRCodeActivity.this, productList);
+                recyclerView.setAdapter(adapter);
+
+                //hide floating button when scroll
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                            fab.hide();
+                        } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                            fab.show();
+                        }
+                    }
+                });
+
+                return null;
+            }
+        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
     public void postHttpQRCode(final String code) {
         new AsyncTask<String, Void, NFe>() {
+            @Override
+            protected void onPreExecute() {
+                progWait.setVisibility(View.VISIBLE);
+                txtWait.setVisibility(View.VISIBLE);
+                super.onPreExecute();
+            }
+
             @Override
             protected NFe doInBackground(String... params) {
                 NFe nfe = null;
@@ -116,25 +160,27 @@ public class ReadQRCodeActivity extends NavActivity {
         }.execute(code);
     }
 
+
     public void rvListQRCode(NFe nfe) {
         productList = new ArrayList<>();
-        //productList.add( new ProductQRCode( 1,"Vinho Hu 0",20.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+        //productList.add( new ProductQRCode( 1,"Vinho Hu 0", "Mercado Hu",20.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
 
         for (int i = 0; i < nfe.getLista_items().size(); i++) {
             int prodId = (int) nfe.getLista_items().get(i).getProduto().getId_produto();
             String prodDesc = nfe.getLista_items().get(i).getProduto().getDescricao();
+            String prodMarket = nfe.getLista_items().get(i).getMercado();
             Double prodPrice = Double.valueOf(nfe.getLista_items().get(i).getValor());
             String prodDate = nfe.getData();
 
             String markName = nfe.getMercado().getNome_fantasia();
             if (markName.contains("BELTRAME")) {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodPrice - 1, prodDate, prodPrice, R.drawable.market_beltrame));
+                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_beltrame));
             } else if (markName.contains("CARREFOUR")) {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodPrice - 1, prodDate, prodPrice, R.drawable.market_carrefour));
+                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_carrefour));
             } else if (markName.contains("BIG")) {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodPrice - 1, prodDate, prodPrice, R.drawable.market_big));
+                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_big));
             } else {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodPrice - 1, prodDate, prodPrice, R.drawable.market_market));
+                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_market));
             }
 
         }
