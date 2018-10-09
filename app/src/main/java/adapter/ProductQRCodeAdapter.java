@@ -39,7 +39,7 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff ;
         ImageView imageView;
 
         public ProductViewHolder(View itemView) {
@@ -52,6 +52,8 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
             imageView = itemView.findViewById(R.id.imageView);
+
+            txtDescOff = itemView.findViewById(R.id.txtOffDescription);
 
         }
 
@@ -88,6 +90,8 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
             holder.txtDate.setText(productQRCode.getDate());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
             holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
+            holder.txtDescOff.setText("Acrescimo");
+            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
         } else {
@@ -96,6 +100,7 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
             holder.txtDate.setText(productQRCode.getDate());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
             holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
+            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
 
@@ -116,10 +121,10 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
                                 Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option2:
-                                Toast.makeText(mCtx, "option2", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mCtx, "Item adicionado", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option3:
-                                Toast.makeText(mCtx, "option3", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mCtx, "Lista acessada!", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 

@@ -2,6 +2,7 @@ package robsonmachczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -59,7 +60,6 @@ public class NavActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
     private TextView navNome, navEmail;
-    private String prefs_user_name, prefs_user_email;
 
 
     @Override
@@ -99,6 +99,11 @@ public class NavActivity extends AppCompatActivity {
         //call nav listener of navigationView
         navigationView.setNavigationItemSelectedListener(new navItem());
 
+        //hidden menus items of nav
+        Menu nav_menu = navigationView.getMenu();
+        nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
+        nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
+
 
         //call edit register
         View headerView = navigationView.getHeaderView(0);
@@ -113,27 +118,20 @@ public class NavActivity extends AppCompatActivity {
             }
         });
 
+
         //user receive for teste
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
-        prefs_user_name = prefs.getString("nome", "--");
-        prefs_user_email = prefs.getString("email", "--@--");
-        navNome.setText(prefs_user_name);
-        navEmail.setText(prefs_user_email);
-
-        //Toast.makeText(activity, navNome.getText(), Toast.LENGTH_SHORT).show();
-
-        /*
-        Menu nav_menu = navigationView.getMenu();
-        if(navNome.getText() == ("--")){
-            Toast.makeText(activity, navNome.getText() + " two", Toast.LENGTH_SHORT).show();
-            //nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
-            //nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
-
-            navigationView.getMenu().findItem(R.id.nav_my_buy).setVisible(false);
+        //prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()); //this
+        prefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        String name = prefs.getString("nome", "--");
+        String email = prefs.getString("email", "--@--");
+        navNome.setText(name);
+        navEmail.setText(email);
+        if(!navNome.getText().toString().equals("--")){
+            nav_menu.findItem(R.id.nav_my_buy).setVisible(true);
+            nav_menu.findItem(R.id.nav_my_nfe).setVisible(true);
         }
-        */
 
     }
 

@@ -21,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -103,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final String email = edtEmail.getText().toString();
         final String senha = edtPass.getText().toString();
+
         //mínimos de dígitos em cada campo
         if (email.length() < 2 || senha.length() < 2) {
             Toast t = Toast.makeText(this, R.string.toast_login, Toast.LENGTH_SHORT);
@@ -120,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         }
+
 
         new AsyncTask<String, Void, Usuario>() {
             @Override

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:paddingTop="16dp"
-            android:text="@string/nav_header_title"
+            android:text="--"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="#000" />
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/txtName"
             android:background="@android:color/transparent"
-            android:text="@string/nav_header_subtitle"
+            android:text="--@--"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/nav_color" />
     </LinearLayout>

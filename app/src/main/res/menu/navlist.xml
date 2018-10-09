@@ -5,8 +5,8 @@
         android:title="Informações" />
     <item
         android:id="@+id/option2"
-        android:title="Option_2" />
+        android:title="++ Lista Compras" />
     <item
         android:id="@+id/option3"
-        android:title="Option_3" />
+        android:title=">> Lista" />
 </menu>

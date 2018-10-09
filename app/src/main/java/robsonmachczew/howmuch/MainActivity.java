@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -68,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void contact(View view) {
-        Toast.makeText(this, "rmachczew@gmail.com", Toast.LENGTH_SHORT).show();
+        Toast t = Toast.makeText(this, "胡 博 嵩 - 1146920702@qq.com", Toast.LENGTH_SHORT);
+        t.setGravity(Gravity.CENTER, 0, 50);
+        t.show();
     }
     public void development(View view) {
         Toast.makeText(this, "Robson Machczew", Toast.LENGTH_SHORT).show();
