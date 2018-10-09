@@ -3,39 +3,24 @@ package robsonmachczew.howmuch;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.speech.RecognizerIntent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.DataOutputStream;
@@ -45,13 +30,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 import adapter.ProductQRCodeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
-import entidade.NFe;
 import entidade.ProdutoAbaixoMedia;
-import entidade.Usuario;
 
 public class OffActivity extends NavActivity {
 
@@ -87,52 +69,6 @@ public class OffActivity extends NavActivity {
         //searchview
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView();
-
-
-        /*
-        //login - information of user
-        Usuario usuario = (Usuario) getIntent().getSerializableExtra("usuario");
-        View headerView = navigationView.getHeaderView(0);
-        TextView navEmail = headerView.findViewById(R.id.txtEmail);
-        TextView navNome = headerView.findViewById(R.id.txtNome);
-        ImageView navImg = headerView.findViewById(R.id.imageContact);
-        if (usuario != null) {
-            navNome.setText(usuario.getNome());
-            navEmail.setText(usuario.getEmail());
-            //navImg.setImageDrawable(usuario.getImage());
-        }
-        navImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent editRegister = new Intent(OffActivity.this, EditRegisterActivity.class);
-                startActivity(editRegister);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
-            }
-        });
-        */
-
-        //user receive for teste
-        View headerView = navigationView.getHeaderView(0);
-        TextView navNome = headerView.findViewById(R.id.txtNome);
-        TextView navEmail = headerView.findViewById(R.id.txtEmail);
-
-        String nome = getIntent().getStringExtra("nome");
-        String email = getIntent().getStringExtra("email");
-
-        if (nome != null && email != null) {
-            navNome.setText(nome);
-            navEmail.setText(email);
-
-            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences prefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("nome", nome);
-            editor.putString("email", email);
-            editor.apply();
-
-        }
-
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
