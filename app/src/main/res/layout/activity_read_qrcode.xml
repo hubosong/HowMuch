@@ -35,8 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|top"
-        android:orientation="vertical"
-        android:layout_margin="20dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtQRCode"
@@ -45,6 +44,9 @@
             android:text="@string/txt_qrcode"
             android:textColor="@color/text_color"
             android:textSize="12sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textAlignment="center" />
 
         <TextView
@@ -54,6 +56,8 @@
             android:text="@string/txt_market_name"
             android:textColor="@color/text_color"
             android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textStyle="bold"
             style="@style/Base.TextAppearance.AppCompat.Large"
             android:textAlignment="center"/>
@@ -65,17 +69,22 @@
             android:text="@string/txt_date"
             android:textColor="@color/text_color"
             android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textAlignment="center"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
             android:elevation="15dp"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             android:scrollbarSize="2sp"
-            android:layout_marginTop="10dp"
             android:scrollbarThumbVertical="@drawable/gradient_list"/>
 
     </LinearLayout>

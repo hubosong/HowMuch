@@ -88,15 +88,15 @@ public class TestProductQRCodeAdapter extends RecyclerView.Adapter<TestProductQR
             holder.txtTitle.setText(productQRCode.getTitle().toUpperCase());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
             holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
-            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
+            holder.txtDescOff.setText("Acrescimo");
+            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
         } else {
             holder.txtTitle.setText(productQRCode.getTitle().toUpperCase());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
             holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
-            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtDescOff.setText("Acrescimo");
+            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
 
@@ -130,6 +130,14 @@ public class TestProductQRCodeAdapter extends RecyclerView.Adapter<TestProductQR
                 popupMenu.show();
             }
         });
+
+        holder.txtMarket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mCtx, R.string.toast_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

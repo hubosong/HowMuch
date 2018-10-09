@@ -114,19 +114,23 @@ public class OffActivity extends NavActivity {
 
         //user receive for teste
         View headerView = navigationView.getHeaderView(0);
-        TextView navEmail = headerView.findViewById(R.id.txtEmail);
         TextView navNome = headerView.findViewById(R.id.txtNome);
+        TextView navEmail = headerView.findViewById(R.id.txtEmail);
+
         String nome = getIntent().getStringExtra("nome");
         String email = getIntent().getStringExtra("email");
+
         if (nome != null && email != null) {
             navNome.setText(nome);
             navEmail.setText(email);
 
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences prefs = getSharedPreferences("loginPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("nome", nome);
             editor.putString("email", email);
             editor.apply();
+
         }
 
 
