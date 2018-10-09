@@ -1,0 +1,30 @@
+package entidade;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import static android.content.Context.MODE_PRIVATE;
+
+public class Utils {
+
+    public static Usuario loadFromSharedPreferences(Context context){
+        Usuario u = new Usuario();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
+        u.setNome(sharedPreferences.getString("NOME", null));
+        u.setId_usuario(sharedPreferences.getLong("IDUSUARIO", 0));
+        u.setSenha(sharedPreferences.getString("SENHA", null));
+        u.setEmail(sharedPreferences.getString("EMAIL", null));
+        return u;
+    }
+
+    public static boolean saveToSharedPreferences(Usuario usuario, Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString("NOME", usuario.getNome());
+        edit.putString("SENHA", usuario.getSenha());
+        edit.putString("EMAIL", usuario.getEmail());
+        edit.putLong("IDUSUARIO", usuario.getId_usuario());
+        return edit.commit();
+    }
+
+}

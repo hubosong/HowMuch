@@ -1,51 +1,27 @@
 package robsonmachczew.howmuch;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.support.annotation.IdRes;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
-import adapter.ProductQRCodeAdapter;
-import entidade.NFe;
 import entidade.Usuario;
+import entidade.Utils;
 
 public class NavActivity extends AppCompatActivity {
 
@@ -57,15 +33,17 @@ public class NavActivity extends AppCompatActivity {
 
     public FloatingActionButton fab;
 
-    private SharedPreferences prefs;
     private TextView navNome, navEmail;
-    private String prefs_user_name, prefs_user_email;
+
+    private Usuario usuario;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
+
+        usuario = Utils.loadFromSharedPreferences(this);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -114,13 +92,13 @@ public class NavActivity extends AppCompatActivity {
         });
 
         //user receive for teste
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //prefs = PreferenceManager.getDefaultSharedPreferences(this);
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
-        prefs_user_name = prefs.getString("nome", "--");
-        prefs_user_email = prefs.getString("email", "--@--");
-        navNome.setText(prefs_user_name);
-        navEmail.setText(prefs_user_email);
+        //prefs_user_name = prefs.getString("nome", "--");
+        //prefs_user_email = prefs.getString("email", "--@--");
+        navNome.setText(usuario.getNome());
+        navEmail.setText(usuario.getEmail());
 
         //Toast.makeText(activity, navNome.getText(), Toast.LENGTH_SHORT).show();
 
@@ -189,8 +167,7 @@ public class NavActivity extends AppCompatActivity {
                 case R.id.nav_logout:
 
                     //clear preferences
-                    prefs.edit().remove("nome").apply();
-                    prefs.edit().remove("email").apply();
+                    Utils.saveToSharedPreferences(new Usuario(), NavActivity.this);
 
                     Intent main = new Intent(NavActivity.this, MainActivity.class);
                     startActivity(main);

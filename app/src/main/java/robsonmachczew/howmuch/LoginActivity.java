@@ -2,11 +2,9 @@ package robsonmachczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +26,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import entidade.Usuario;
+import entidade.Utils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,8 +55,14 @@ public class LoginActivity extends AppCompatActivity {
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
 
+
         edtEmail = findViewById(R.id.edtEmail);
         edtPass = findViewById(R.id.edtPass);
+        Usuario u = Utils.loadFromSharedPreferences(this);
+        if (u != null) {
+            edtEmail.setText(u.getEmail());
+            edtPass.setText(u.getSenha());
+        }
 
         //when clicked feito or enter on keyboard call btnlogin method
         edtPass.setOnKeyListener(new View.OnKeyListener() {
@@ -98,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         edt.requestFocus();
 
         //hidden keyboard
-        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
         final String email = edtEmail.getText().toString();
@@ -112,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         //using for test
-        if(email.equals("aaa") && senha.equals("aaa")){
+        if (email.equals("aaa") && senha.equals("aaa")) {
             Intent content = new Intent(LoginActivity.this, OffActivity.class);
             content.putExtra("nome", "hubosong");
             content.putExtra("email", "hu@bo.song");
@@ -162,11 +166,13 @@ public class LoginActivity extends AppCompatActivity {
             protected void onPostExecute(Usuario usuario) {
                 progWait.setVisibility(View.GONE);
                 txtWait.setVisibility(View.GONE);
-                if(usuario == null){
+                if (usuario == null) {
                     Toast.makeText(LoginActivity.this, R.string.toast_invalidade_login, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent content = new Intent(LoginActivity.this, OffActivity.class);
+                usuario.setSenha(senha);
+                Utils.saveToSharedPreferences(usuario, LoginActivity.this);
                 content.putExtra("usuario", usuario);
                 startActivity(content);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
