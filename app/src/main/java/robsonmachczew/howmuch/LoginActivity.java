@@ -96,6 +96,16 @@ public class LoginActivity extends AppCompatActivity {
     //logar
     @SuppressLint("StaticFieldLeak")
     public void btnLogin(View view) {
+        Usuario u = Utils.loadFromSharedPreferences(this);
+        if(u.getId_usuario() != 0){
+            Intent content = new Intent(LoginActivity.this, OffActivity.class);
+            content.putExtra("usuario", u);
+            startActivity(content);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+            return;
+        }
+
         //clear focus --> created edittext Vazio
         EditText edt = findViewById(R.id.edtVazio);
         edtPass.clearFocus();
