@@ -109,23 +109,12 @@ public class LoginActivity extends AppCompatActivity {
         final String senha = edtPass.getText().toString();
 
         //mínimos de dígitos em cada campo
-        if (email.length() < 2 || senha.length() < 2) {
+        if (email.length() < 3 || senha.length() < 5) {
             Toast t = Toast.makeText(this, R.string.toast_login, Toast.LENGTH_SHORT);
             t.setGravity(Gravity.CENTER, 0, 50);
             t.show();
             return;
         }
-
-        //using for test
-        if (email.equals("aaa") && senha.equals("aaa")) {
-            Intent content = new Intent(LoginActivity.this, OffActivity.class);
-            content.putExtra("nome", "hubosong");
-            content.putExtra("email", "hu@bo.song");
-            startActivity(content);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            finish();
-        }
-
 
         new AsyncTask<String, Void, Usuario>() {
             @Override
@@ -173,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 Intent content = new Intent(LoginActivity.this, OffActivity.class);
-                usuario.setSenha(senha);
+                usuario.setSenha(senha); //mudanca 1
                 Utils.saveToSharedPreferences(usuario, LoginActivity.this);
                 content.putExtra("usuario", usuario);
                 startActivity(content);

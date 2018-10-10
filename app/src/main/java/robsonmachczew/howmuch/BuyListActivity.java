@@ -1,17 +1,21 @@
 package robsonmachczew.howmuch;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +23,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,6 +44,9 @@ public class BuyListActivity extends NavActivity {
     private ImageView imgLogo;
     private ArrayList<Produto> lista_compras;
 
+    private MaterialSearchView searchView;
+    private final Activity activity = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +58,13 @@ public class BuyListActivity extends NavActivity {
         navigationView.getMenu().getItem(1).setChecked(true);
 
         //basic config
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         getSupportActionBar().setTitle(R.string.bar_buy_list);
+
+
+        //searchview
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView();
+
 
         txtNomeLista = findViewById(R.id.txtNomeLista);
         txtNomeLista.setOnClickListener(new View.OnClickListener() {
@@ -59,13 +73,15 @@ public class BuyListActivity extends NavActivity {
 
             }
         });
-        editNomeLista = (EditText) findViewById(R.id.editNomeLista);
+
+        //editNomeLista = (EditText) findViewById(R.id.editNomeLista);
         lista_compras = new ArrayList<>();
 
         layoutProdutos = (LinearLayout) findViewById(R.id.layoutProdutos);
         imgLogo = findViewById(R.id.imgLogo);
 
-        searchText = findViewById(R.id.txtSearch);
+
+        /*
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -80,6 +96,54 @@ public class BuyListActivity extends NavActivity {
                 if (s.length() > 2) {
                     realizaPesquisaProdutos(s.toString());
                 }
+            }
+        });
+        */
+    }
+
+    //searchView
+    public void searchView() {
+        searchView.setEllipsize(true);
+        searchView.setAnimationDuration(700);
+        searchView.setHint("Consultar Produto..");
+        searchView.setHintTextColor(R.color.hint_nav_login);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                txtNomeLista .setText(query);
+                realizaPesquisaProdutos(query.toString());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() > 2) {
+                    realizaPesquisaProdutos(newText.toString());
+                }
+                return false;
+            }
+        });
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                Window window = activity.getWindow();
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(ContextCompat.getColor(activity, R.color.searchview_status));
+
+                fab.setVisibility(View.GONE);
+                //fab.startAnimation(alpha_out);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                Window window = activity.getWindow();
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(ContextCompat.getColor(activity, R.color.toolbar_status));
+
+                fab.setVisibility(View.VISIBLE);
+                //fab.startAnimation(alpha_in);
             }
         });
     }
@@ -182,13 +246,21 @@ public class BuyListActivity extends NavActivity {
     }
 
 
-    //usado para executar o voltar da action
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        //search bar
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+
+        return true;
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent content = new Intent(BuyListActivity.this, OffActivity.class);
-        startActivity(content);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        this.finish();
         return super.onOptionsItemSelected(item);
     }
 

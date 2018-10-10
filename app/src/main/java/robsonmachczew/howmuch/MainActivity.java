@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //mudanca
         if(Utils.loadFromSharedPreferences(this).getId_usuario() != 0){
             Intent content = new Intent(this, OffActivity.class);
             startActivity(content);
@@ -91,7 +92,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
         Toast.makeText(this, R.string.toast_got_out, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
+
     }
 }

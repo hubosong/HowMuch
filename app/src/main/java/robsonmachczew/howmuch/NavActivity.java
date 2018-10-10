@@ -11,8 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,26 +95,19 @@ public class NavActivity extends AppCompatActivity {
         });
 
         //user receive for teste
-        //prefs = PreferenceManager.getDefaultSharedPreferences(this);
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
-        //prefs_user_name = prefs.getString("nome", "--");
-        //prefs_user_email = prefs.getString("email", "--@--");
         navNome.setText(usuario.getNome());
         navEmail.setText(usuario.getEmail());
 
-        //Toast.makeText(activity, navNome.getText(), Toast.LENGTH_SHORT).show();
-
-        /*
+        //hidden menus items of nav
         Menu nav_menu = navigationView.getMenu();
-        if(navNome.getText() == ("--")){
-            Toast.makeText(activity, navNome.getText() + " two", Toast.LENGTH_SHORT).show();
-            //nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
-            //nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
-
-            navigationView.getMenu().findItem(R.id.nav_my_buy).setVisible(false);
+        if(navNome.getText().equals("")){
+            nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
+            nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
         }
-        */
+
+
 
     }
 
@@ -166,6 +162,7 @@ public class NavActivity extends AppCompatActivity {
 
                 case R.id.nav_logout:
 
+                    //mudanca
                     //clear preferences
                     Utils.saveToSharedPreferences(new Usuario(), NavActivity.this);
 
@@ -212,4 +209,25 @@ public class NavActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
     }
+
+    //onBack
+    @Override
+    public void onBackPressed() {
+
+        if(navNome.getText().equals("")){
+            Intent main = new Intent(NavActivity.this, MainActivity.class);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            startActivity(main);
+            finish();
+        } else {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            System.exit(0);
+        }
+
+    }
+
 }

@@ -51,7 +51,7 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
             txtOff = itemView.findViewById(R.id.txtOff);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
-            imageView = itemView.findViewById(R.id.imageView);
+            //imageView = itemView.findViewById(R.id.imageView);
 
             txtDescOff = itemView.findViewById(R.id.txtOffDescription);
 

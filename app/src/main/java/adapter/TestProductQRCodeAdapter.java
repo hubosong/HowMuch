@@ -51,7 +51,7 @@ public class TestProductQRCodeAdapter extends RecyclerView.Adapter<TestProductQR
             txtOff = itemView.findViewById(R.id.txtOff);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
-            imageView = itemView.findViewById(R.id.imageView);
+            //imageView = itemView.findViewById(R.id.imageView);
 
             txtDescOff = itemView.findViewById(R.id.txtOffDescription);
 
@@ -130,14 +130,6 @@ public class TestProductQRCodeAdapter extends RecyclerView.Adapter<TestProductQR
                 popupMenu.show();
             }
         });
-
-        holder.txtMarket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mCtx, R.string.toast_error, Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

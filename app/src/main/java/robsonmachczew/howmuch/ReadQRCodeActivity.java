@@ -87,6 +87,14 @@ public class ReadQRCodeActivity extends NavActivity {
                 TextView txtMarket = findViewById(R.id.txtMarket);
                 TextView txtDate = findViewById(R.id.txtDate);
                 txtMarket.setText("Mercado Hu");
+
+                txtMarket.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(ReadQRCodeActivity.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 txtDate.setText("10/09/2018 00:00:00");
 
                 ArrayList<ProductQRCode>productList = new ArrayList<>();

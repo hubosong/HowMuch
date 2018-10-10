@@ -64,7 +64,6 @@ public class OffActivity extends NavActivity {
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
         txtResult = findViewById(R.id.txtResult);
-        txtResult.setVisibility(View.GONE);
 
         //searchview
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -253,14 +252,16 @@ public class OffActivity extends NavActivity {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(OffActivity.this, MainActivity.class);
-        startActivity(main);
-        finish();
         if (searchView.isSearchOpen()) {
             searchView.closeSearch();
         } else {
             super.onBackPressed();
         }
+
+        Intent main = new Intent(OffActivity.this, MainActivity.class);
+        startActivity(main);
+        finish();
+
     }
 
 }
