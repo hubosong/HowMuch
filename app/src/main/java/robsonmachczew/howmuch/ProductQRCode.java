@@ -8,8 +8,11 @@ public class ProductQRCode {
     private String date;
     private Double price;
     private int image;
+    private float unitprice;
+    private float howmany;
 
-    public ProductQRCode(int id, String title, String market, Double mediumprice, String date, Double price, int image) {
+
+    public ProductQRCode(int id, String title, String market, Double mediumprice, String date, Double price, int image, float unitprice, float howmany) {
         this.id = id;
         this.title = title;
         this.market = market;
@@ -17,6 +20,9 @@ public class ProductQRCode {
         this.date = date;
         this.price = price;
         this.image = image;
+        this.unitprice = unitprice;
+        this.howmany = howmany;
+
     }
 
     public int getId() {
@@ -41,6 +47,14 @@ public class ProductQRCode {
 
     public Double getPrice() {
         return price;
+    }
+
+    public float getUnitprice() {
+        return unitprice;
+    }
+
+    public float getHowmany() {
+        return howmany;
     }
 
     public int getImage() {

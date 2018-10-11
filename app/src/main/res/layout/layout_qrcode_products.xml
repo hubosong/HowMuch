@@ -34,47 +34,47 @@
 
 
             <TextView
-                android:id="@+id/txtMediumPriceDescription"
+                android:id="@+id/txtHowManyDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTitle"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/txt_desc_medium_price"
+                android:text="Quantidade: "
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/txtMediumPrice"
+                android:id="@+id/txtHowMany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTitle"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="6dp"
-                android:layout_toEndOf="@id/txtMediumPriceDescription"
-                android:text="@string/txt_medium_price"
+                android:layout_toEndOf="@id/txtHowManyDesc"
+                android:text="0"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/hint_nav_login" />
 
             <TextView
-                android:id="@+id/txtOffDescription"
+                android:id="@+id/txtUnitPriceDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtMediumPriceDescription"
+                android:layout_below="@id/txtHowManyDesc"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/txt_desc_off_price"
+                android:text="Valor Unitário: "
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/txtOff"
+                android:id="@+id/txtUnitPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtMediumPriceDescription"
+                android:layout_below="@id/txtHowManyDesc"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="3dp"
-                android:layout_toEndOf="@id/txtOffDescription"
+                android:layout_toEndOf="@id/txtUnitPriceDesc"
                 android:text="@string/txt_off_price"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/hint_nav_login" />

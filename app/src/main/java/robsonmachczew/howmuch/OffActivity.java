@@ -75,8 +75,8 @@ public class OffActivity extends NavActivity {
         recyclerView.setAdapter(tmp_adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //rvListStart();
-        rvlistTeste();
+        rvListStart();
+        //rvlistTeste();
 
     }
 
@@ -124,7 +124,7 @@ public class OffActivity extends NavActivity {
         });
     }
 
-
+    /*
     @SuppressLint("StaticFieldLeak")
     public void rvlistTeste(){
         new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
@@ -159,6 +159,8 @@ public class OffActivity extends NavActivity {
             }
         }.execute();
     }
+    */
+
 
     //recyclerview list off == Descontos
     @SuppressLint("StaticFieldLeak")

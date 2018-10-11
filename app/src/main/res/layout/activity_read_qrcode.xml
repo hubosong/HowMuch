@@ -38,28 +38,16 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtQRCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_qrcode"
-            android:textColor="@color/text_color"
-            android:textSize="12sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textAlignment="center" />
-
-        <TextView
             android:id="@+id/txtMarket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/txt_market_name"
             android:textColor="@color/text_color"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:textStyle="bold"
-            style="@style/Base.TextAppearance.AppCompat.Large"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
             android:textAlignment="center"/>
 
         <TextView
@@ -71,7 +59,20 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            style="@style/Base.TextAppearance.AppCompat.Small"/>
+
+        <TextView
+            android:id="@+id/txtQRCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_qrcode"
+            android:textColor="@color/text_color"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:textAlignment="center" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"

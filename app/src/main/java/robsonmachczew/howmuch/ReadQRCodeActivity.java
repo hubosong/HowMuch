@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +29,7 @@ import java.util.List;
 
 import adapter.ProductQRCodeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
-import adapter.TestProductQRCodeAdapter;
+import adapter.ReadQRCodeAdapter;
 import entidade.NFe;
 import entidade.ProdutoAbaixoMedia;
 
@@ -71,12 +70,13 @@ public class ReadQRCodeActivity extends NavActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         String code = getIntent().getStringExtra("code");
-        //postHttpQRCode(code);
+        postHttpQRCode(code);
 
-        rvlistQRTeste(code);
+        //rvlistQRTeste(code);
 
     }
 
+    /*
     @SuppressLint("StaticFieldLeak")
     public void rvlistQRTeste(final String code){
         new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
@@ -106,7 +106,7 @@ public class ReadQRCodeActivity extends NavActivity {
                 productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
                 productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour));
 
-                TestProductQRCodeAdapter adapter = new TestProductQRCodeAdapter(ReadQRCodeActivity.this, productList);
+                ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(ReadQRCodeActivity.this, productList);
                 recyclerView.setAdapter(adapter);
 
                 //hide floating button when scroll
@@ -126,6 +126,7 @@ public class ReadQRCodeActivity extends NavActivity {
             }
         }.execute();
     }
+    */
 
     @SuppressLint("StaticFieldLeak")
     public void postHttpQRCode(final String code) {
@@ -170,6 +171,7 @@ public class ReadQRCodeActivity extends NavActivity {
 
             @Override
             protected void onPostExecute(NFe nfe) {
+                txtQRCode.setText(code);
                 rvListQRCode(nfe);
             }
         }.execute(code);
@@ -177,33 +179,43 @@ public class ReadQRCodeActivity extends NavActivity {
 
 
     public void rvListQRCode(NFe nfe) {
+        progWait.setVisibility(View.GONE);
+        txtWait.setVisibility(View.GONE);
+
         productList = new ArrayList<>();
-        //productList.add( new ProductQRCode( 1,"Vinho Hu 0", "Mercado Hu",20.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
+
+        TextView txtMarket = findViewById(R.id.txtMarket);
+        TextView txtDate = findViewById(R.id.txtDate);
 
         for (int i = 0; i < nfe.getLista_items().size(); i++) {
+
             int prodId = (int) nfe.getLista_items().get(i).getProduto().getId_produto();
             String prodDesc = nfe.getLista_items().get(i).getProduto().getDescricao();
             String prodMarket = nfe.getLista_items().get(i).getMercado();
             Double prodPrice = Double.valueOf(nfe.getLista_items().get(i).getValor());
             String prodDate = nfe.getData();
-
             String markName = nfe.getMercado().getNome_fantasia();
-            if (markName.contains("BELTRAME")) {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_beltrame));
-            } else if (markName.contains("CARREFOUR")) {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_carrefour));
-            } else if (markName.contains("BIG")) {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_big));
-            } else {
-                productList.add(new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice - 1, prodDate, prodPrice, R.drawable.market_market));
-            }
 
+            float prodHowMany = nfe.getLista_items().get(i).getQuantidade();
+            float prodUnitPrice = (float) (prodPrice / prodHowMany);
+
+            txtMarket.setText(markName);
+            txtDate.setText(prodDate);
+
+            productList.add( new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice, prodDate, prodPrice, R.drawable.market, prodUnitPrice, prodHowMany));
         }
 
         Toast.makeText(ReadQRCodeActivity.this, nfe.getLista_items().size() + " itens encontrados", Toast.LENGTH_LONG).show();
 
-        ProductQRCodeAdapter adapter = new ProductQRCodeAdapter(this, productList);
+        ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(this, productList);
         recyclerView.setAdapter(adapter);
+
+        txtMarket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ReadQRCodeActivity.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //hide floating button when scroll
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

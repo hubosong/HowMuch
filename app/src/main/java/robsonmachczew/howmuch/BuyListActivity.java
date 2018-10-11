@@ -91,8 +91,6 @@ public class BuyListActivity extends NavActivity {
         searchView.setAnimationDuration(700);
         searchView.setHint("Consultar Produto..");
         searchView.setHintTextColor(R.color.hint_nav_login);
-        searchView.setVoiceSearch(true);
-        searchView.setAnimationDuration(AnimationUtil.ANIMATION_DURATION_MEDIUM);
         searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -134,6 +132,7 @@ public class BuyListActivity extends NavActivity {
             }
         });
     }
+
 
 
     @SuppressLint("StaticFieldLeak")
@@ -232,6 +231,7 @@ public class BuyListActivity extends NavActivity {
             }
         }.execute();
     }
+
 
 
     //menu

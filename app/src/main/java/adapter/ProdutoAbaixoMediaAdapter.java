@@ -37,7 +37,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
         //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
@@ -50,6 +50,8 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
             //imageView = itemView.findViewById(R.id.imageView);
+
+            txtDescOff = itemView.findViewById(R.id.txtOffDescription);
 
         }
     }
@@ -72,6 +74,8 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
             holder.txtDate.setText(prodBelowAverage.getData());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
             holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
+            holder.txtDescOff.setText("Acrescimo");
+            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
 
@@ -82,6 +86,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
             holder.txtDate.setText(prodBelowAverage.getData());
             holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
             holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
+            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
             holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
 
@@ -107,10 +112,10 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                 Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option2:
-                                Toast.makeText(mCtx, "option2", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mCtx, "Item adicionado", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option3:
-                                Toast.makeText(mCtx, "option3", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mCtx, "Lista acessada!", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
