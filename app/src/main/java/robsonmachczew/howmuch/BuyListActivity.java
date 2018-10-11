@@ -5,26 +5,29 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.miguelcatalan.materialsearchview.utils.AnimationUtil;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,7 +41,6 @@ import entidade.Produto;
 
 public class BuyListActivity extends NavActivity {
 
-    private EditText searchText, editNomeLista;
     private TextView txtNomeLista;
     private LinearLayout layoutProdutos;
     private ImageView imgLogo;
@@ -46,6 +48,7 @@ public class BuyListActivity extends NavActivity {
 
     private MaterialSearchView searchView;
     private final Activity activity = this;
+    private Animation alpha_in, alpha_out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,8 @@ public class BuyListActivity extends NavActivity {
         //basic config
         getSupportActionBar().setTitle(R.string.bar_buy_list);
 
+        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
+        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
         //searchview
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -70,35 +75,14 @@ public class BuyListActivity extends NavActivity {
         txtNomeLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(activity, "teste", Toast.LENGTH_SHORT).show();
             }
         });
 
-        //editNomeLista = (EditText) findViewById(R.id.editNomeLista);
         lista_compras = new ArrayList<>();
-
         layoutProdutos = (LinearLayout) findViewById(R.id.layoutProdutos);
         imgLogo = findViewById(R.id.imgLogo);
 
-
-        /*
-        searchText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 2) {
-                    realizaPesquisaProdutos(s.toString());
-                }
-            }
-        });
-        */
     }
 
     //searchView
@@ -107,19 +91,20 @@ public class BuyListActivity extends NavActivity {
         searchView.setAnimationDuration(700);
         searchView.setHint("Consultar Produto..");
         searchView.setHintTextColor(R.color.hint_nav_login);
+        searchView.setVoiceSearch(true);
+        searchView.setAnimationDuration(AnimationUtil.ANIMATION_DURATION_MEDIUM);
+        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                txtNomeLista .setText(query);
-                realizaPesquisaProdutos(query.toString());
+                txtNomeLista.setText(query);
+                txtNomeLista.startAnimation(alpha_in);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() > 2) {
-                    realizaPesquisaProdutos(newText.toString());
-                }
                 return false;
             }
         });
@@ -132,7 +117,8 @@ public class BuyListActivity extends NavActivity {
                 window.setStatusBarColor(ContextCompat.getColor(activity, R.color.searchview_status));
 
                 fab.setVisibility(View.GONE);
-                //fab.startAnimation(alpha_out);
+                fab.startAnimation(alpha_out);
+
             }
 
             @Override
@@ -143,10 +129,12 @@ public class BuyListActivity extends NavActivity {
                 window.setStatusBarColor(ContextCompat.getColor(activity, R.color.toolbar_status));
 
                 fab.setVisibility(View.VISIBLE);
-                //fab.startAnimation(alpha_in);
+                fab.startAnimation(alpha_in);
+
             }
         });
     }
+
 
     @SuppressLint("StaticFieldLeak")
     private void realizaPesquisaProdutos(final String pesquisa) {
@@ -237,7 +225,7 @@ public class BuyListActivity extends NavActivity {
                             if (!adicionado) {
                                 lista_compras.add(produto);
                             }
-                            txtNomeLista.setText(editNomeLista.getText() + " ("+lista_compras.size()+" Produtos)");
+                            //txtNomeLista.setText(editNomeLista.getText() + " ("+lista_compras.size()+" Produtos)");
                         }
                     });
                 }

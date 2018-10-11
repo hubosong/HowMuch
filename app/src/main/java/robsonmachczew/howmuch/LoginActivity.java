@@ -96,16 +96,6 @@ public class LoginActivity extends AppCompatActivity {
     //logar
     @SuppressLint("StaticFieldLeak")
     public void btnLogin(View view) {
-        Usuario u = Utils.loadFromSharedPreferences(this);
-        if(u.getId_usuario() != 0){
-            Intent content = new Intent(LoginActivity.this, OffActivity.class);
-            content.putExtra("usuario", u);
-            startActivity(content);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            finish();
-            return;
-        }
-
         //clear focus --> created edittext Vazio
         EditText edt = findViewById(R.id.edtVazio);
         edtPass.clearFocus();
@@ -125,6 +115,18 @@ public class LoginActivity extends AppCompatActivity {
             t.show();
             return;
         }
+
+
+        Usuario u = Utils.loadFromSharedPreferences(this);
+        if(u.getId_usuario() != 0){
+            Intent content = new Intent(LoginActivity.this, OffActivity.class);
+            content.putExtra("usuario", u);
+            startActivity(content);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+            return;
+        }
+
 
         new AsyncTask<String, Void, Usuario>() {
             @Override
@@ -172,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 Intent content = new Intent(LoginActivity.this, OffActivity.class);
-                usuario.setSenha(senha); //mudanca 1
+                usuario.setSenha(senha);
                 Utils.saveToSharedPreferences(usuario, LoginActivity.this);
                 content.putExtra("usuario", usuario);
                 startActivity(content);
