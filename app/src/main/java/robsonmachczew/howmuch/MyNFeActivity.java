@@ -31,10 +31,18 @@ import java.util.List;
 
 import adapter.ProductQRCodeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
+import adapter.ReadQRCodeAdapter;
 import entidade.NFe;
 import entidade.ProdutoAbaixoMedia;
 
 public class MyNFeActivity extends NavActivity {
+
+    private ProgressBar progWait;
+    private TextView txtResult, txtWait;
+    private MaterialSearchView searchView;
+    private RecyclerView recyclerView;
+    private final Activity activity = this;
+    public Animation alpha_in, alpha_out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +57,52 @@ public class MyNFeActivity extends NavActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_my_nfe);
 
+        progWait = findViewById(R.id.progWait);
+        txtWait = findViewById(R.id.txtWait);
+
+
+        //recyclerview
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        ProdutoAbaixoMediaAdapter tmp_adapter = new ProdutoAbaixoMediaAdapter(this, new ArrayList<ProdutoAbaixoMedia>());
+        recyclerView.setAdapter(tmp_adapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        rvlistTeste();
+
     }
+
+
+    @SuppressLint("StaticFieldLeak")
+    public void rvlistTeste(){
+        new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
+            @Override
+            protected ArrayList<ProductQRCode> doInBackground(String... strings) {
+                ArrayList<ProductQRCode>productList = new ArrayList<>();
+                productList.add( new ProductQRCode( 1,"Nota 1", "Mercado Hu",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour, 1, 1));
+
+                ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(MyNFeActivity.this, productList);
+
+                recyclerView.setAdapter(adapter);
+
+                //hide floating button when scroll
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                            fab.hide();
+                        } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                            fab.show();
+                        }
+                    }
+                });
+
+                return null;
+            }
+        }.execute();
+    }
+
 
     //onBack
     @Override

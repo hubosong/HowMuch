@@ -83,10 +83,9 @@ public class OffActivity extends NavActivity {
 
     //searchView
     public void searchView() {
-        searchView.setEllipsize(true);
-        searchView.setAnimationDuration(700);
         searchView.setHint("Consultar Produto..");
         searchView.setHintTextColor(R.color.hint_nav_login);
+        searchView.setVoiceSearch(true);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -124,6 +123,7 @@ public class OffActivity extends NavActivity {
         });
     }
 
+
     /*
     @SuppressLint("StaticFieldLeak")
     public void rvlistTeste(){
@@ -131,13 +131,13 @@ public class OffActivity extends NavActivity {
             @Override
             protected ArrayList<ProductQRCode> doInBackground(String... strings) {
                 ArrayList<ProductQRCode>productList = new ArrayList<>();
-                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour, 1, 1));
 
                 ProductQRCodeAdapter adapter = new ProductQRCodeAdapter(OffActivity.this, productList);
                 recyclerView.setAdapter(adapter);
@@ -160,6 +160,7 @@ public class OffActivity extends NavActivity {
         }.execute();
     }
     */
+
 
 
     //recyclerview list off == Descontos
@@ -218,8 +219,10 @@ public class OffActivity extends NavActivity {
                             super.onScrolled(recyclerView, dx, dy);
                             if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
                                 fab.hide();
+                                fab.startAnimation(alpha_out);
                             } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
                                 fab.show();
+                                fab.startAnimation(alpha_in);
                             }
                         }
                     });

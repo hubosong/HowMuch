@@ -3,6 +3,7 @@ package robsonmachczew.howmuch;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
@@ -10,6 +11,7 @@ import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,11 +89,10 @@ public class BuyListActivity extends NavActivity {
 
     //searchView
     public void searchView() {
-        searchView.setEllipsize(true);
-        searchView.setAnimationDuration(700);
         searchView.setHint("Consultar Produto..");
         searchView.setHintTextColor(R.color.hint_nav_login);
-        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        //searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        searchView.setVoiceSearch(false);
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -117,6 +118,7 @@ public class BuyListActivity extends NavActivity {
                 fab.setVisibility(View.GONE);
                 fab.startAnimation(alpha_out);
 
+
             }
 
             @Override
@@ -131,8 +133,8 @@ public class BuyListActivity extends NavActivity {
 
             }
         });
-    }
 
+    }
 
 
     @SuppressLint("StaticFieldLeak")

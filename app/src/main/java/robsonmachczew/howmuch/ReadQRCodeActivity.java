@@ -87,6 +87,7 @@ public class ReadQRCodeActivity extends NavActivity {
                 TextView txtMarket = findViewById(R.id.txtMarket);
                 TextView txtDate = findViewById(R.id.txtDate);
                 txtMarket.setText("Mercado Hu");
+                txtDate.setText("10/09/2018 00:00:00");
 
                 txtMarket.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -95,16 +96,16 @@ public class ReadQRCodeActivity extends NavActivity {
                     }
                 });
 
-                txtDate.setText("10/09/2018 00:00:00");
+                TextView prodHowMany = findViewById(R.id.txtHowMany);
 
                 ArrayList<ProductQRCode>productList = new ArrayList<>();
-                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour));
-                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour));
+                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 2, 3));
+                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 2, 3));
+                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour, 2, 3));
+                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour, 2, 3));
+                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour, 2, 3));
+                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 2, 3));
+                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour, 2, 3));
 
                 ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(ReadQRCodeActivity.this, productList);
                 recyclerView.setAdapter(adapter);
@@ -192,7 +193,7 @@ public class ReadQRCodeActivity extends NavActivity {
             int prodId = (int) nfe.getLista_items().get(i).getProduto().getId_produto();
             String prodDesc = nfe.getLista_items().get(i).getProduto().getDescricao();
             String prodMarket = nfe.getLista_items().get(i).getMercado();
-            Double prodPrice = Double.valueOf(nfe.getLista_items().get(i).getValor());
+            Double prodPrice = (double) nfe.getLista_items().get(i).getValor();
             String prodDate = nfe.getData();
             String markName = nfe.getMercado().getNome_fantasia();
 
@@ -224,8 +225,10 @@ public class ReadQRCodeActivity extends NavActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
                     fab.hide();
+                    fab.startAnimation(alpha_out);
                 } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
                     fab.show();
+                    fab.startAnimation(alpha_in);
                 }
             }
         });
