@@ -2,6 +2,7 @@ package robsonmachczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -10,9 +11,12 @@ import android.speech.RecognizerIntent;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +24,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,14 +44,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import entidade.Produto;
 
 public class BuyListActivity extends NavActivity {
 
-    private TextView txtNomeLista;
+    private TextView txtList;
+    private EditText edtSearch;
     private LinearLayout layoutProdutos;
-    private ImageView imgLogo;
     private ArrayList<Produto> lista_compras;
 
     private MaterialSearchView searchView;
@@ -59,7 +66,7 @@ public class BuyListActivity extends NavActivity {
         //called by nav
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_buy_list, contentFrameLayout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(1).setChecked(true);
 
         //basic config
@@ -68,25 +75,87 @@ public class BuyListActivity extends NavActivity {
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
+        /*
         //searchview
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView();
+        */
 
 
-        txtNomeLista = findViewById(R.id.txtNomeLista);
-        txtNomeLista.setOnClickListener(new View.OnClickListener() {
+        txtList = findViewById(R.id.txtList);
+        txtList.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(activity, "teste", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(BuyListActivity.this);
+                //dialog.setTitle("Produtos Adicionados");
+
+                TextView title = new TextView(BuyListActivity.this);
+                //title.setText("Produtos Adicionados");
+                title.setText("Menor preco: R$ 122,39");
+                title.setBackgroundColor(ContextCompat.getColor(BuyListActivity.this, R.color.toolbar_status));
+                title.setPadding(10, 10, 10, 10);
+                title.setGravity(Gravity.CENTER);
+                title.setTextColor(Color.WHITE);
+                title.setTextSize(20);
+                title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_maps);
+                dialog.setCustomTitle(title);
+
+                //call market data
+                title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(BuyListActivity.this, "Mercado Hu", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                //list
+                dialog.setView(LayoutInflater.from(BuyListActivity.this).inflate(android.R.layout.simple_list_item_1,null));
+                String[] someList = {"02 | Vinho Hu", "05 | Cerveja Hu", "02 | Batata Hu", "03 | Arroz Hu", "10 | Massa Hu"};
+                dialog.setItems(someList, null);
+
+                dialog.setCancelable(false);
+                dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(activity, "Cancelado!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(activity, "Lista Salva!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog alert = dialog.create();
+                alert.show();
             }
         });
 
-        lista_compras = new ArrayList<>();
+
         layoutProdutos = (LinearLayout) findViewById(R.id.layoutProdutos);
-        imgLogo = findViewById(R.id.imgLogo);
+        lista_compras = new ArrayList<>();
+
+
+        edtSearch = findViewById(R.id.edtSearch);
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 2) {
+                    realizaPesquisaProdutos(s.toString());
+                }
+            }
+        });
 
     }
 
+    /*
     //searchView
     public void searchView() {
         searchView.setHint("Consultar Produto..");
@@ -97,8 +166,8 @@ public class BuyListActivity extends NavActivity {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                txtNomeLista.setText(query);
-                txtNomeLista.startAnimation(alpha_in);
+                txtManyList.setText(query);
+                txtManyList.startAnimation(alpha_in);
                 return false;
             }
 
@@ -135,6 +204,7 @@ public class BuyListActivity extends NavActivity {
         });
 
     }
+    */
 
 
     @SuppressLint("StaticFieldLeak")
@@ -143,11 +213,13 @@ public class BuyListActivity extends NavActivity {
             @Override
             protected void onPreExecute() {
                 layoutProdutos.removeAllViews();
+
                 TextView txtCarregando = new TextView(BuyListActivity.this);
                 txtCarregando.setText(R.string.txt_progress);
                 txtCarregando.setTextSize(16);
                 txtCarregando.setTextColor(Color.parseColor("#ffffff"));
                 layoutProdutos.addView(txtCarregando);
+
                 super.onPreExecute();
             }
 
@@ -181,11 +253,15 @@ public class BuyListActivity extends NavActivity {
 
             @Override
             protected void onPostExecute(ArrayList<Produto> list) {
+
                 layoutProdutos.removeAllViews();
+
                 for (final Produto produto : list) {
 
+                    ImageView imgLogo = findViewById(R.id.imgLogo);
                     imgLogo.setVisibility(View.GONE);
 
+                    //layout subscribe linear layout of xml
                     LinearLayout l = new LinearLayout(BuyListActivity.this);
                     l.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -226,7 +302,7 @@ public class BuyListActivity extends NavActivity {
                             if (!adicionado) {
                                 lista_compras.add(produto);
                             }
-                            //txtNomeLista.setText(editNomeLista.getText() + " ("+lista_compras.size()+" Produtos)");
+                            txtList.setText("Produtos Add: ("+lista_compras.size()+")");
                         }
                     });
                 }
@@ -236,6 +312,7 @@ public class BuyListActivity extends NavActivity {
 
 
 
+    /*
     //menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -253,6 +330,7 @@ public class BuyListActivity extends NavActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+    */
 
 
     //onBack

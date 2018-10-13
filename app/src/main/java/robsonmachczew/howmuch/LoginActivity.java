@@ -116,7 +116,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-
         Usuario u = Utils.loadFromSharedPreferences(this);
         if(u.getId_usuario() != 0){
             Intent content = new Intent(LoginActivity.this, OffActivity.class);

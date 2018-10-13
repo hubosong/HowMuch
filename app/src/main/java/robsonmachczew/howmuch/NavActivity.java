@@ -46,8 +46,6 @@ public class NavActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
 
-        usuario = Utils.loadFromSharedPreferences(this);
-
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setStatusBarColor(this.getResources().getColor(R.color.toolbar_status));
@@ -94,7 +92,10 @@ public class NavActivity extends AppCompatActivity {
             }
         });
 
-        //user receive for teste
+
+        //user receive
+        usuario = Utils.loadFromSharedPreferences(this);
+
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
         navNome.setText(usuario.getNome());
@@ -103,11 +104,9 @@ public class NavActivity extends AppCompatActivity {
         //hidden menus items of nav
         Menu nav_menu = navigationView.getMenu();
         if(navNome.getText().equals("")){
-            nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
+            nav_menu.findItem(R.id.nav_my_buy).setVisible(true);
             nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
         }
-
-
 
     }
 
