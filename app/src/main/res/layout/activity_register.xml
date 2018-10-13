@@ -97,35 +97,54 @@
                 android:textColor="#000"
                 android:layout_marginBottom="10dp" />
 
+
             <LinearLayout
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:orientation="horizontal"
+                android:background="#33000000"
                 android:layout_marginBottom="20dp">
 
                 <Button
-                    android:id="@+id/buttonChoose"
+                    android:id="@+id/btnChoose"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
+                    android:layout_weight="1"
                     android:background="@drawable/buttons_login"
-                    android:drawableLeft="@drawable/ic_camera"
-                    android:drawableTint="@color/nav_color"
-                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/ic_search_upload"
                     android:paddingStart="12dp"
-                    android:paddingEnd="15dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginStart="10dp"
                     android:text="@string/btn_search_image"
                     android:textColor="@color/nav_color"/>
 
+                <ImageView
+                    android:id="@+id/imgUpload"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:elevation="15dp"
+                    app:srcCompat="@drawable/contact"
+                    android:visibility="gone"/>
+
                 <TextView
-                    android:id="@+id/editTextName"
+                    android:id="@+id/txtImageDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="5dp"
-                    android:hint="@string/txt_image_name" />
+                    android:layout_marginEnd="10dp"
+                    android:textAlignment="center"
+                    android:hint="@string/txt_image_name"
+                    android:visibility="visible"/>
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="300dp"
