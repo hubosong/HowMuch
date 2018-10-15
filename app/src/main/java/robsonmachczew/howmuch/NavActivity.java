@@ -14,8 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -185,7 +183,8 @@ public class NavActivity extends AppCompatActivity {
         if (result != null) {
             if (result.getContents() != null) {
                 String cut = result.getContents();
-                String code = cut.substring(53, 97);
+                int corte = cut.indexOf("=") + 1;
+                String code = cut.substring(corte, corte + 44);
                 Intent readQRcode = new Intent(activity, ReadQRCodeActivity.class);
                 readQRcode.putExtra("code", code);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

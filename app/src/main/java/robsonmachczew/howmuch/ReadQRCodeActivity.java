@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.design.widget.NavigationView;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,7 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import adapter.ProductQRCodeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
 import adapter.ReadQRCodeAdapter;
 import entidade.NFe;
@@ -144,6 +143,7 @@ public class ReadQRCodeActivity extends NavActivity {
                 NFe nfe = null;
                 try {
                     String urlParameters = "chavenfe=" + code;
+                    System.out.println("Enviando chave: "+code);
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
                     URL url = new URL("http://187.181.170.135:8080/Mercado/enviar_id_nfe");
