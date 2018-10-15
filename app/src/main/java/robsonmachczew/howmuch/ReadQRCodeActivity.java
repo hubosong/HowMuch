@@ -75,7 +75,6 @@ public class ReadQRCodeActivity extends NavActivity {
 
     }
 
-    /*
     @SuppressLint("StaticFieldLeak")
     public void rvlistQRTeste(final String code){
         new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
@@ -126,7 +125,7 @@ public class ReadQRCodeActivity extends NavActivity {
             }
         }.execute();
     }
-    */
+
 
     @SuppressLint("StaticFieldLeak")
     public void postHttpQRCode(final String code) {

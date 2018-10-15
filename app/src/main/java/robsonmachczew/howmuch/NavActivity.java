@@ -102,8 +102,8 @@ public class NavActivity extends AppCompatActivity {
         //hidden menus items of nav
         Menu nav_menu = navigationView.getMenu();
         if(navNome.getText().equals("")){
-            nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
-            nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
+            nav_menu.findItem(R.id.nav_my_buy).setVisible(true);
+            nav_menu.findItem(R.id.nav_my_nfe).setVisible(true);
         }
 
     }
