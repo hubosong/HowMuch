@@ -2,13 +2,17 @@ package robsonmachczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +64,22 @@ public class OffActivity extends NavActivity {
 
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
+
+
+        //test internet connection
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            connected = true;
+            //Toast.makeText(activity, "Internet OK", Toast.LENGTH_SHORT).show();
+        } else {
+            connected = false;
+            Toast t = Toast.makeText(activity, "Internet Error!", Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.CENTER, 0, 50);
+            t.show();
+        }
+
 
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
