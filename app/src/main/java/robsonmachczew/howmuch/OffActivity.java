@@ -124,7 +124,6 @@ public class OffActivity extends NavActivity {
     }
 
 
-    /*
     @SuppressLint("StaticFieldLeak")
     public void rvlistTeste(){
         new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
@@ -159,7 +158,6 @@ public class OffActivity extends NavActivity {
             }
         }.execute();
     }
-    */
 
 
 
