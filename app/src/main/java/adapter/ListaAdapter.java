@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,32 +14,30 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import robsonmachczew.howmuch.ProductQRCode;
-import robsonmachczew.howmuch.R;
+import entidade.Lista;
+import robsonmachczew.activities.R;
 
-public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdapter.ProductViewHolder> {
+public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewHolder> {
 
-    //this context we will use to inflate the layout
     private Context mCtx;
-    //we are storing all the products in a list
-    private List<ProductQRCode> productList;
+    private List<Lista> productList;
+
     //getting the context and product list with constructor
-    public ProductQRCodeAdapter(Context mCtx, List<ProductQRCode> productList) {
+    public ListaAdapter(Context mCtx, List<Lista> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
 
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_products, null);
         return new ProductViewHolder(view);
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff ;
-        ImageView imageView;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
+        //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
@@ -51,12 +48,10 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
             txtOff = itemView.findViewById(R.id.txtOff);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
-            //imageView = itemView.findViewById(R.id.imageView);
 
             txtDescOff = itemView.findViewById(R.id.txtOffDescription);
 
         }
-
     }
 
     @Override
@@ -64,47 +59,27 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
         return productList.size();
     }
 
-    /*
-    public void add(int position, String product) {
-        productList.add(position, product);
-        notifyItemInserted(position);
-    }
-    */
-
-    public void remove(int position) {
-        productList.remove(position);
-        notifyItemRemoved(position);
-    }
-
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        //getting the productQRCode of the specified position
-        final ProductQRCode productQRCode = productList.get(position);
+        final Lista lista = productList.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        if(productQRCode.getPrice() >= productQRCode.getMediumprice()){
-            holder.txtTitle.setText(productQRCode.getTitle().toUpperCase());
-            holder.txtMarket.setText(productQRCode.getMarket().toUpperCase());
-            holder.txtDate.setText(productQRCode.getDate());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
-            holder.txtDescOff.setText("Acrescimo");
-            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
-        } else {
-            holder.txtTitle.setText(productQRCode.getTitle().toUpperCase());
-            holder.txtMarket.setText(productQRCode.getMarket().toUpperCase());
-            holder.txtDate.setText(productQRCode.getDate());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(productQRCode.getMediumprice())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(productQRCode.getPrice() - productQRCode.getMediumprice())));
-            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
+        holder.txtTitle.setText(lista.getNome());
+        holder.txtMarket.setText(String.valueOf(lista.getListaProdutos().size()));
+        holder.txtDate.setText(lista.getData());
+        holder.txtMediumPrice.setText("");
+        holder.txtOff.setText("");
+        holder.txtDescOff.setText("");
+        holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setText("");
 
-        }
+
+
+        //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...
+        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
 
         holder.txtOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,14 +113,15 @@ public class ProductQRCodeAdapter extends RecyclerView.Adapter<ProductQRCodeAdap
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + productQRCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCtx, "Produto: " + lista, Toast.LENGTH_SHORT).show();
                 remove(position);
                 return false;
             }
         });
-
-        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(productQRCode.getImage()));
-
     }
 
+    public void remove(int position) {
+        productList.remove(position);
+        notifyItemRemoved(position);
+    }
 }

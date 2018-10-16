@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/nav_color"
-    tools:context=".OffActivity">
+    tools:context=".Descontos">
 
     <ProgressBar
         android:id="@+id/progWait"

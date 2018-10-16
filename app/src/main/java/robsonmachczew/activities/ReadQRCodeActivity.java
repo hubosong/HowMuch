@@ -1,4 +1,4 @@
-package robsonmachczew.howmuch;
+package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,11 +25,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 import adapter.ProdutoAbaixoMediaAdapter;
 import adapter.ReadQRCodeAdapter;
 import entidade.NFe;
+import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 
 public class ReadQRCodeActivity extends NavActivity {
@@ -41,7 +41,7 @@ public class ReadQRCodeActivity extends NavActivity {
     private final Activity activity = this;
     public Animation alpha_in, alpha_out;
 
-    private List<ProductQRCode> productList;
+    private ArrayList<Produto> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,59 +71,7 @@ public class ReadQRCodeActivity extends NavActivity {
         String code = getIntent().getStringExtra("code");
         postHttpQRCode(code);
 
-        //rvlistQRTeste(code);
 
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    public void rvlistQRTeste(final String code){
-        new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
-            @Override
-            protected ArrayList<ProductQRCode> doInBackground(String... strings) {
-
-                txtQRCode.setText(code);
-                TextView txtMarket = findViewById(R.id.txtMarket);
-                TextView txtDate = findViewById(R.id.txtDate);
-                txtMarket.setText("Mercado Hu");
-                txtDate.setText("10/09/2018 00:00:00");
-
-                txtMarket.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(ReadQRCodeActivity.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                TextView prodHowMany = findViewById(R.id.txtHowMany);
-
-                ArrayList<ProductQRCode>productList = new ArrayList<>();
-                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 2, 3));
-                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 2, 3));
-                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour, 2, 3));
-                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour, 2, 3));
-                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour, 2, 3));
-                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 2, 3));
-                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour, 2, 3));
-
-                ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(ReadQRCodeActivity.this, productList);
-                recyclerView.setAdapter(adapter);
-
-                //hide floating button when scroll
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                            fab.hide();
-                        } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                            fab.show();
-                        }
-                    }
-                });
-
-                return null;
-            }
-        }.execute();
     }
 
 
@@ -151,13 +99,11 @@ public class ReadQRCodeActivity extends NavActivity {
                     urlCon.setDoOutput(true); // Habilita o envio da chave por stream
                     urlCon.setDoInput(true); // Habilita o recebimento via stream
 
-                    System.out.println("ERROR Send");
                     DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream()); // Stream que envia a chave para o servidor
                     wr.write(postData); // Envia a chave
                     wr.close();
                     wr.flush();
 
-                    System.out.println("ERROR Receive");
                     ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
                     nfe = (NFe) ois.readObject();
                     ois.close();
@@ -172,13 +118,13 @@ public class ReadQRCodeActivity extends NavActivity {
             @Override
             protected void onPostExecute(NFe nfe) {
                 txtQRCode.setText(code);
-                rvListQRCode(nfe);
+                preencherViewsProdutosNFe(nfe);
             }
         }.execute(code);
     }
 
 
-    public void rvListQRCode(NFe nfe) {
+    public void preencherViewsProdutosNFe(NFe nfe) {
         progWait.setVisibility(View.GONE);
         txtWait.setVisibility(View.GONE);
 
@@ -186,24 +132,6 @@ public class ReadQRCodeActivity extends NavActivity {
 
         TextView txtMarket = findViewById(R.id.txtMarket);
         TextView txtDate = findViewById(R.id.txtDate);
-
-        for (int i = 0; i < nfe.getLista_items().size(); i++) {
-
-            int prodId = (int) nfe.getLista_items().get(i).getProduto().getId_produto();
-            String prodDesc = nfe.getLista_items().get(i).getProduto().getDescricao();
-            String prodMarket = nfe.getLista_items().get(i).getMercado();
-            Double prodPrice = (double) nfe.getLista_items().get(i).getValor();
-            String prodDate = nfe.getData();
-            String markName = nfe.getMercado().getNome_fantasia();
-
-            float prodHowMany = nfe.getLista_items().get(i).getQuantidade();
-            float prodUnitPrice = (float) (prodPrice / prodHowMany);
-
-            txtMarket.setText(markName);
-            txtDate.setText(prodDate);
-
-            productList.add( new ProductQRCode(prodId, prodDesc, prodMarket, prodPrice, prodDate, prodPrice, R.drawable.market, prodUnitPrice, prodHowMany));
-        }
 
         Toast.makeText(ReadQRCodeActivity.this, nfe.getLista_items().size() + " itens encontrados", Toast.LENGTH_LONG).show();
 
@@ -237,7 +165,7 @@ public class ReadQRCodeActivity extends NavActivity {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent off = new Intent(ReadQRCodeActivity.this, OffActivity.class);
+        Intent off = new Intent(ReadQRCodeActivity.this, Descontos.class);
         startActivity(off);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

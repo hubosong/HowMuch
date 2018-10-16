@@ -1,12 +1,12 @@
 package adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,30 +14,32 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import entidade.ProdutoAbaixoMedia;
+import entidade.Produto;
 import robsonmachczew.activities.R;
 
-public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaixoMediaAdapter.ProductViewHolder> {
+public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProductViewHolder> {
 
+    //this context we will use to inflate the layout
     private Context mCtx;
-    private List<ProdutoAbaixoMedia> productList;
-
+    //we are storing all the products in a list
+    private List<Produto> productList;
     //getting the context and product list with constructor
-    public ProdutoAbaixoMediaAdapter(Context mCtx, List<ProdutoAbaixoMedia> productList) {
+    public ProdutoAdapter(Context mCtx, List<Produto> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
 
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_products, null);
         return new ProductViewHolder(view);
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
-        //ImageView imageView;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff ;
+        ImageView imageView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
@@ -53,6 +55,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
             txtDescOff = itemView.findViewById(R.id.txtOffDescription);
 
         }
+
     }
 
     @Override
@@ -60,41 +63,25 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
         return productList.size();
     }
 
+    /*
+    public void add(int position, String product) {
+        productList.add(position, product);
+        notifyItemInserted(position);
+    }
+    */
+
+    public void remove(int position) {
+        productList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        final ProdutoAbaixoMedia prodBelowAverage = productList.get(position);
+        //getting the productQRCode of the specified position
+        final Produto produto = productList.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
-
-        if(prodBelowAverage.getValor() >= prodBelowAverage.getValor_medio()){
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
-            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
-            holder.txtDate.setText(prodBelowAverage.getData());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
-            holder.txtDescOff.setText("Acrescimo");
-            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
-
-
-        } else {
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
-            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
-            holder.txtDate.setText(prodBelowAverage.getData());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
-            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
-
-
-
-        }
-
-        //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...
-        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
 
         holder.txtOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,24 +115,14 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + prodBelowAverage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCtx, "Produto: " + produto, Toast.LENGTH_SHORT).show();
                 remove(position);
                 return false;
             }
         });
-        /*
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
+
+        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(productQRCode.getImage()));
 
     }
 
-    public void remove(int position) {
-        productList.remove(position);
-        notifyItemRemoved(position);
-    }
 }

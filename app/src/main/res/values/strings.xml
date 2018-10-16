@@ -31,7 +31,7 @@
     <!-- nav (menu) -->
     <string name="nav_off">Descontos</string>
     <string name="nav_new_list">Nova Lista de Compras</string>
-    <string name="nav_my_buy">Minhas Compras</string>
+    <string name="nav_my_buy">Listas de Compras</string>
     <string name="nav_my_nfe">Minhas NFe</string>
     <string name="nav_send_nfe">Enviar NFe (QRCode)</string>
     <string name="nav_logout">Sair</string>
@@ -57,11 +57,11 @@
     <string name="txt_product_name">Produto</string>
     <string name="txt_market_name">Mercado</string>
     <string name="txt_date">10/09/2018 00:00:00</string>
-    <string name="txt_desc_medium_price">P.M.: </string>
+    <string name="txt_desc_medium_price">Preço Médio: </string>
     <string name="txt_medium_price">R$ 0,00</string>
     <string name="txt_desc_off_price">Desconto: </string>
     <string name="txt_off_price">R$ 0,00</string>
-    <string name="txt_desc_price">P.A.: </string>
+    <string name="txt_desc_price">Preço Atual: </string>
     <string name="txt_price">R$ 0,00</string>
 
     <!-- buy list -->
@@ -71,12 +71,12 @@
     <string name="bar_buy_list">Lista de Compras</string>
 
     <!-- my buy -->
-    <string name="txt_my_buys">Minhas Compras</string>
-    <string name="bar_my_buys">Minhas Compras</string>
+    <string name="txt_my_buys">Minhas Listas de Compras</string>
+    <string name="bar_my_buys">Minhas Listas de Compras</string>
 
     <!-- my nfe -->
-    <string name="txt_my_nfe">Minhas NFe Enviadas</string>
-    <string name="bar_my_nfe">Minhas NFe</string>
+    <string name="txt_my_nfe">Minhas NFes Enviadas</string>
+    <string name="bar_my_nfe">Minhas NFes</string>
 
 
 

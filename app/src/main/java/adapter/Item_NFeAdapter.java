@@ -14,16 +14,16 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import entidade.ProdutoAbaixoMedia;
+import entidade.Item_NFe;
 import robsonmachczew.activities.R;
 
-public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaixoMediaAdapter.ProductViewHolder> {
+public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.ProductViewHolder> {
 
     private Context mCtx;
-    private List<ProdutoAbaixoMedia> productList;
+    private List<Item_NFe> productList;
 
     //getting the context and product list with constructor
-    public ProdutoAbaixoMediaAdapter(Context mCtx, List<ProdutoAbaixoMedia> productList) {
+    public Item_NFeAdapter(Context mCtx, List<Item_NFe> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
@@ -62,36 +62,22 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        final ProdutoAbaixoMedia prodBelowAverage = productList.get(position);
+        final Item_NFe item = productList.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        if(prodBelowAverage.getValor() >= prodBelowAverage.getValor_medio()){
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
-            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
-            holder.txtDate.setText(prodBelowAverage.getData());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
-            holder.txtDescOff.setText("Acrescimo");
-            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
+        holder.txtTitle.setText(item.getProduto().getDescricao());
+        holder.txtMarket.setText(item.getTransient_mercado().getNome());
+        holder.txtDate.setText(item.getTransient_data());
+        holder.txtMediumPrice.setText("");
+        holder.txtOff.setText("");
+        holder.txtDescOff.setText("");
+        holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setText(String.valueOf(decFormat.format(item.getValor() / item.getQuantidade())) + " ("+item.getProduto().getUnidade_comercial()+")");
 
 
-        } else {
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
-            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
-            holder.txtDate.setText(prodBelowAverage.getData());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
-            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
-
-
-
-        }
 
         //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
@@ -128,7 +114,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + prodBelowAverage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCtx, "Produto: " + item, Toast.LENGTH_SHORT).show();
                 remove(position);
                 return false;
             }

@@ -1,25 +1,16 @@
-package robsonmachczew.howmuch;
+package robsonmachczew.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
     //usado para executar o voltar da action
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
+        Intent login = new Intent(RegisterActivity.this, Fazer_Login.class);
         startActivity(login);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();
@@ -98,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent login = new Intent(RegisterActivity.this, LoginActivity.class);
+        Intent login = new Intent(RegisterActivity.this, Fazer_Login.class);
         startActivity(login);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();

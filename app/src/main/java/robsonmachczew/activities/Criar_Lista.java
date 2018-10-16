@@ -1,41 +1,31 @@
-package robsonmachczew.howmuch;
+package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.speech.RecognizerIntent;
-import android.support.design.widget.NavigationView;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-import com.miguelcatalan.materialsearchview.utils.AnimationUtil;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -44,11 +34,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 import entidade.Produto;
 
-public class BuyListActivity extends NavActivity {
+public class Criar_Lista extends NavActivity {
 
     private TextView txtList;
     private EditText edtSearch;
@@ -75,24 +64,17 @@ public class BuyListActivity extends NavActivity {
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
-        /*
-        //searchview
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        searchView();
-        */
-
-
         txtList = findViewById(R.id.txtList);
         txtList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(BuyListActivity.this);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(Criar_Lista.this);
                 //dialog.setTitle("Produtos Adicionados");
 
-                TextView title = new TextView(BuyListActivity.this);
+                TextView title = new TextView(Criar_Lista.this);
                 //title.setText("Produtos Adicionados");
                 title.setText("Menor preco: R$ 122,39");
-                title.setBackgroundColor(ContextCompat.getColor(BuyListActivity.this, R.color.toolbar_status));
+                title.setBackgroundColor(ContextCompat.getColor(Criar_Lista.this, R.color.toolbar_status));
                 title.setPadding(10, 10, 10, 10);
                 title.setGravity(Gravity.CENTER);
                 title.setTextColor(Color.WHITE);
@@ -104,12 +86,12 @@ public class BuyListActivity extends NavActivity {
                 title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(BuyListActivity.this, "Mercado Hu", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Criar_Lista.this, "Mercado Hu", Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 //list
-                dialog.setView(LayoutInflater.from(BuyListActivity.this).inflate(android.R.layout.simple_list_item_1,null));
+                dialog.setView(LayoutInflater.from(Criar_Lista.this).inflate(android.R.layout.simple_list_item_1,null));
                 String[] someList = {"02 | Vinho Hu", "05 | Cerveja Hu", "02 | Batata Hu", "03 | Arroz Hu", "10 | Massa Hu"};
                 dialog.setItems(someList, null);
 
@@ -155,58 +137,6 @@ public class BuyListActivity extends NavActivity {
 
     }
 
-    /*
-    //searchView
-    public void searchView() {
-        searchView.setHint("Consultar Produto..");
-        searchView.setHintTextColor(R.color.hint_nav_login);
-        //searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
-        searchView.setVoiceSearch(false);
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                txtManyList.setText(query);
-                txtManyList.startAnimation(alpha_in);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                Window window = activity.getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(ContextCompat.getColor(activity, R.color.searchview_status));
-
-                fab.setVisibility(View.GONE);
-                fab.startAnimation(alpha_out);
-
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                Window window = activity.getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(ContextCompat.getColor(activity, R.color.toolbar_status));
-
-                fab.setVisibility(View.VISIBLE);
-                fab.startAnimation(alpha_in);
-
-            }
-        });
-
-    }
-    */
-
-
     @SuppressLint("StaticFieldLeak")
     private void realizaPesquisaProdutos(final String pesquisa) {
         new AsyncTask<String, Void, ArrayList<Produto>>() {
@@ -214,7 +144,7 @@ public class BuyListActivity extends NavActivity {
             protected void onPreExecute() {
                 layoutProdutos.removeAllViews();
 
-                TextView txtCarregando = new TextView(BuyListActivity.this);
+                TextView txtCarregando = new TextView(Criar_Lista.this);
                 txtCarregando.setText(R.string.txt_progress);
                 txtCarregando.setTextSize(16);
                 txtCarregando.setTextColor(Color.parseColor("#ffffff"));
@@ -262,10 +192,10 @@ public class BuyListActivity extends NavActivity {
                     imgLogo.setVisibility(View.GONE);
 
                     //layout subscribe linear layout of xml
-                    LinearLayout l = new LinearLayout(BuyListActivity.this);
+                    LinearLayout l = new LinearLayout(Criar_Lista.this);
                     l.setOrientation(LinearLayout.HORIZONTAL);
 
-                    Button btnAdd = new Button(BuyListActivity.this);
+                    Button btnAdd = new Button(Criar_Lista.this);
                     btnAdd.setText("+ Add");
                     btnAdd.setMinimumHeight(0);
                     btnAdd.setHeight(80);
@@ -273,11 +203,11 @@ public class BuyListActivity extends NavActivity {
                     btnAdd.setTextColor(Color.parseColor("#ffffff"));
                     btnAdd.setBackgroundResource(R.drawable.buttons_login);
 
-                    final EditText edtQtd = new EditText(BuyListActivity.this);
+                    final EditText edtQtd = new EditText(Criar_Lista.this);
                     edtQtd.setText("1.0");
                     edtQtd.setTextColor(Color.parseColor("#a8acb1"));
 
-                    final TextView txtDesc = new TextView(BuyListActivity.this);
+                    final TextView txtDesc = new TextView(Criar_Lista.this);
                     txtDesc.setText(produto.getDescricao());
                     txtDesc.setTextColor(Color.parseColor("#ffffff"));
                     txtDesc.setPadding(5,0,0,0);
@@ -310,33 +240,9 @@ public class BuyListActivity extends NavActivity {
         }.execute();
     }
 
-
-
-    /*
-    //menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        //search bar
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-    */
-
-
-    //onBack
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(BuyListActivity.this, MainActivity.class);
+        Intent main = new Intent(Criar_Lista.this, MainActivity.class);
         startActivity(main);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

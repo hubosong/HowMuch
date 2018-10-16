@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 public class Item_NFe implements Serializable {
 
-    private long id_nfe; 
+    private long id_nfe;
     private Produto produto;
     private float valor;
     private float quantidade;
 
     //Transient Fields;
-    private String mercado;
-    private String data;
+    private Mercado transient_mercado;
+    private String transient_data;
 
     @Override
     public String toString() {
@@ -22,20 +22,20 @@ public class Item_NFe implements Serializable {
         return String.format("%.02f", valor / quantidade);
     }
 
-    public String getMercado() {
-        return mercado;
+    public Mercado getTransient_mercado() {
+        return transient_mercado;
     }
 
-    public void setMercado(String mercado) {
-        this.mercado = mercado;
+    public void setTransient_mercado(Mercado transient_mercado) {
+        this.transient_mercado = transient_mercado;
     }
 
-    public String getData() {
-        return data;
+    public String getTransient_data() {
+        return transient_data;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setTransient_data(String transient_data) {
+        this.transient_data = transient_data;
     }
 
     public long getId_nfe() {

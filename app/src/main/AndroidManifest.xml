@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="robsonmachczew.howmuch">
+    package="robsonmachczew.activities">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="robsonmachczew.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,28 +24,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="robsonmachczew.activities.Fazer_Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="robsonmachczew.activities.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".OffActivity"
+            android:name="robsonmachczew.activities.Descontos"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BuyListActivity"
+            android:name="robsonmachczew.activities.Criar_Lista"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyBuyActivity"
+            android:name="robsonmachczew.activities.Minhas_Listas"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MyNFeActivity"
+            android:name="robsonmachczew.activities.Minhas_NFes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".EditRegisterActivity"
+            android:name="robsonmachczew.activities.EditRegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ReadQRCodeActivity"
+            android:name="robsonmachczew.activities.ReadQRCodeActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
 

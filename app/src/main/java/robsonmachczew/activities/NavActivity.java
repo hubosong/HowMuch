@@ -1,4 +1,4 @@
-package robsonmachczew.howmuch;
+package robsonmachczew.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -114,7 +114,7 @@ public class NavActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_off:
-                    Intent off = new Intent(NavActivity.this, OffActivity.class);
+                    Intent off = new Intent(NavActivity.this, Descontos.class);
                     startActivity(off);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -122,7 +122,7 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_new_list:
-                    Intent buyList = new Intent(NavActivity.this, BuyListActivity.class);
+                    Intent buyList = new Intent(NavActivity.this, Criar_Lista.class);
                     startActivity(buyList);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -130,7 +130,7 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_my_buy:
-                    Intent my_buy = new Intent(NavActivity.this, MyBuyActivity.class);
+                    Intent my_buy = new Intent(NavActivity.this, Minhas_Listas.class);
                     startActivity(my_buy);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -138,7 +138,7 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_my_nfe:
-                    Intent my_nfe = new Intent(NavActivity.this, MyNFeActivity.class);
+                    Intent my_nfe = new Intent(NavActivity.this, Minhas_NFes.class);
                     startActivity(my_nfe);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();

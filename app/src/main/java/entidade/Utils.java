@@ -2,6 +2,8 @@ package entidade;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -25,6 +27,15 @@ public class Utils {
         edit.putString("EMAIL", usuario.getEmail());
         edit.putLong("IDUSUARIO", usuario.getId_usuario());
         return edit.commit();
+    }
+
+    public static boolean estaConectado(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        }
+        return false;
     }
 
 }

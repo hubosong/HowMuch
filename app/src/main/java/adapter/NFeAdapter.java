@@ -14,16 +14,16 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import entidade.ProdutoAbaixoMedia;
+import entidade.NFe;
 import robsonmachczew.activities.R;
 
-public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaixoMediaAdapter.ProductViewHolder> {
+public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolder> {
 
     private Context mCtx;
-    private List<ProdutoAbaixoMedia> productList;
+    private List<NFe> productList;
 
     //getting the context and product list with constructor
-    public ProdutoAbaixoMediaAdapter(Context mCtx, List<ProdutoAbaixoMedia> productList) {
+    public NFeAdapter(Context mCtx, List<NFe> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
@@ -36,7 +36,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice, txtOff, txtPrice, txtOption, txtDescOff;
         //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
@@ -62,36 +62,21 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        final ProdutoAbaixoMedia prodBelowAverage = productList.get(position);
+        final NFe nfe = productList.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        if(prodBelowAverage.getValor() >= prodBelowAverage.getValor_medio()){
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
-            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
-            holder.txtDate.setText(prodBelowAverage.getData());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
-            holder.txtDescOff.setText("Acrescimo");
-            holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
+        holder.txtTitle.setText(nfe.getChave());
+        holder.txtMarket.setText(nfe.getMercado().getNome());
+        holder.txtDate.setText(nfe.getData());
+        holder.txtMediumPrice.setText("");
+        holder.txtOff.setText("");
+        holder.txtDescOff.setText("");
+        holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setText(String.valueOf(nfe.getValor()));
 
-
-        } else {
-            holder.txtTitle.setText(prodBelowAverage.getDescricao_produto().toUpperCase());
-            holder.txtMarket.setText(prodBelowAverage.getNome_mercado().toUpperCase());
-            holder.txtDate.setText(prodBelowAverage.getData());
-            holder.txtMediumPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor_medio())));
-            holder.txtOff.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor() - prodBelowAverage.getValor_medio())));
-            holder.txtOff.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
-            holder.txtPrice.setText(String.valueOf(decFormat.format(prodBelowAverage.getValor())));
-
-
-
-        }
 
         //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
@@ -105,7 +90,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
+                        switch (item.getItemId()) {
                             case R.id.option1:
                                 //Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
@@ -128,7 +113,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + prodBelowAverage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCtx, "Produto: " + nfe, Toast.LENGTH_SHORT).show();
                 remove(position);
                 return false;
             }

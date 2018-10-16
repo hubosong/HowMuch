@@ -1,4 +1,4 @@
-package robsonmachczew.howmuch;
+package robsonmachczew.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if(Utils.loadFromSharedPreferences(this).getId_usuario() != 0){
-            Intent content = new Intent(this, OffActivity.class);
+            Intent content = new Intent(this, Descontos.class);
             startActivity(content);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         btnAccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent content = new Intent(MainActivity.this, OffActivity.class);
+                Intent content = new Intent(MainActivity.this, Descontos.class);
                 startActivity(content);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login = new Intent(MainActivity.this, LoginActivity.class);
+                Intent login = new Intent(MainActivity.this, Fazer_Login.class);
                 startActivity(login);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();

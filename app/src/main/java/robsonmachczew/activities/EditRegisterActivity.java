@@ -1,17 +1,14 @@
-package robsonmachczew.howmuch;
+package robsonmachczew.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class EditRegisterActivity extends NavActivity {
@@ -61,7 +58,7 @@ public class EditRegisterActivity extends NavActivity {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent off = new Intent(EditRegisterActivity.this, OffActivity.class);
+        Intent off = new Intent(EditRegisterActivity.this, Descontos.class);
         startActivity(off);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

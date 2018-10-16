@@ -1,18 +1,14 @@
-package robsonmachczew.howmuch;
+package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,11 +31,14 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import adapter.ProductQRCodeAdapter;
+import adapter.Item_NFeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
+import entidade.Item_NFe;
+import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
+import entidade.Utils;
 
-public class OffActivity extends NavActivity {
+public class Descontos extends NavActivity {
 
     private ProgressBar progWait;
     private TextView txtResult, txtWait;
@@ -47,7 +46,6 @@ public class OffActivity extends NavActivity {
     private RecyclerView recyclerView;
     private final Activity activity = this;
     public Animation alpha_in, alpha_out;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +65,10 @@ public class OffActivity extends NavActivity {
 
 
         //test internet connection
-        boolean connected = false;
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            connected = true;
-            //Toast.makeText(activity, "Internet OK", Toast.LENGTH_SHORT).show();
-        } else {
-            connected = false;
-            Toast t = Toast.makeText(activity, "Internet Error!", Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER, 0, 50);
-            t.show();
+        if(Utils.estaConectado(this)){
+
+        }else{
+
         }
 
 
@@ -96,25 +87,140 @@ public class OffActivity extends NavActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         rvListStart();
-        //rvlistTeste();
-
     }
-
 
     //searchView
     public void searchView() {
         searchView.setHint("Consultar Produto..");
         searchView.setHintTextColor(R.color.hint_nav_login);
         searchView.setVoiceSearch(true);
+
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                txtResult.setText(query);
+            public boolean onQueryTextSubmit(final String query) {
+                new AsyncTask<String, Void, ArrayList<Item_NFe>>() {
+
+                    @Override
+                    protected void onPreExecute() {
+                        progWait.setVisibility(View.VISIBLE);
+                        txtWait.setVisibility(View.VISIBLE);
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected ArrayList<Item_NFe> doInBackground(String... params) {
+                        ArrayList<Item_NFe> list = null;
+                        try {
+                            String urlParameters = "funcao=GET_PRODUTOS_PESQUISA_APP&descricao=" + query;
+                            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                            URL url = new URL("http://187.181.170.135:8080/Mercado/produto");
+                            HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                            urlCon.setRequestMethod("POST");
+                            urlCon.setDoOutput(true);
+                            urlCon.setDoInput(true);
+
+                            DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                            wr.write(postData);
+                            wr.close();
+                            wr.flush();
+
+                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                            list = (ArrayList<Item_NFe>) ois.readObject();
+                            ois.close();
+
+                        } catch (ClassNotFoundException | IOException e) {
+                            e.printStackTrace();
+                        }
+                        return list;
+                    }
+
+                    @Override
+                    protected void onPostExecute(ArrayList<Item_NFe> list) {
+                        progWait.setVisibility(View.GONE);
+                        txtWait.setVisibility(View.GONE);
+                        //Se voltar nulo é porque deu algum erro
+                        if (list != null) {
+                            Toast.makeText(Descontos.this, list.size() + " itens encontrados", Toast.LENGTH_LONG).show();
+                            Item_NFeAdapter adapter = new Item_NFeAdapter(Descontos.this, list);
+                            recyclerView.setAdapter(adapter);
+
+                            //hide floating button when scroll
+                            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                @Override
+                                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                    super.onScrolled(recyclerView, dx, dy);
+                                    if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                                        fab.hide();
+                                        fab.startAnimation(alpha_out);
+                                    } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                                        fab.show();
+                                        fab.startAnimation(alpha_in);
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }.execute();
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(final String newText) {
+                if(newText.length() == 3){
+                    new AsyncTask<String, Void, ArrayList<Produto>>() {
+
+                        @Override
+                        protected void onPreExecute() {
+                            progWait.setVisibility(View.VISIBLE);
+                            txtWait.setVisibility(View.VISIBLE);
+                            super.onPreExecute();
+                        }
+
+                        @Override
+                        protected ArrayList<Produto> doInBackground(String... params) {
+                            ArrayList<Produto> list = null;
+                            try {
+                                String urlParameters = "funcao=GET_BY_DESCRICAO&descricao=" + newText;
+                                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                                URL url = new URL("http://187.181.170.135:8080/Mercado/produto");
+                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                                urlCon.setRequestMethod("POST");
+                                urlCon.setDoOutput(true);
+                                urlCon.setDoInput(true);
+
+                                DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                                wr.write(postData);
+                                wr.close();
+                                wr.flush();
+
+                                ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                                list = (ArrayList<Produto>) ois.readObject();
+                                ois.close();
+
+                            } catch (ClassNotFoundException | IOException e) {
+                                e.printStackTrace();
+                            }
+                            return list;
+                        }
+
+                        @Override
+                        protected void onPostExecute(ArrayList<Produto> list) {
+                            progWait.setVisibility(View.GONE);
+                            txtWait.setVisibility(View.GONE);
+                            String[] listaProds = new String[list.size()];
+                            for(int i=0; i<list.size(); i++){
+                                listaProds[i] = list.get(i).getDescricao();
+                            }
+                            searchView.setSuggestions(listaProds);
+                        }
+                    }.execute();
+
+                }
                 return false;
             }
         });
@@ -142,44 +248,6 @@ public class OffActivity extends NavActivity {
             }
         });
     }
-
-
-    @SuppressLint("StaticFieldLeak")
-    public void rvlistTeste(){
-        new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
-            @Override
-            protected ArrayList<ProductQRCode> doInBackground(String... strings) {
-                ArrayList<ProductQRCode>productList = new ArrayList<>();
-                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
-                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
-                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour, 1, 1));
-                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour, 1, 1));
-                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour, 1, 1));
-                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
-                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour, 1, 1));
-
-                ProductQRCodeAdapter adapter = new ProductQRCodeAdapter(OffActivity.this, productList);
-                recyclerView.setAdapter(adapter);
-
-                //hide floating button when scroll
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                            fab.hide();
-                        } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                            fab.show();
-                        }
-                    }
-                });
-
-                return null;
-            }
-        }.execute();
-    }
-
-
 
     //recyclerview list off == Descontos
     @SuppressLint("StaticFieldLeak")
@@ -226,8 +294,8 @@ public class OffActivity extends NavActivity {
                 txtWait.setVisibility(View.GONE);
                 //Se voltar nulo é porque deu algum erro
                 if (list != null) {
-                    Toast.makeText(OffActivity.this, list.size() + " itens encontrados", Toast.LENGTH_LONG).show();
-                    ProdutoAbaixoMediaAdapter adapter = new ProdutoAbaixoMediaAdapter(OffActivity.this, list);
+                    Toast.makeText(Descontos.this, list.size() + " itens encontrados", Toast.LENGTH_LONG).show();
+                    ProdutoAbaixoMediaAdapter adapter = new ProdutoAbaixoMediaAdapter(Descontos.this, list);
                     recyclerView.setAdapter(adapter);
 
                     //hide floating button when scroll
@@ -245,13 +313,12 @@ public class OffActivity extends NavActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(OffActivity.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();
 
     }
-
 
     //menu
     @Override
@@ -271,7 +338,6 @@ public class OffActivity extends NavActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     //onBack
     @Override
     public void onBackPressed() {
@@ -281,7 +347,7 @@ public class OffActivity extends NavActivity {
             super.onBackPressed();
         }
 
-        Intent main = new Intent(OffActivity.this, MainActivity.class);
+        Intent main = new Intent(Descontos.this, MainActivity.class);
         startActivity(main);
         finish();
 

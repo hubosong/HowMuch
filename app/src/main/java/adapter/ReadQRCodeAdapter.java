@@ -4,28 +4,25 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-import robsonmachczew.howmuch.ProductQRCode;
-import robsonmachczew.howmuch.R;
+import entidade.Produto;
+import robsonmachczew.activities.R;
 
 public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.ProductViewHolder> {
 
     //this context we will use to inflate the layout
     private Context mCtx;
     //we are storing all the products in a list
-    private List<ProductQRCode> productList;
+    private List<Produto> productList;
     //getting the context and product list with constructor
-    public ReadQRCodeAdapter(Context mCtx, List<ProductQRCode> productList) {
+    public ReadQRCodeAdapter(Context mCtx, List<Produto> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
@@ -73,15 +70,15 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
         //getting the productQRCode of the specified position
-        final ProductQRCode productQRCode = productList.get(position);
+        final Produto productQRCode = productList.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        holder.txtTitle.setText(productQRCode.getTitle().toUpperCase());
-        holder.txtHowMany.setText(String.valueOf(productQRCode.getHowmany()));
-        holder.txtUnitPrice.setText(String.valueOf(decFormat.format(productQRCode.getUnitprice())));
-        holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getPrice())));
+        holder.txtTitle.setText(productQRCode.getDescricao().toUpperCase());
+        holder.txtHowMany.setText(String.valueOf(productQRCode.getTransient_quantidade()));
+        holder.txtUnitPrice.setText(String.valueOf(decFormat.format(productQRCode.getTransient_valor() / productQRCode.getTransient_quantidade())));
+        holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getTransient_valor())));
         holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
