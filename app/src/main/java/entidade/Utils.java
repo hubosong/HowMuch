@@ -30,8 +30,10 @@ public class Utils {
     }
     
     public static boolean logout(Context context){
-        
-        return true;
+        SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.clear();
+        return edit.commit();
     }
 
     public static boolean estaConectado(Context context){
