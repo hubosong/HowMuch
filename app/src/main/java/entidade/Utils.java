@@ -28,6 +28,11 @@ public class Utils {
         edit.putLong("IDUSUARIO", usuario.getId_usuario());
         return edit.commit();
     }
+    
+    public static boolean logout(Context context){
+        
+        return true;
+    }
 
     public static boolean estaConectado(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
