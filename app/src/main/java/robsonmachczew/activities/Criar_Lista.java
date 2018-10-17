@@ -30,12 +30,17 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import entidade.Lista;
 import entidade.Produto;
+import entidade.Usuario;
+import entidade.Utils;
 
 public class Criar_Lista extends NavActivity {
 
@@ -47,6 +52,7 @@ public class Criar_Lista extends NavActivity {
     private MaterialSearchView searchView;
     private final Activity activity = this;
     private Animation alpha_in, alpha_out;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,8 @@ public class Criar_Lista extends NavActivity {
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
         txtList = findViewById(R.id.txtList);
+        usuario = Utils.loadFromSharedPreferences(this);
+
         txtList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +99,7 @@ public class Criar_Lista extends NavActivity {
                 });
 
                 //list
-                dialog.setView(LayoutInflater.from(Criar_Lista.this).inflate(android.R.layout.simple_list_item_1,null));
+                dialog.setView(LayoutInflater.from(Criar_Lista.this).inflate(android.R.layout.simple_list_item_1, null));
                 String[] someList = {"02 | Vinho Hu", "05 | Cerveja Hu", "02 | Batata Hu", "03 | Arroz Hu", "10 | Massa Hu"};
                 dialog.setItems(someList, null);
 
@@ -101,9 +109,65 @@ public class Criar_Lista extends NavActivity {
                         Toast.makeText(activity, "Cancelado!", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
+
                 dialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(activity, "Lista Salva!", Toast.LENGTH_SHORT).show();
+                        new AsyncTask<String, Void, Long>() {
+                            @Override
+                            protected void onPreExecute() {
+                                layoutProdutos.removeAllViews();
+                                TextView txtCarregando = new TextView(Criar_Lista.this);
+                                txtCarregando.setText(R.string.txt_progress);
+                                txtCarregando.setTextSize(16);
+                                txtCarregando.setTextColor(Color.parseColor("#ffffff"));
+                                layoutProdutos.addView(txtCarregando);
+                                super.onPreExecute();
+                            }
+
+                            @Override
+                            protected Long doInBackground(String... params) {
+                                try {
+                                    String urlParameters = "funcao=SALVAR_LISTA&id_usuario=" + usuario.getId_usuario();
+                                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                                    URL url = new URL("http://187.181.170.135:8080/Mercado/lista");
+                                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                                    urlCon.setRequestMethod("POST");
+                                    urlCon.setDoOutput(true);
+                                    urlCon.setDoInput(true);
+
+                                    OutputStream os = urlCon.getOutputStream();
+                                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                                    objectOutputStream.writeUTF("SALVAR_LISTA");
+                                    objectOutputStream.writeLong(usuario.getId_usuario());
+                                    Lista lista = new Lista();
+                                    lista.setNome("LISTA TESTE");
+                                    lista.setListaProdutos(lista_compras);
+                                    objectOutputStream.writeObject(lista);
+
+                                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                                    long id_lista = (long) ois.readLong();
+                                    ois.close();
+                                    objectOutputStream.close();
+                                    objectOutputStream.flush();
+                                    return id_lista;
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                return new Long(0);
+                            }
+
+                            @Override
+                            protected void onPostExecute(Long id_lista) {
+                                if(id_lista > 0){
+                                    Toast.makeText(activity, "Lista Salva!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }.execute();
+
                     }
                 });
 
@@ -210,7 +274,7 @@ public class Criar_Lista extends NavActivity {
                     final TextView txtDesc = new TextView(Criar_Lista.this);
                     txtDesc.setText(produto.getDescricao());
                     txtDesc.setTextColor(Color.parseColor("#ffffff"));
-                    txtDesc.setPadding(5,0,0,0);
+                    txtDesc.setPadding(5, 0, 0, 0);
 
                     l.addView(btnAdd);
                     l.addView(edtQtd);
@@ -232,7 +296,7 @@ public class Criar_Lista extends NavActivity {
                             if (!adicionado) {
                                 lista_compras.add(produto);
                             }
-                            txtList.setText("Produtos Add: ("+lista_compras.size()+")");
+                            txtList.setText("Produtos Add: (" + lista_compras.size() + ")");
                         }
                     });
                 }

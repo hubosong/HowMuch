@@ -16,12 +16,11 @@ import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import adapter.ListaAdapter;
@@ -89,17 +88,15 @@ public class Minhas_Listas extends NavActivity {
                 protected ArrayList<Lista> doInBackground(String... params) {
                     ArrayList<Lista> list = null;
                     try {
-                        String urlParameters = "funcao=GET_BY_ID_USUARIO&id_usuario=" + usuario.getId_usuario();
-                        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-
                         URL url = new URL("http://187.181.170.135:8080/Mercado/lista");
                         HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                         urlCon.setRequestMethod("POST");
                         urlCon.setDoOutput(true);
                         urlCon.setDoInput(true);
 
-                        DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                        wr.write(postData);
+                        ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
+                        wr.writeUTF("GET_BY_ID_USUARIO");
+                        wr.writeLong(usuario.getId_usuario());
                         wr.close();
                         wr.flush();
 

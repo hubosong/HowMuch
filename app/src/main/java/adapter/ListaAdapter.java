@@ -67,7 +67,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewH
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
         holder.txtTitle.setText(lista.getNome());
-        holder.txtMarket.setText(String.valueOf(lista.getListaProdutos().size()));
+        holder.txtMarket.setText(String.valueOf(lista.getTransient_qtd_produtos()) + " Produtos");
         holder.txtDate.setText(lista.getData());
         holder.txtMediumPrice.setText("");
         holder.txtOff.setText("");
