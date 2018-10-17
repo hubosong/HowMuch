@@ -100,8 +100,11 @@ public class Criar_Lista extends NavActivity {
 
                 //list
                 dialog.setView(LayoutInflater.from(Criar_Lista.this).inflate(android.R.layout.simple_list_item_1, null));
-                String[] someList = {"02 | Vinho Hu", "05 | Cerveja Hu", "02 | Batata Hu", "03 | Arroz Hu", "10 | Massa Hu"};
-                dialog.setItems(someList, null);
+                String[] lista = new String[lista_compras.size()];
+                for (int i = 0; i < lista_compras.size(); i++) {
+                    lista[i] = (i + 1) + " | " + lista_compras.get(i).getDescricao() + " | " + lista_compras.get(i).getTransient_quantidade() + " (" + lista_compras.get(i).getUnidade_comercial() + ")";
+                }
+                dialog.setItems(lista, null);
 
                 dialog.setCancelable(false);
                 dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -109,7 +112,6 @@ public class Criar_Lista extends NavActivity {
                         Toast.makeText(activity, "Cancelado!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
 
                 dialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
@@ -162,12 +164,11 @@ public class Criar_Lista extends NavActivity {
 
                             @Override
                             protected void onPostExecute(Long id_lista) {
-                                if(id_lista > 0){
+                                if (id_lista > 0) {
                                     Toast.makeText(activity, "Lista Salva!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }.execute();
-
                     }
                 });
 
