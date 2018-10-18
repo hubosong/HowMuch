@@ -13,19 +13,24 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import entidade.Usuario;
 import entidade.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btnLogin, btnAccess;
     private VideoView mVideoView;
+    private Usuario usuario;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(Utils.loadFromSharedPreferences(this).getId_usuario() != 0){
+        usuario = Utils.loadFromSharedPreferences(this);
+
+        if(usuario.getId_usuario() != 0){
             Intent content = new Intent(this, Descontos.class);
             startActivity(content);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //background video
-        mVideoView = (VideoView) findViewById(R.id.bgVideoView);
+        mVideoView = findViewById(R.id.bgVideoView);
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.market);
         mVideoView.setVideoURI(uri);
         mVideoView.start();
@@ -103,3 +108,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+

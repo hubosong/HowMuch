@@ -81,20 +81,20 @@ public class Criar_Lista extends NavActivity {
 
                 TextView title = new TextView(Criar_Lista.this);
                 //title.setText("Produtos Adicionados");
-                title.setText("Menor preco: R$ 122,39");
+                title.setText("Minha Lista de Compras");
                 title.setBackgroundColor(ContextCompat.getColor(Criar_Lista.this, R.color.toolbar_status));
                 title.setPadding(10, 10, 10, 10);
                 title.setGravity(Gravity.CENTER);
                 title.setTextColor(Color.WHITE);
                 title.setTextSize(20);
-                title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_maps);
+                //title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_maps);
                 dialog.setCustomTitle(title);
 
                 //call market data
                 title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(Criar_Lista.this, "Mercado Hu", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Criar_Lista.this, "Mercado Hu", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -169,6 +169,13 @@ public class Criar_Lista extends NavActivity {
                                 }
                             }
                         }.execute();
+                    }
+                });
+
+                dialog.setNeutralButton("Salvar e Comparar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
                     }
                 });
 

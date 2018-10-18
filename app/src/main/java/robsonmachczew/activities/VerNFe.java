@@ -32,7 +32,7 @@ import entidade.NFe;
 import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 
-public class ReadQRCodeActivity extends NavActivity {
+public class VerNFe extends NavActivity {
 
     private ProgressBar progWait;
     private TextView txtQRCode, txtWait;
@@ -133,7 +133,7 @@ public class ReadQRCodeActivity extends NavActivity {
         TextView txtMarket = findViewById(R.id.txtMarket);
         TextView txtDate = findViewById(R.id.txtDate);
 
-        Toast.makeText(ReadQRCodeActivity.this, nfe.getLista_items().size() + " itens encontrados", Toast.LENGTH_LONG).show();
+        Toast.makeText(VerNFe.this, nfe.getLista_items().size() + " itens encontrados", Toast.LENGTH_LONG).show();
 
         ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(this, productList);
         recyclerView.setAdapter(adapter);
@@ -141,7 +141,7 @@ public class ReadQRCodeActivity extends NavActivity {
         txtMarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ReadQRCodeActivity.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(VerNFe.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -165,7 +165,7 @@ public class ReadQRCodeActivity extends NavActivity {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent off = new Intent(ReadQRCodeActivity.this, Descontos.class);
+        Intent off = new Intent(VerNFe.this, Descontos.class);
         startActivity(off);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

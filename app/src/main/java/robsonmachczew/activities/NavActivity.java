@@ -44,6 +44,8 @@ public class NavActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
 
+        usuario = Utils.loadFromSharedPreferences(this);
+
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setStatusBarColor(this.getResources().getColor(R.color.toolbar_status));
@@ -90,20 +92,17 @@ public class NavActivity extends AppCompatActivity {
             }
         });
 
-
-        //user receive
-        usuario = Utils.loadFromSharedPreferences(this);
-
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
-        navNome.setText(usuario.getNome());
-        navEmail.setText(usuario.getEmail());
-
-        //hidden menus items of nav
-        Menu nav_menu = navigationView.getMenu();
-        if(navNome.getText().equals("")){
-            nav_menu.findItem(R.id.nav_my_buy).setVisible(true);
-            nav_menu.findItem(R.id.nav_my_nfe).setVisible(true);
+        if(usuario.getId_usuario() != 0) {
+            navNome.setText(usuario.getNome());
+            navEmail.setText(usuario.getEmail());
+        }else{
+            navNome.setVisibility(View.GONE);
+            navEmail.setVisibility(View.GONE);
+            Menu nav_menu = navigationView.getMenu();
+            nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
+            nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
         }
 
     }
@@ -158,23 +157,21 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_logout:
-
-                    //mudanca
-                    //clear preferences
-                    Utils.saveToSharedPreferences(new Usuario(), NavActivity.this);
-
-                    Intent main = new Intent(NavActivity.this, MainActivity.class);
-                    startActivity(main);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();
-                    drawerLayout.closeDrawers();
+                    if (Utils.logout(NavActivity.this)) {
+                        Intent main = new Intent(NavActivity.this, MainActivity.class);
+                        startActivity(main);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
+                        drawerLayout.closeDrawers();
+                    }else{
+                        Toast.makeText(NavActivity.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
+                    }
                     break;
 
             }
             return false;
         }
     }
-
 
     //qrcode reader
     @Override
@@ -185,7 +182,7 @@ public class NavActivity extends AppCompatActivity {
                 String cut = result.getContents();
                 int corte = cut.indexOf("=") + 1;
                 String code = cut.substring(corte, corte + 44);
-                Intent readQRcode = new Intent(activity, ReadQRCodeActivity.class);
+                Intent readQRcode = new Intent(activity, VerNFe.class);
                 readQRcode.putExtra("code", code);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(readQRcode);
@@ -201,7 +198,6 @@ public class NavActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -212,7 +208,7 @@ public class NavActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if(navNome.getText().equals("")){
+        if (navNome.getText().equals("")) {
             Intent main = new Intent(NavActivity.this, MainActivity.class);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             startActivity(main);

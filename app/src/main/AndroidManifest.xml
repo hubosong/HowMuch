@@ -45,7 +45,7 @@
             android:name="robsonmachczew.activities.EditRegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.ReadQRCodeActivity"
+            android:name="robsonmachczew.activities.VerNFe"
             android:theme="@style/AppTheme.NoActionBar"/>
 
 
