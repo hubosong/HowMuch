@@ -41,9 +41,9 @@ public class ItemNFeAdapter extends RecyclerView.Adapter<ItemNFeAdapter.ProductV
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtMarket = itemView.findViewById(R.id.txtMarket);
-            txtDate = itemView.findViewById(R.id.txtDate);
+            txtTitle = itemView.findViewById(R.id.txtNomeLista);
+            txtMarket = itemView.findViewById(R.id.txtDataLista);
+            txtDate = itemView.findViewById(R.id.txtQtdItems);
             txtHowMany = itemView.findViewById(R.id.txtHowMany);
             txtUnitPrice = itemView.findViewById(R.id.txtUnitPrice);
             txtPrice = itemView.findViewById(R.id.txtPrice);

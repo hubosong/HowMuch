@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,6 +59,8 @@ public class Minhas_Listas extends NavActivity {
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
 
+        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
+        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

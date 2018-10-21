@@ -1,17 +1,17 @@
 package adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import entidade.Lista;
@@ -20,108 +20,85 @@ import robsonmachczew.activities.R;
 public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewHolder> {
 
     private Context mCtx;
-    private List<Lista> productList;
+    private List<Lista> listas;
 
     //getting the context and product list with constructor
     public ListaAdapter(Context mCtx, List<Lista> productList) {
         this.mCtx = mCtx;
-        this.productList = productList;
+        this.listas = productList;
     }
 
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_products, null);
+        View view = inflater.inflate(R.layout.layout_lista_de_listas, null);
         return new ProductViewHolder(view);
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
+        TextView txtNomeLista, txtDataLista, txtQtdItems;
         //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtMarket = itemView.findViewById(R.id.txtMarket);
-            txtDate = itemView.findViewById(R.id.txtDate);
-            txtMediumPrice = itemView.findViewById(R.id.txtMediumPrice);
-            txtOff = itemView.findViewById(R.id.txtOff);
-            txtPrice = itemView.findViewById(R.id.txtPrice);
-            txtOption = itemView.findViewById(R.id.txtOptions);
-
-            txtDescOff = itemView.findViewById(R.id.txtOffDescription);
-
+            txtNomeLista = itemView.findViewById(R.id.txtNomeLista);
+            txtDataLista = itemView.findViewById(R.id.txtDataLista);
+            txtQtdItems = itemView.findViewById(R.id.txtQtdItems);
         }
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return listas.size();
     }
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        final Lista lista = productList.get(position);
+        final Lista lista = listas.get(position);
 
-        //convert double to R$
-        DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
+        holder.txtNomeLista.setText(lista.getNome());
+        holder.txtQtdItems.setText(String.valueOf(lista.getTransient_qtd_produtos()) + " Produtos");
+        holder.txtDataLista.setText(lista.getData());
 
-        holder.txtTitle.setText(lista.getNome());
-        holder.txtMarket.setText(String.valueOf(lista.getTransient_qtd_produtos()) + " Produtos");
-        holder.txtDate.setText(lista.getData());
-        holder.txtMediumPrice.setText("");
-        holder.txtOff.setText("");
-        holder.txtDescOff.setText("");
-        holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-        holder.txtPrice.setText("");
-
-
-
-        //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...
-        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
-
-        holder.txtOption.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //Toast.makeText(mCtx, "teste", Toast.LENGTH_SHORT).show();
-                PopupMenu popupMenu = new PopupMenu(mCtx, holder.txtOption);
-                popupMenu.inflate(R.menu.navlist);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public void onClick(View view) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(mCtx);
+                TextView title = new TextView(mCtx);
+                title.setText("Opções da Lista");
+                title.setBackgroundColor(ContextCompat.getColor(mCtx, R.color.toolbar_status));
+                title.setPadding(10, 10, 10, 10);
+                title.setGravity(Gravity.CENTER);
+                title.setTextColor(Color.WHITE);
+                title.setTextSize(20);
+                dialog.setCustomTitle(title);
+                dialog.setNeutralButton("Comparar em Mercados", new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.option1:
-                                //Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.option2:
-                                Toast.makeText(mCtx, "Item adicionado", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.option3:
-                                Toast.makeText(mCtx, "Lista acessada!", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                        return false;
                     }
                 });
-                popupMenu.show();
+                dialog.setNegativeButton("Excluir Lista", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                dialog.setPositiveButton("Editar Lista", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog alert = dialog.create();
+                alert.show();
             }
         });
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + lista, Toast.LENGTH_SHORT).show();
-                remove(position);
-                return false;
-            }
-        });
     }
 
     public void remove(int position) {
-        productList.remove(position);
+        listas.remove(position);
         notifyItemRemoved(position);
     }
 }

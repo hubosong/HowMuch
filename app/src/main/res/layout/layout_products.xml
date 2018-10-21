@@ -21,7 +21,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtNomeLista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -32,10 +32,10 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtMarket"
+                android:id="@+id/txtDataLista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtTitle"
+                android:layout_below="@id/txtNomeLista"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/txt_market_name"
@@ -46,10 +46,10 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtDate"
+                android:id="@+id/txtQtdItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtMarket"
+                android:layout_below="@id/txtDataLista"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/txt_date"
@@ -60,7 +60,7 @@
                 android:id="@+id/txtMediumPriceDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtDate"
+                android:layout_below="@id/txtQtdItems"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/txt_desc_medium_price"
@@ -71,7 +71,7 @@
                 android:id="@+id/txtMediumPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtDate"
+                android:layout_below="@id/txtQtdItems"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="6dp"
                 android:layout_toEndOf="@id/txtMediumPriceDescription"

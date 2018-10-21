@@ -41,9 +41,9 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtMarket = itemView.findViewById(R.id.txtMarket);
-            txtDate = itemView.findViewById(R.id.txtDate);
+            txtTitle = itemView.findViewById(R.id.txtNomeLista);
+            txtMarket = itemView.findViewById(R.id.txtDataLista);
+            txtDate = itemView.findViewById(R.id.txtQtdItems);
             txtMediumPrice = itemView.findViewById(R.id.txtMediumPrice);
             txtOff = itemView.findViewById(R.id.txtOff);
             txtPrice = itemView.findViewById(R.id.txtPrice);
@@ -118,15 +118,6 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
                 return false;
             }
         });
-        /*
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
-
     }
 
     public void remove(int position) {

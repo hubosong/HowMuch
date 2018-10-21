@@ -85,14 +85,6 @@ public class Minhas_NFes extends NavActivity {
                 protected void onPreExecute() {
                     progWait.setVisibility(View.VISIBLE);
                     txtWait.setVisibility(View.VISIBLE);
-                /*layoutProdutos.removeAllViews();
-
-                TextView txtCarregando = new TextView(Criar_Lista.this);
-                txtCarregando.setText(R.string.txt_progress);
-                txtCarregando.setTextSize(16);
-                txtCarregando.setTextColor(Color.parseColor("#ffffff"));
-                layoutProdutos.addView(txtCarregando);*/
-
                     super.onPreExecute();
                 }
 

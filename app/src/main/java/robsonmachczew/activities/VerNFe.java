@@ -58,8 +58,8 @@ public class VerNFe extends NavActivity {
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
         txtQRCode = findViewById(R.id.txtQRCode);
-        txtMercado = findViewById(R.id.txtMarket);
-        txtData = findViewById(R.id.txtDate);
+        txtMercado = findViewById(R.id.txtDataLista);
+        txtData = findViewById(R.id.txtQtdItems);
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -128,8 +128,8 @@ public class VerNFe extends NavActivity {
         txtMercado.setText(nfe.getMercado().getNome());
         txtData.setText(nfe.getData());
 
-        TextView txtMarket = findViewById(R.id.txtMarket);
-        TextView txtDate = findViewById(R.id.txtDate);
+        TextView txtMarket = findViewById(R.id.txtDataLista);
+        TextView txtDate = findViewById(R.id.txtQtdItems);
 
         Toast.makeText(VerNFe.this, nfe.getLista_items().size() + " itens encontrados", Toast.LENGTH_LONG).show();
 
