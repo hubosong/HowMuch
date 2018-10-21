@@ -88,7 +88,7 @@ public class Minhas_Listas extends NavActivity {
                 protected ArrayList<Lista> doInBackground(String... params) {
                     ArrayList<Lista> list = null;
                     try {
-                        URL url = new URL("http://187.181.170.135:8080/Mercado/lista");
+                        URL url = new URL(Utils.URL + "lista");
                         HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                         urlCon.setRequestMethod("POST");
                         urlCon.setDoOutput(true);

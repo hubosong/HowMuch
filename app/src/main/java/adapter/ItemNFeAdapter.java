@@ -15,7 +15,7 @@ import java.util.List;
 import entidade.Item_NFe;
 import robsonmachczew.activities.R;
 
-public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.ProductViewHolder> {
+public class ItemNFeAdapter extends RecyclerView.Adapter<ItemNFeAdapter.ProductViewHolder> {
 
     //this context we will use to inflate the layout
     private Context mCtx;
@@ -23,7 +23,7 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
     private List<Item_NFe> productList;
 
     //getting the context and product list with constructor
-    public ReadQRCodeAdapter(Context mCtx, List<Item_NFe> productList) {
+    public ItemNFeAdapter(Context mCtx, List<Item_NFe> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
@@ -32,7 +32,7 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_qrcode_products, null);
+        View view = inflater.inflate(R.layout.layout_item_nfe, null);
         return new ProductViewHolder(view);
     }
 

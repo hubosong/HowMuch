@@ -26,8 +26,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import adapter.ItemNFeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
-import adapter.ReadQRCodeAdapter;
 import entidade.NFe;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Utils;
@@ -133,7 +133,7 @@ public class VerNFe extends NavActivity {
 
         Toast.makeText(VerNFe.this, nfe.getLista_items().size() + " itens encontrados", Toast.LENGTH_LONG).show();
 
-        ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(this, nfe.getLista_items());
+        ItemNFeAdapter adapter = new ItemNFeAdapter(this, nfe.getLista_items());
         recyclerView.setAdapter(adapter);
 
         txtMarket.setOnClickListener(new View.OnClickListener() {
