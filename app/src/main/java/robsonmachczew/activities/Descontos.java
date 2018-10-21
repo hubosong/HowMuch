@@ -51,6 +51,12 @@ public class Descontos extends NavActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //test internet connection
+        if(!Utils.estaConectado(this)){
+            Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_off, contentFrameLayout);
@@ -64,12 +70,7 @@ public class Descontos extends NavActivity {
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
 
-        //test internet connection
-        if(Utils.estaConectado(this)){
 
-        }else{
-
-        }
 
 
         progWait = findViewById(R.id.progWait);
@@ -114,7 +115,7 @@ public class Descontos extends NavActivity {
                             String urlParameters = "funcao=GET_PRODUTOS_PESQUISA_APP&descricao=" + query;
                             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                            URL url = new URL("http://187.181.170.135:8080/Mercado/produto");
+                            URL url = new URL(Utils.URL+"produto");
                             HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                             urlCon.setRequestMethod("POST");
                             urlCon.setDoOutput(true);
@@ -187,7 +188,7 @@ public class Descontos extends NavActivity {
                                 String urlParameters = "funcao=GET_BY_DESCRICAO&descricao=" + newText;
                                 byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                                URL url = new URL("http://187.181.170.135:8080/Mercado/produto");
+                                URL url = new URL(Utils.URL+"produto");
                                 HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                                 urlCon.setRequestMethod("POST");
                                 urlCon.setDoOutput(true);
@@ -267,7 +268,7 @@ public class Descontos extends NavActivity {
                     String urlParameters = "funcao=GET_PRODUTOS_ABAIXO_MEDIA";
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL("http://187.181.170.135:8080/Mercado/produto");
+                    URL url = new URL(Utils.URL+"produto");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
                     urlCon.setDoOutput(true);

@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import entidade.Produto;
+import entidade.Item_NFe;
 import robsonmachczew.activities.R;
 
 public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.ProductViewHolder> {
@@ -20,9 +20,10 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
     //this context we will use to inflate the layout
     private Context mCtx;
     //we are storing all the products in a list
-    private List<Produto> productList;
+    private List<Item_NFe> productList;
+
     //getting the context and product list with constructor
-    public ReadQRCodeAdapter(Context mCtx, List<Produto> productList) {
+    public ReadQRCodeAdapter(Context mCtx, List<Item_NFe> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
@@ -36,7 +37,7 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtHowMany, txtUnitPrice,  txtPrice;
+        TextView txtTitle, txtMarket, txtDate, txtHowMany, txtUnitPrice, txtPrice, txtUnitPriceDesc;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
@@ -46,6 +47,7 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
             txtHowMany = itemView.findViewById(R.id.txtHowMany);
             txtUnitPrice = itemView.findViewById(R.id.txtUnitPrice);
             txtPrice = itemView.findViewById(R.id.txtPrice);
+            txtUnitPriceDesc = itemView.findViewById(R.id.txtUnitPriceDesc);
         }
 
     }
@@ -70,16 +72,17 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
         //getting the productQRCode of the specified position
-        final Produto productQRCode = productList.get(position);
+        final Item_NFe item = productList.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        holder.txtTitle.setText(productQRCode.getDescricao().toUpperCase());
-        holder.txtHowMany.setText(String.valueOf(productQRCode.getTransient_quantidade()));
-        holder.txtUnitPrice.setText(String.valueOf(decFormat.format(productQRCode.getTransient_valor() / productQRCode.getTransient_quantidade())));
-        holder.txtPrice.setText(String.valueOf(decFormat.format(productQRCode.getTransient_valor())));
+        holder.txtTitle.setText(item.getProduto().getDescricao().toUpperCase());
+        holder.txtHowMany.setText(String.valueOf(item.getQuantidade()));
+        holder.txtUnitPrice.setText(String.valueOf(decFormat.format(item.getValor() / item.getQuantidade())));
+        holder.txtPrice.setText(String.valueOf(decFormat.format(item.getValor())));
         holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
+        holder.txtUnitPriceDesc.setText("Valor " + item.getProduto().getUnidade_comercial() + ":");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +94,7 @@ public class ReadQRCodeAdapter extends RecyclerView.Adapter<ReadQRCodeAdapter.Pr
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + productQRCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCtx, "Produto: " + item.getProduto(), Toast.LENGTH_SHORT).show();
                 remove(position);
                 return false;
             }

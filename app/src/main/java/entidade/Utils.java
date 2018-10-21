@@ -9,6 +9,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
 
+    public static final String URL = "http://187.181.170.135:8080/Mercado/";
+
     public static Usuario loadFromSharedPreferences(Context context){
         Usuario u = new Usuario();
         SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);

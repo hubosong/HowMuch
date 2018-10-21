@@ -135,7 +135,7 @@ public class Criar_Lista extends NavActivity {
                                     String urlParameters = "funcao=SALVAR_LISTA&id_usuario=" + usuario.getId_usuario();
                                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                                    URL url = new URL("http://187.181.170.135:8080/Mercado/lista");
+                                    URL url = new URL(Utils.URL+"lista");
                                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                                     urlCon.setRequestMethod("POST");
                                     urlCon.setDoOutput(true);
@@ -232,7 +232,7 @@ public class Criar_Lista extends NavActivity {
                     String urlParameters = "funcao=GET_BY_DESCRICAO&descricao=" + pesquisa;
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL("http://187.181.170.135:8080/Mercado/produto");
+                    URL url = new URL(Utils.URL + "produto");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
                     urlCon.setDoOutput(true);

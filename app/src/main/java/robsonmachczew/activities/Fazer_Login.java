@@ -142,7 +142,7 @@ public class Fazer_Login extends AppCompatActivity {
                     String urlParameters = "email=" + email + "&senha=" + senha;
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL("http://187.181.170.135:8080/Mercado/login");
+                    URL url = new URL(Utils.URL+"login");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
                     urlCon.setDoOutput(true);

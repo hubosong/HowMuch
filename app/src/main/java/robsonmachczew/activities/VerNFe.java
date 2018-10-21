@@ -29,19 +29,17 @@ import java.util.ArrayList;
 import adapter.ProdutoAbaixoMediaAdapter;
 import adapter.ReadQRCodeAdapter;
 import entidade.NFe;
-import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
+import entidade.Utils;
 
 public class VerNFe extends NavActivity {
 
     private ProgressBar progWait;
-    private TextView txtQRCode, txtWait;
+    private TextView txtQRCode, txtWait, txtMercado, txtData;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
     private final Activity activity = this;
     public Animation alpha_in, alpha_out;
-
-    private ArrayList<Produto> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +58,8 @@ public class VerNFe extends NavActivity {
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
         txtQRCode = findViewById(R.id.txtQRCode);
+        txtMercado = findViewById(R.id.txtMarket);
+        txtData = findViewById(R.id.txtDate);
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -70,8 +70,6 @@ public class VerNFe extends NavActivity {
 
         String code = getIntent().getStringExtra("code");
         postHttpQRCode(code);
-
-
     }
 
 
@@ -93,7 +91,7 @@ public class VerNFe extends NavActivity {
                     System.out.println("Enviando chave: "+code);
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL("http://187.181.170.135:8080/Mercado/enviar_id_nfe");
+                    URL url = new URL(Utils.URL+"enviar_id_nfe");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
                     urlCon.setDoOutput(true); // Habilita o envio da chave por stream
@@ -127,15 +125,15 @@ public class VerNFe extends NavActivity {
     public void preencherViewsProdutosNFe(NFe nfe) {
         progWait.setVisibility(View.GONE);
         txtWait.setVisibility(View.GONE);
-
-        productList = new ArrayList<>();
+        txtMercado.setText(nfe.getMercado().getNome());
+        txtData.setText(nfe.getData());
 
         TextView txtMarket = findViewById(R.id.txtMarket);
         TextView txtDate = findViewById(R.id.txtDate);
 
         Toast.makeText(VerNFe.this, nfe.getLista_items().size() + " itens encontrados", Toast.LENGTH_LONG).show();
 
-        ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(this, productList);
+        ReadQRCodeAdapter adapter = new ReadQRCodeAdapter(this, nfe.getLista_items());
         recyclerView.setAdapter(adapter);
 
         txtMarket.setOnClickListener(new View.OnClickListener() {

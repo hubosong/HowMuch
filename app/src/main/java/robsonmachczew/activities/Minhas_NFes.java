@@ -103,7 +103,7 @@ public class Minhas_NFes extends NavActivity {
                         String urlParameters = "funcao=GET_ALL_BY_ID_USUARIO&id_usuario=" + usuario.getId_usuario();
                         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                        URL url = new URL("http://187.181.170.135:8080/Mercado/nfe");
+                        URL url = new URL(Utils.URL+"nfe");
                         HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                         urlCon.setRequestMethod("POST");
                         urlCon.setDoOutput(true);

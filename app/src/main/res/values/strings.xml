@@ -44,7 +44,7 @@
     <string name="nav_drawer_close">Close navigation drawer</string>
 
     <!-- off -->
-    <string name="bar_off">Preços Baixos</string>
+    <string name="bar_off">Descontos</string>
     <string name="search_hint">Consultar Produto..</string> <!-- não funciona -->
     <string name="toast_off_options1">P.M. = Preço Médio\nP.A. =  Preço Atual</string>
 
