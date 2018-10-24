@@ -11,8 +11,15 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import entidade.NFe;
 import robsonmachczew.activities.R;
@@ -36,7 +43,7 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice, txtOff, txtPrice, txtOption, txtDescOff;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice, txtDescMediumPrice, txtOff, txtDescPrice, txtPrice, txtOption, txtDescOff;
         //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
@@ -44,8 +51,10 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
             txtTitle = itemView.findViewById(R.id.txtNomeLista);
             txtMarket = itemView.findViewById(R.id.txtDataLista);
             txtDate = itemView.findViewById(R.id.txtQtdItems);
+            txtDescMediumPrice = itemView.findViewById(R.id.txtMediumPriceDescription);
             txtMediumPrice = itemView.findViewById(R.id.txtMediumPrice);
             txtOff = itemView.findViewById(R.id.txtOff);
+            txtDescPrice = itemView.findViewById(R.id.txtPriceDescription);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
             //imageView = itemView.findViewById(R.id.imageView);
@@ -67,15 +76,17 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        holder.txtTitle.setText(nfe.getChave());
-        holder.txtMarket.setText(nfe.getMercado().getNome());
+        holder.txtTitle.setText(nfe.getMercado().getNome());
+        holder.txtMarket.setText(nfe.getChave());
         holder.txtDate.setText(nfe.getData());
+        holder.txtDescMediumPrice.setText("");
         holder.txtMediumPrice.setText("");
         holder.txtOff.setText("");
         holder.txtDescOff.setText("");
         holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-        holder.txtPrice.setText(String.valueOf(nfe.getValor()));
+        holder.txtDescPrice.setText("Valor Total:");
+        holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
+        holder.txtPrice.setText(String.valueOf(decFormat.format(nfe.getValor())));
 
 
         //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...

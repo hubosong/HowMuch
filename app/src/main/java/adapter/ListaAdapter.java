@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import entidade.Lista;
+import robsonmachczew.activities.Criar_Lista;
 import robsonmachczew.activities.R;
 
 public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewHolder> {
