@@ -87,7 +87,7 @@ public class VerNFe extends NavActivity {
             protected NFe doInBackground(String... params) {
                 NFe nfe = null;
                 try {
-                    String urlParameters = "chavenfe=" + code;
+                    String urlParameters = "chavenfe=" + code+"&idusuario="+Utils.loadFromSharedPreferences(VerNFe.this).getId_usuario();
                     System.out.println("Enviando chave: "+code);
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
