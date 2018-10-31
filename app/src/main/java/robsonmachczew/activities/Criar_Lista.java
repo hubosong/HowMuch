@@ -80,14 +80,12 @@ public class Criar_Lista extends NavActivity {
                 //dialog.setTitle("Produtos Adicionados");
 
                 TextView title = new TextView(Criar_Lista.this);
-                //title.setText("Produtos Adicionados");
                 title.setText("Minha Lista de Compras");
                 title.setBackgroundColor(ContextCompat.getColor(Criar_Lista.this, R.color.toolbar_status));
                 title.setPadding(10, 10, 10, 10);
                 title.setGravity(Gravity.CENTER);
                 title.setTextColor(Color.WHITE);
                 title.setTextSize(20);
-                //title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_maps);
                 dialog.setCustomTitle(title);
 
                 //call market data
