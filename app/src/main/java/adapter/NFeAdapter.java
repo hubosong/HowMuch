@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,27 +17,28 @@ import java.util.List;
 
 import entidade.NFe;
 import robsonmachczew.activities.R;
+import robsonmachczew.activities.VerNFe;
 
 public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolder> {
 
-    private Context mCtx;
-    private List<NFe> productList;
+    private Context context;
+    private List<NFe> lista_nfes;
 
     //getting the context and product list with constructor
-    public NFeAdapter(Context mCtx, List<NFe> productList) {
-        this.mCtx = mCtx;
-        this.productList = productList;
+    public NFeAdapter(Context context, List<NFe> productList) {
+        this.context = context;
+        this.lista_nfes = productList;
     }
 
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mCtx);
+        LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.layout_products, null);
         return new ProductViewHolder(view);
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice, txtOff, txtPrice, txtOption, txtDescOff;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPrice, txtOff, txtPrice, txtOption, txtDescOff, titleItens, txtPriceDescription;
         //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
@@ -48,6 +50,8 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
             txtOff = itemView.findViewById(R.id.txtOff);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtOption = itemView.findViewById(R.id.txtOptions);
+            titleItens = itemView.findViewById(R.id.txtMediumPriceDescription);
+            txtPriceDescription = itemView.findViewById(R.id.txtPriceDescription);
             //imageView = itemView.findViewById(R.id.imageView);
 
             txtDescOff = itemView.findViewById(R.id.txtOffDescription);
@@ -57,26 +61,26 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return lista_nfes.size();
     }
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        final NFe nfe = productList.get(position);
+        final NFe nfe = lista_nfes.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        holder.txtTitle.setText(nfe.getChave());
-        holder.txtMarket.setText(nfe.getMercado().getNome());
-        holder.txtDate.setText(nfe.getData());
-        holder.txtMediumPrice.setText("");
+        holder.txtTitle.setText(nfe.getMercado().getNome());
+        holder.txtMarket.setText(nfe.getChave());
+        holder.txtDate.setText("Data: " + nfe.getData());
+        holder.txtMediumPrice.setText(String.valueOf(nfe.getLista_items().size()));
         holder.txtOff.setText("");
         holder.txtDescOff.setText("");
-        holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
         holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
         holder.txtPrice.setText(String.valueOf(nfe.getValor()));
-
+        holder.titleItens.setText("Quantidade de Itens:");
+        holder.txtPriceDescription.setText("Valor da NFe:");
 
         //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
@@ -85,21 +89,25 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
             @Override
             public void onClick(View v) {
                 //Toast.makeText(mCtx, "teste", Toast.LENGTH_SHORT).show();
-                PopupMenu popupMenu = new PopupMenu(mCtx, holder.txtOption);
+                PopupMenu popupMenu = new PopupMenu(context, holder.txtOption);
                 popupMenu.inflate(R.menu.navlist);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.option1:
-                                //Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
+                                //Detalhes da NFe
+                                Intent intent = new Intent(context, VerNFe.class);
+                                intent.putExtra("NFE", nfe);
+                                context.startActivity(intent);
                                 break;
                             case R.id.option2:
-                                Toast.makeText(mCtx, "Item adicionado", Toast.LENGTH_SHORT).show();
+                                //Excluir NFe
+                                Toast.makeText(context, "Item adicionado", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option3:
-                                Toast.makeText(mCtx, "Lista acessada!", Toast.LENGTH_SHORT).show();
+                                //Transformar em Lista de Compras
+                                Toast.makeText(context, "Lista acessada!", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
@@ -113,7 +121,7 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + nfe, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Produto: " + nfe, Toast.LENGTH_SHORT).show();
                 remove(position);
                 return false;
             }
@@ -121,7 +129,7 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
     }
 
     public void remove(int position) {
-        productList.remove(position);
+        lista_nfes.remove(position);
         notifyItemRemoved(position);
     }
 }

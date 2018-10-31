@@ -101,7 +101,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
             public void onClick(View v) {
                 //Toast.makeText(mCtx, "teste", Toast.LENGTH_SHORT).show();
                 PopupMenu popupMenu = new PopupMenu(mCtx, holder.txtOption);
-                popupMenu.inflate(R.menu.navlist);
+                popupMenu.inflate(R.menu.navlist_produto);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

@@ -40,6 +40,7 @@ public class VerNFe extends NavActivity {
     private RecyclerView recyclerView;
     private final Activity activity = this;
     public Animation alpha_in, alpha_out;
+    private String origem = "DESCONTOS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class VerNFe extends NavActivity {
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_qrcode);
+
+        NFe nfe = (NFe) getIntent().getSerializableExtra("NFE");
 
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
@@ -68,8 +71,13 @@ public class VerNFe extends NavActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        String code = getIntent().getStringExtra("code");
-        postHttpQRCode(code);
+        if(nfe != null) {
+            preencherViewsProdutosNFe(nfe);
+            origem = "MINHAS_NFES";
+        }else {
+            String code = getIntent().getStringExtra("code");
+            postHttpQRCode(code);
+        }
     }
 
 
@@ -87,11 +95,11 @@ public class VerNFe extends NavActivity {
             protected NFe doInBackground(String... params) {
                 NFe nfe = null;
                 try {
-                    String urlParameters = "chavenfe=" + code+"&idusuario="+Utils.loadFromSharedPreferences(VerNFe.this).getId_usuario();
-                    System.out.println("Enviando chave: "+code);
+                    String urlParameters = "chavenfe=" + code + "&idusuario=" + Utils.loadFromSharedPreferences(VerNFe.this).getId_usuario();
+                    System.out.println("Enviando chave: " + code);
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL(Utils.URL+"enviar_id_nfe");
+                    URL url = new URL(Utils.URL + "enviar_id_nfe");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
                     urlCon.setDoOutput(true); // Habilita o envio da chave por stream
@@ -163,8 +171,13 @@ public class VerNFe extends NavActivity {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent off = new Intent(VerNFe.this, Descontos.class);
-        startActivity(off);
+        Intent intent;
+        if(origem == "MINHAS_NFES"){
+            intent = new Intent(VerNFe.this, Minhas_NFes.class);
+        }else{
+            intent = new Intent(VerNFe.this, Descontos.class);
+        }
+        startActivity(intent);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }

@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/option1"
-        android:title="Detalhes" />
+        android:title="Adicionar a Nova Lista" />
     <item
         android:id="@+id/option2"
-        android:title="Excluir NFe" />
+        android:title="Adicionar a Lista Existente" />
     <item
         android:id="@+id/option3"
-        android:title="Transformar em Lista" />
+        android:title="Compartilhar Oferta" />
 </menu>
