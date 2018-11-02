@@ -47,7 +47,7 @@ public class VerNFe extends NavActivity {
         super.onCreate(savedInstanceState);
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_read_qrcode, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_ver_comparacao_lista, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

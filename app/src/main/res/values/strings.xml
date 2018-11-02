@@ -9,7 +9,7 @@
     <string name="toast_got_out">Até Logo!</string>
 
     <!-- login, register adn edit register-->
-        <!-- xml -->
+    <!-- xml -->
     <string name="edt_hint_email">E-mail</string>
     <string name="edt_hint_pass">Password</string>
     <string name="edt_hint_name">Nome</string>
@@ -19,7 +19,7 @@
     <string name="btn_change">A l t e r a r</string>
     <string name="txt_forgot_pass">Forgot Password?</string>
     <string name="txt_image_name">Nome da imagem</string>
-        <!-- java -->
+    <!-- java -->
     <string name="bar_login">Login</string>
     <string name="bar_register">Cadastro</string>
     <string name="bar_edit_register">Listar/Alterar</string>
@@ -77,7 +77,6 @@
     <!-- my nfe -->
     <string name="txt_my_nfe">Minhas NFes Enviadas</string>
     <string name="bar_my_nfe">Minhas NFes</string>
-
 
 
     <!-- global -->

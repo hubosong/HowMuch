@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="robsonmachczew.activities.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,37 +24,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="robsonmachczew.activities.Fazer_Login"
+            android:name=".Fazer_Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.RegisterActivity"
+            android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.Descontos"
+            android:name=".Descontos"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.Criar_Lista"
+            android:name=".Criar_Lista"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.Minhas_Listas"
+            android:name=".Minhas_Listas"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.Minhas_NFes"
+            android:name=".Minhas_NFes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.EditRegisterActivity"
+            android:name=".EditRegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="robsonmachczew.activities.VerNFe"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:name=".VerNFe"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- change orientation of scan -->
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
-
+        <activity android:name=".VerComparacaoLista"></activity>
     </application>
 
 </manifest>

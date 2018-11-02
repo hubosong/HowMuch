@@ -3,7 +3,6 @@ package adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -25,15 +24,14 @@ import java.util.List;
 import entidade.Lista;
 import entidade.Utils;
 import robsonmachczew.activities.R;
-import robsonmachczew.activities.VerComparacaoLista;
 
-public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewHolder> {
+public class ComparacaoListasAdapter extends RecyclerView.Adapter<ComparacaoListasAdapter.ProductViewHolder> {
 
     private Context mCtx;
     private List<Lista> listas;
 
     //getting the context and product list with constructor
-    public ListaAdapter(Context mCtx, List<Lista> productList) {
+    public ComparacaoListasAdapter(Context mCtx, List<Lista> productList) {
         this.mCtx = mCtx;
         this.listas = productList;
     }
@@ -41,17 +39,16 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewH
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.layout_lista_de_listas, null);
+        View view = inflater.inflate(R.layout.layout_comparacao_de_listas, null);
         return new ProductViewHolder(view);
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNomeLista, txtDataLista, txtQtdItems;
+        TextView txtDataLista, txtQtdItems;
         //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-            txtNomeLista = itemView.findViewById(R.id.txtNomeLista);
             txtDataLista = itemView.findViewById(R.id.txtDataLista);
             txtQtdItems = itemView.findViewById(R.id.txtQtdItems);
         }
@@ -66,9 +63,8 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewH
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
         final Lista lista = listas.get(position);
 
-        holder.txtNomeLista.setText(lista.getNome());
-        holder.txtQtdItems.setText(String.valueOf(lista.getTransient_qtd_produtos()) + " Produtos");
-        holder.txtDataLista.setText(lista.getData());
+        holder.txtQtdItems.setText(String.valueOf(lista.getValor_total()));
+        holder.txtDataLista.setText(lista.getMercado().getNome());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,9 +117,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewH
 
                             @Override
                             protected void onPostExecute(ArrayList<Lista> list) {
-                                Intent i = new Intent(mCtx, VerComparacaoLista.class);
-                                i.putExtra("LISTAS", list);
-                                mCtx.startActivity(i);
+
                             }
                         }.execute();
                     }
