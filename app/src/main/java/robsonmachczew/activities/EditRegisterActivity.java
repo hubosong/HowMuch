@@ -7,9 +7,11 @@ import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import entidade.Usuario;
 
 public class EditRegisterActivity extends NavActivity {
 
@@ -17,6 +19,11 @@ public class EditRegisterActivity extends NavActivity {
     private ImageView imgUpload;
     private static final int SELECT_PICTURE = 1;
     private Uri selectedImage;
+
+    private EditText inputName;
+    private EditText edtEmail;
+    private EditText edtPass;
+    private EditText edtCPF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +46,16 @@ public class EditRegisterActivity extends NavActivity {
             }
         });
 
+        inputName = findViewById(R.id.inputName);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPass = findViewById(R.id.edtPass);
+        edtCPF = findViewById(R.id.edtCPF);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             selectedImage = data.getData();
             imgUpload.setImageURI(selectedImage);
         }
@@ -52,7 +63,8 @@ public class EditRegisterActivity extends NavActivity {
     }
 
     public void btnEditRegisterUser(View view) {
-        Toast.makeText(this, R.string.toast_successfull_change, Toast.LENGTH_SHORT).show();
+        final Usuario usuario = new Usuario();
+
     }
 
     //onBack

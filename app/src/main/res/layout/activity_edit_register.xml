@@ -75,6 +75,23 @@
                 android:textColor="#000"
                 android:layout_marginBottom="10dp" />
 
+            <EditText
+                android:id="@+id/edtCPF"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:background="@drawable/button_edttext"
+                android:drawableLeft="@drawable/ic_password"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="CPF"
+                android:textColorHint="@color/nav_color"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textSize="16dp"
+                android:textColor="#000"
+                android:layout_marginBottom="10dp" />
+
             <LinearLayout
                 android:gravity="center"
                 android:layout_width="match_parent"

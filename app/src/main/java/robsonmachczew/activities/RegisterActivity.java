@@ -3,6 +3,7 @@ package robsonmachczew.activities;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +16,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import entidade.Usuario;
+import entidade.Utils;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText inputName;
     private Button btnChoose;
     private ImageView imgUpload;
     private TextView txtImageDesc;
@@ -25,13 +34,18 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int SELECT_PICTURE = 1;
     private Uri selectedImage;
 
+    private EditText inputName;
+    private EditText edtEmail;
+    private EditText edtPass;
+    private EditText edtCPF;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         //toolbar
-        Toolbar  toolbar = (Toolbar) findViewById(R.id.bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.bar);
         toolbar.setTitle(R.string.bar_register);
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_bg));
@@ -56,14 +70,18 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        inputName = findViewById(R.id.inputName);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPass = findViewById(R.id.edtPass);
+        edtCPF = findViewById(R.id.edtCPF);
 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             selectedImage = data.getData();
             txtImageDesc.setVisibility(View.GONE);
             imgUpload.setVisibility(View.VISIBLE);
@@ -73,7 +91,52 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void btnRegisterUser(View view) {
-        Toast.makeText(this, R.string.toast_successfull_register, Toast.LENGTH_SHORT).show();
+        final Usuario usuario = new Usuario();
+        usuario.setNome(inputName.getText().toString());
+        usuario.setEmail(edtEmail.getText().toString());
+        usuario.setSenha(edtPass.getText().toString());
+        usuario.setCpf(edtCPF.getText().toString());
+        new AsyncTask<String, Void, Usuario>() {
+
+            @Override
+            protected void onPreExecute() {
+                //progWait.setVisibility(View.VISIBLE);
+                //txtWait.setVisibility(View.VISIBLE);
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Usuario doInBackground(String... params) {
+                Usuario u = new Usuario();
+                try {
+                    URL url = new URL(Utils.URL + "cadastrar_usuario");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true);
+                    urlCon.setDoInput(true);
+
+                    ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
+                    wr.writeObject(usuario);
+                    wr.close();
+                    wr.flush();
+
+                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                    u = (Usuario) ois.readObject();
+                    ois.close();
+
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
+                return u;
+            }
+
+            @Override
+            protected void onPostExecute(Usuario u) {
+                if (u.getId_usuario() != 0) {
+                    Toast.makeText(RegisterActivity.this, "REGISTRADO", Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 
 
