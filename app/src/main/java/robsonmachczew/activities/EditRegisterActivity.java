@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import entidade.Usuario;
+import entidade.Utils;
 
 public class EditRegisterActivity extends NavActivity {
 
@@ -19,6 +20,8 @@ public class EditRegisterActivity extends NavActivity {
     private ImageView imgUpload;
     private static final int SELECT_PICTURE = 1;
     private Uri selectedImage;
+
+    private Usuario usuario;
 
     private EditText inputName;
     private EditText edtEmail;
@@ -50,6 +53,14 @@ public class EditRegisterActivity extends NavActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPass = findViewById(R.id.edtPass);
         edtCPF = findViewById(R.id.edtCPF);
+
+        usuario = Utils.loadFromSharedPreferences(this);
+        if(usuario != null) {
+            inputName.setText(usuario.getNome());
+            edtEmail.setText(usuario.getEmail());
+            edtPass.setText(usuario.getSenha());
+            edtCPF.setText(usuario.getCpf());
+        }
     }
 
     @Override

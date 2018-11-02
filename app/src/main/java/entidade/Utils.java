@@ -18,6 +18,7 @@ public class Utils {
         u.setId_usuario(sharedPreferences.getLong("IDUSUARIO", 0));
         u.setSenha(sharedPreferences.getString("SENHA", null));
         u.setEmail(sharedPreferences.getString("EMAIL", null));
+        u.setCpf(sharedPreferences.getString("CPF", null));
         return u;
     }
 
@@ -28,6 +29,7 @@ public class Utils {
         edit.putString("SENHA", usuario.getSenha());
         edit.putString("EMAIL", usuario.getEmail());
         edit.putLong("IDUSUARIO", usuario.getId_usuario());
+        edit.putString("CPF", usuario.getCpf());
         return edit.commit();
     }
     
