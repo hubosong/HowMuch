@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 import adapter.ItemNFeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
+import dao.NFe_DAO;
 import entidade.Item_NFe;
 import entidade.Mercado;
 import entidade.NFe;
@@ -128,11 +129,12 @@ public class VerNFe extends NavActivity {
                         ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
                         nfe = (NFe) ois.readObject();
                         ois.close();
-
+                        if(nfe.getId_nfe() != 0) {
+                            new NFe_DAO(VerNFe.this).insertFromServer(nfe);
+                        }
                     } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
-
                     return nfe;
                 }
 
@@ -146,109 +148,119 @@ public class VerNFe extends NavActivity {
     }
 
     private void pegaNotaDoSite(final String code){
-        new AsyncTask<String, Integer, NFe>() {
-            @Override
-            protected void onPreExecute() {
-                progWait.setVisibility(View.VISIBLE);
-                txtWait.setVisibility(View.VISIBLE);
-                super.onPreExecute();
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-                switch (values[0]){
-                    case 1:
-                        txtWait.setText("Processando Dados Básicos..");
-                        break;
-                    case 2:
-                        txtWait.setText("Processando Dados do Mercado..");
-                        break;
-                    case 3:
-                        txtWait.setText("Processando Itens..");
-                        break;
-                    case 4:
-                        txtWait.setText("Concluindo..");
-                        break;
+        NFe nota = new NFe_DAO(this).getByChave(code);
+        if(nota != null) {
+            preencherViewsProdutosNFe(nota);
+        }else {
+            new AsyncTask<String, Integer, NFe>() {
+                @Override
+                protected void onPreExecute() {
+                    progWait.setVisibility(View.VISIBLE);
+                    txtWait.setVisibility(View.VISIBLE);
+                    super.onPreExecute();
                 }
-            }
 
-            @Override
-            protected NFe doInBackground(String... params) {
-                String url = "https://www.sefaz.rs.gov.br/NFE/NFE-COM.aspx";
-                String url2 = "https://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-COM_2.asp";
-                NFe nfe = null;
-                try {
-                    publishProgress(1);
-                    Connection.Response res = Jsoup.connect(url).method(Connection.Method.GET).execute();
-                    publishProgress(2);
-                    Document doc = Jsoup.connect(url2)
-                            .data("HML", "false")
-                            .data("chaveNFe", code)
-                            .data("Action", "Avan%E7ar")
-                            .cookies(res.cookies())
-                            .method(Connection.Method.POST)
-                            .get();
-
-                    //Pega os dados da Nota Fiscal Eletronica
-                    Element divNFe = doc.getElementById("NFe");
-                    nfe = getNFe(divNFe);
-                    nfe.setChave(code);
-                    if (usuario.getId_usuario() != 0) {
-                        nfe.setId_usuario(usuario.getId_usuario());
+                @Override
+                protected void onProgressUpdate(Integer... values) {
+                    super.onProgressUpdate(values);
+                    switch (values[0]) {
+                        case 1:
+                            txtWait.setText("Processando Dados Básicos..");
+                            break;
+                        case 2:
+                            txtWait.setText("Processando Dados do Mercado..");
+                            break;
+                        case 3:
+                            txtWait.setText("Processando Itens..");
+                            break;
+                        case 4:
+                            txtWait.setText("Concluindo..");
+                            break;
                     }
+                }
 
-                    //Pega os dados do Mercado
-                    Element divEminente = doc.getElementById("Emitente");
-                    Mercado mercado = getMercado(divEminente);
-                    nfe.setMercado(mercado);
+                @Override
+                protected NFe doInBackground(String... params) {
+                    String url = "https://www.sefaz.rs.gov.br/NFE/NFE-COM.aspx";
+                    String url2 = "https://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-COM_2.asp";
+                    NFe nfe = null;
+                    try {
+                        publishProgress(1);
+                        Connection.Response res = Jsoup.connect(url).method(Connection.Method.POST).execute();
+                        publishProgress(2);
+                        Document doc = Jsoup.connect(url2)
+                                .data("HML", "false")
+                                .data("chaveNFe", code)
+                                .data("Action", "Avan%E7ar")
+                                .cookies(res.cookies())
+                                .method(Connection.Method.POST)
+                                .get();
 
-                    //Pega os items e produtos da Nota Fiscal Eletrônica e os cadastra no BD
-                    publishProgress(3);
-                    Element divProd = doc.getElementById("Prod");
-                    ArrayList<Item_NFe> lista_itens = getItemsNFe(divProd);
-                    nfe.setLista_items(lista_itens);
+                        //Pega os dados da Nota Fiscal Eletronica
+                        Element divNFe = doc.getElementById("NFe");
+                        nfe = getNFe(divNFe);
+                        nfe.setChave(code);
+                        if (usuario.getId_usuario() != 0) {
+                            nfe.setId_usuario(usuario.getId_usuario());
+                        }
+
+                        //Pega os dados do Mercado
+                        Element divEminente = doc.getElementById("Emitente");
+                        Mercado mercado = getMercado(divEminente);
+                        nfe.setMercado(mercado);
+
+                        //Pega os items e produtos da Nota Fiscal Eletrônica e os cadastra no BD
+                        publishProgress(3);
+                        Element divProd = doc.getElementById("Prod");
+                        ArrayList<Item_NFe> lista_itens = getItemsNFe(divProd);
+                        nfe.setLista_items(lista_itens);
 
 
-                    //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
-                    System.out.println("Enviando nfe: " + nfe);
-                    publishProgress(4);
-                    if(Utils.servidorDePe()) {
-                        URL url3 = new URL(Utils.URL + "enviar_nfe");
-                        HttpURLConnection urlCon = (HttpURLConnection) url3.openConnection();
-                        urlCon.setRequestMethod("POST");
-                        urlCon.setDoOutput(true); // Habilita o envio da chave por stream
-                        urlCon.setDoInput(true); // Habilita o recebimento via stream
+                        //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
+                        System.out.println("Enviando nfe: " + nfe);
+                        publishProgress(4);
+                        if (Utils.servidorDePe()) {
+                            URL url3 = new URL(Utils.URL + "enviar_nfe");
+                            HttpURLConnection urlCon = (HttpURLConnection) url3.openConnection();
+                            urlCon.setRequestMethod("POST");
+                            urlCon.setDoOutput(true); // Habilita o envio da chave por stream
+                            urlCon.setDoInput(true); // Habilita o recebimento via stream
 
-                        OutputStream os = urlCon.getOutputStream();
-                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
-                        objectOutputStream.writeObject(nfe);
-                        objectOutputStream.close();
-                        objectOutputStream.flush();
+                            OutputStream os = urlCon.getOutputStream();
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                            objectOutputStream.writeObject(nfe);
+                            objectOutputStream.close();
+                            objectOutputStream.flush();
 
-                        ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
-                        nfe = (NFe) ois.readObject();
-                        ois.close();
+                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
+                            nfe = (NFe) ois.readObject();
+                            ois.close();
+                            if(nfe.getId_nfe() != 0) {
+                                new NFe_DAO(VerNFe.this).insertFromServer(nfe);
+                            }
+                        }else{
+                            Toast.makeText(VerNFe.this, "Servidor Down", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    return nfe;
                 }
-                return nfe;
-            }
 
-            @Override
-            protected void onPostExecute(NFe nfe) {
-                txtWait.setText("Carregando..");
-                final Intent intent = new Intent(activity, VerNFe.class);
-                if (nfe != null) {
-                    System.out.println("NFe Recebida do servidor: " + nfe);
-                    preencherViewsProdutosNFe(nfe);
-                } else {
-                    //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue no site.
-                    postHttpQRCode(code);
+                @Override
+                protected void onPostExecute(NFe nfe) {
+                    txtWait.setText("Carregando..");
+                    final Intent intent = new Intent(activity, VerNFe.class);
+                    if (nfe != null) {
+                        System.out.println("NFe Recebida do servidor: " + nfe);
+                        preencherViewsProdutosNFe(nfe);
+                    } else {
+                        //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue no site.
+                        postHttpQRCode(code);
+                    }
                 }
-            }
-        }.execute(code);
+            }.execute(code);
+        }
     }
 
     public void preencherViewsProdutosNFe(NFe nfe) {

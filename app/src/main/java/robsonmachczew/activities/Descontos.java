@@ -51,11 +51,7 @@ public class Descontos extends NavActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //test internet connection
-        if(!Utils.estaConectado(this)){
-            Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
-            return;
-        }
+
 
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
@@ -83,6 +79,12 @@ public class Descontos extends NavActivity {
         recyclerView.setAdapter(tmp_adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //test internet connection
+        if(!Utils.estaConectado(this)){
+            Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
+            return;
+        }
         rvListStart();
     }
 

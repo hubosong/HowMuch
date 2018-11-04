@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import adapter.NFeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
+import dao.NFe_DAO;
 import entidade.NFe;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
@@ -78,6 +79,7 @@ public class Minhas_NFes extends NavActivity {
         if (usuario == null) {
             usuario = Utils.loadFromSharedPreferences(this);
         }
+
         if (usuario != null && usuario.getId_usuario() > 0) {
             new AsyncTask<String, Void, ArrayList<NFe>>() {
 
@@ -91,37 +93,43 @@ public class Minhas_NFes extends NavActivity {
                 @Override
                 protected ArrayList<NFe> doInBackground(String... params) {
                     ArrayList<NFe> list = null;
-                    try {
-                        String urlParameters = "funcao=GET_ALL_BY_ID_USUARIO&id_usuario=" + usuario.getId_usuario();
-                        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                    if (Utils.servidorDePe()) {
 
-                        URL url = new URL(Utils.URL+"nfe");
-                        HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                        urlCon.setRequestMethod("POST");
-                        urlCon.setDoOutput(true);
-                        urlCon.setDoInput(true);
+                        try {
+                            String urlParameters = "funcao=GET_ALL_BY_ID_USUARIO&id_usuario=" + usuario.getId_usuario();
+                            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                        DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                        wr.write(postData);
-                        wr.close();
-                        wr.flush();
+                            URL url = new URL(Utils.URL + "nfe");
+                            HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                            urlCon.setRequestMethod("POST");
+                            urlCon.setDoOutput(true);
+                            urlCon.setDoInput(true);
 
-                        ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                        list = (ArrayList<NFe>) ois.readObject();
-                        ois.close();
+                            DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                            wr.write(postData);
+                            wr.close();
+                            wr.flush();
 
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
+                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                            list = (ArrayList<NFe>) ois.readObject();
+                            ois.close();
+
+                        } catch (ClassNotFoundException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // SE O SERVIDOR NÃO ESTIVER DE PÉ OU NÃO HOUVER CONEXÃO COM INTERNET, TENTA PEGAR AS NFES DO APP.
+                        list = new NFe_DAO(Minhas_NFes.this).getAllNFes();
                     }
                     return list;
                 }
 
                 @Override
-                protected void onPostExecute(ArrayList<NFe> list) {
+                protected void onPostExecute(final ArrayList<NFe> list) {
                     progWait.setVisibility(View.GONE);
                     txtWait.setVisibility(View.GONE);
                     if (list != null) {
-                        Toast.makeText(Minhas_NFes.this, list.size() + " itens encontrados", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Minhas_NFes.this, list.size() + " NFes Encontrados", Toast.LENGTH_LONG).show();
                         NFeAdapter adapter = new NFeAdapter(Minhas_NFes.this, list);
                         recyclerView.setAdapter(adapter);
 
@@ -139,6 +147,28 @@ public class Minhas_NFes extends NavActivity {
                                 }
                             }
                         });
+
+                        //Thread para sincronizar as nfes do servidor com as nfes locais
+                        new Thread() {
+                            public void run() {
+                                NFe_DAO nFe_dao = new NFe_DAO(getApplicationContext());
+                                ArrayList<Long> lista_ids_nfes = nFe_dao.getIdsNFesCadastradasLocamente();
+                                if(lista_ids_nfes.size() < list.size()){
+                                    if(lista_ids_nfes.size() == 0) {
+                                        nFe_dao.insertAllFromServer(list);
+                                    }else{
+                                        int cadastros = 0;
+                                        for (int i = 0; i < list.size(); i++) {
+                                            if (!lista_ids_nfes.contains(list.get(i).getId_nfe()) && cadastros < 20) {
+                                                nFe_dao.insertFromServer(list.get(i));
+                                                cadastros++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }.start();
+
                     } else {
                         Toast.makeText(Minhas_NFes.this, "Nenhuma NFe Encontrada", Toast.LENGTH_LONG).show();
                     }
