@@ -9,9 +9,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
 
-    public static final String URL = "http://187.181.170.135:8080/Mercado/";
+    public static final String URL = "http://177.143.220.92:8080/Mercado/";
 
-    public static Usuario loadFromSharedPreferences(Context context){
+    public static Usuario loadFromSharedPreferences(Context context) {
         Usuario u = new Usuario();
         SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
         u.setNome(sharedPreferences.getString("NOME", null));
@@ -22,7 +22,7 @@ public class Utils {
         return u;
     }
 
-    public static boolean saveToSharedPreferences(Usuario usuario, Context context){
+    public static boolean saveToSharedPreferences(Usuario usuario, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString("NOME", usuario.getNome());
@@ -32,21 +32,41 @@ public class Utils {
         edit.putString("CPF", usuario.getCpf());
         return edit.commit();
     }
-    
-    public static boolean logout(Context context){
+
+    public static boolean logout(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.clear();
         return edit.commit();
     }
 
-    public static boolean estaConectado(Context context){
-        ConnectivityManager connectivityManager = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+    public static boolean estaConectado(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
             return true;
         }
         return false;
     }
+
+    public static NFe criarListaComChave(String chave, Context context) {
+        if (chave.trim().length() == 44) {
+            return criarLista(chave,context);
+        }
+        return null;
+    }
+
+
+
+
+
+    // Métodos que buscam a NFe no site do sefaz. A ideia é distribuir esse processamento
+    // (de buscar a nota) para desafogar o servidor.
+    // DEIXAR PRIVADOS
+    private static NFe criarLista(final String chave, final Context context) {
+
+        return null;
+    }
+
 
 }

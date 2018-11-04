@@ -94,10 +94,10 @@ public class NavActivity extends AppCompatActivity {
 
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
-        if(usuario.getId_usuario() != 0) {
+        if (usuario.getId_usuario() != 0) {
             navNome.setText(usuario.getNome());
             navEmail.setText(usuario.getEmail());
-        }else{
+        } else {
             navNome.setVisibility(View.GONE);
             navEmail.setVisibility(View.GONE);
             Menu nav_menu = navigationView.getMenu();
@@ -163,7 +163,7 @@ public class NavActivity extends AppCompatActivity {
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                         drawerLayout.closeDrawers();
-                    }else{
+                    } else {
                         Toast.makeText(NavActivity.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
                     }
                     break;
@@ -181,7 +181,7 @@ public class NavActivity extends AppCompatActivity {
             if (result.getContents() != null) {
                 String cut = result.getContents();
                 int corte = cut.indexOf("=") + 1;
-                String code = cut.substring(corte, corte + 44);
+                final String code = cut.substring(corte, corte + 44);
                 Intent readQRcode = new Intent(activity, VerNFe.class);
                 readQRcode.putExtra("code", code);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -195,7 +195,6 @@ public class NavActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-
     }
 
     @Override
@@ -223,5 +222,8 @@ public class NavActivity extends AppCompatActivity {
         }
 
     }
+
+
+
 
 }
