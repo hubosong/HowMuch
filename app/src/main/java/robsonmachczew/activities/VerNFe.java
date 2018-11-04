@@ -213,21 +213,23 @@ public class VerNFe extends NavActivity {
                     //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
                     System.out.println("Enviando nfe: " + nfe);
                     publishProgress(4);
-                    URL url3 = new URL(Utils.URL + "enviar_nfe");
-                    HttpURLConnection urlCon = (HttpURLConnection) url3.openConnection();
-                    urlCon.setRequestMethod("POST");
-                    urlCon.setDoOutput(true); // Habilita o envio da chave por stream
-                    urlCon.setDoInput(true); // Habilita o recebimento via stream
+                    if(Utils.servidorDePe()) {
+                        URL url3 = new URL(Utils.URL + "enviar_nfe");
+                        HttpURLConnection urlCon = (HttpURLConnection) url3.openConnection();
+                        urlCon.setRequestMethod("POST");
+                        urlCon.setDoOutput(true); // Habilita o envio da chave por stream
+                        urlCon.setDoInput(true); // Habilita o recebimento via stream
 
-                    OutputStream os = urlCon.getOutputStream();
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
-                    objectOutputStream.writeObject(nfe);
-                    objectOutputStream.close();
-                    objectOutputStream.flush();
+                        OutputStream os = urlCon.getOutputStream();
+                        ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                        objectOutputStream.writeObject(nfe);
+                        objectOutputStream.close();
+                        objectOutputStream.flush();
 
-                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
-                    nfe = (NFe) ois.readObject();
-                    ois.close();
+                        ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
+                        nfe = (NFe) ois.readObject();
+                        ois.close();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

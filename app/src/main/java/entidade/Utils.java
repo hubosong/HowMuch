@@ -5,6 +5,12 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
@@ -49,23 +55,22 @@ public class Utils {
         return false;
     }
 
-    public static NFe criarListaComChave(String chave, Context context) {
-        if (chave.trim().length() == 44) {
-            return criarLista(chave,context);
+    public static boolean servidorDePe() {
+        boolean isAlive = false;
+        SocketAddress socketAddress = new InetSocketAddress("177.143.220.92", 8080);
+        Socket socket = new Socket();
+        int timeout = 2000;
+        try {
+            socket.connect(socketAddress, timeout);
+            socket.close();
+            isAlive = true;
+
+        } catch (SocketTimeoutException exception) {
+            System.out.println("Server Timeout...");
+        } catch (IOException exception) {
+            System.out.println("IOException: "+exception.getMessage());
         }
-        return null;
-    }
-
-
-
-
-
-    // Métodos que buscam a NFe no site do sefaz. A ideia é distribuir esse processamento
-    // (de buscar a nota) para desafogar o servidor.
-    // DEIXAR PRIVADOS
-    private static NFe criarLista(final String chave, final Context context) {
-
-        return null;
+        return isAlive;
     }
 
 

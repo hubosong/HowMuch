@@ -69,10 +69,6 @@ public class Descontos extends NavActivity {
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
-
-
-
-
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
         txtResult = findViewById(R.id.txtResult);
@@ -264,27 +260,29 @@ public class Descontos extends NavActivity {
             @Override
             protected ArrayList<ProdutoAbaixoMedia> doInBackground(String... params) {
                 ArrayList<ProdutoAbaixoMedia> list = null;
-                try {
-                    String urlParameters = "funcao=GET_PRODUTOS_ABAIXO_MEDIA";
-                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                if(Utils.servidorDePe()) {
+                    try {
+                        String urlParameters = "funcao=GET_PRODUTOS_ABAIXO_MEDIA";
+                        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL(Utils.URL+"produto");
-                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                    urlCon.setRequestMethod("POST");
-                    urlCon.setDoOutput(true);
-                    urlCon.setDoInput(true);
+                        URL url = new URL(Utils.URL + "produto");
+                        HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                        urlCon.setRequestMethod("POST");
+                        urlCon.setDoOutput(true);
+                        urlCon.setDoInput(true);
 
-                    DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                    wr.write(postData);
-                    wr.close();
-                    wr.flush();
+                        DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                        wr.write(postData);
+                        wr.close();
+                        wr.flush();
 
-                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                    list = (ArrayList<ProdutoAbaixoMedia>) ois.readObject();
-                    ois.close();
+                        ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                        list = (ArrayList<ProdutoAbaixoMedia>) ois.readObject();
+                        ois.close();
 
-                } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
+                    } catch (ClassNotFoundException | IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return list;
             }
