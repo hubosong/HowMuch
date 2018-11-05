@@ -38,7 +38,7 @@ import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Utils;
 
-public class Descontos extends NavActivity {
+public class Descontos extends Nav {
 
     private ProgressBar progWait;
     private TextView txtResult, txtWait;
@@ -55,7 +55,7 @@ public class Descontos extends NavActivity {
 
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_off, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_descontos, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
 
@@ -348,7 +348,7 @@ public class Descontos extends NavActivity {
             super.onBackPressed();
         }
 
-        Intent main = new Intent(Descontos.this, MainActivity.class);
+        Intent main = new Intent(Descontos.this, Main.class);
         startActivity(main);
         finish();
 

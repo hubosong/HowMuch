@@ -16,7 +16,7 @@ import android.widget.VideoView;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class MainActivity extends AppCompatActivity {
+public class Main extends AppCompatActivity {
 
     private Button btnLogin, btnAccess;
     private VideoView mVideoView;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btnAccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent content = new Intent(MainActivity.this, Descontos.class);
+                Intent content = new Intent(Main.this, Descontos.class);
                 startActivity(content);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login = new Intent(MainActivity.this, Fazer_Login.class);
+                Intent login = new Intent(Main.this, Login.class);
                 startActivity(login);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void phone(View view) {
         //gerar um sair do app 哈哈
-        Intent user = new Intent(this, NavActivity.class);
+        Intent user = new Intent(this, Nav.class);
         finish();
     }
 

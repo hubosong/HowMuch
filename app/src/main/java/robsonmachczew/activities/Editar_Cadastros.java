@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class EditRegisterActivity extends NavActivity {
+public class Editar_Cadastros extends Nav {
 
     private Button btnChoose;
     private ImageView imgUpload;
@@ -33,7 +33,7 @@ public class EditRegisterActivity extends NavActivity {
         super.onCreate(savedInstanceState);
         //called by nav
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_edit_register, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_editar_cadastros, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         //basic config
@@ -81,7 +81,7 @@ public class EditRegisterActivity extends NavActivity {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent off = new Intent(EditRegisterActivity.this, Descontos.class);
+        Intent off = new Intent(Editar_Cadastros.this, Descontos.class);
         startActivity(off);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

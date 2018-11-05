@@ -42,7 +42,7 @@ import entidade.Produto;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class Criar_Lista extends NavActivity {
+public class Criar_Lista extends Nav {
 
     private TextView txtList;
     private EditText edtSearch;
@@ -60,7 +60,7 @@ public class Criar_Lista extends NavActivity {
 
         //called by nav
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_buy_list, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_criar_lista, contentFrameLayout);
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(1).setChecked(true);
 
@@ -312,7 +312,7 @@ public class Criar_Lista extends NavActivity {
 
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(Criar_Lista.this, MainActivity.class);
+        Intent main = new Intent(Criar_Lista.this, Main.class);
         startActivity(main);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

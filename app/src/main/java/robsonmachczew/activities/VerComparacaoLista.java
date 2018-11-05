@@ -18,7 +18,7 @@ import adapter.ProdutoAbaixoMediaAdapter;
 import entidade.Lista;
 import entidade.ProdutoAbaixoMedia;
 
-public class VerComparacaoLista extends NavActivity {
+public class VerComparacaoLista extends Nav {
 
     private ProgressBar progWait;
     private TextView txtQRCode, txtWait, txtMercado, txtData;

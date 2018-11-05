@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,10 +24,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Fazer_Login"
+            android:name=".Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Cadastrar_Usuario"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Descontos"
@@ -42,7 +42,7 @@
             android:name=".Minhas_NFes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".EditRegisterActivity"
+            android:name=".Editar_Cadastros"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".VerNFe"

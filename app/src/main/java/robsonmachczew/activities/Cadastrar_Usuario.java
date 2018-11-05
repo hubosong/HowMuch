@@ -25,7 +25,7 @@ import java.net.URL;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class RegisterActivity extends AppCompatActivity {
+public class Cadastrar_Usuario extends AppCompatActivity {
 
     private Button btnChoose;
     private ImageView imgUpload;
@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_cadastrar);
 
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.bar);
@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Usuario u) {
                 if (u.getId_usuario() != 0) {
-                    Toast.makeText(RegisterActivity.this, "REGISTRADO", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Cadastrar_Usuario.this, "REGISTRADO", Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();
@@ -143,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity {
     //usado para executar o voltar da action
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent login = new Intent(RegisterActivity.this, Fazer_Login.class);
+        Intent login = new Intent(Cadastrar_Usuario.this, Login.class);
         startActivity(login);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();
@@ -152,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent login = new Intent(RegisterActivity.this, Fazer_Login.class);
+        Intent login = new Intent(Cadastrar_Usuario.this, Login.class);
         startActivity(login);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();

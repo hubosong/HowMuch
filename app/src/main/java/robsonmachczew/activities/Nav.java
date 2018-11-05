@@ -24,7 +24,7 @@ import com.google.zxing.integration.android.IntentResult;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class NavActivity extends AppCompatActivity {
+public class Nav extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -85,7 +85,7 @@ public class NavActivity extends AppCompatActivity {
         navImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editRegister = new Intent(activity, EditRegisterActivity.class);
+                Intent editRegister = new Intent(activity, Editar_Cadastros.class);
                 startActivity(editRegister);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
@@ -113,7 +113,7 @@ public class NavActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_off:
-                    Intent off = new Intent(NavActivity.this, Descontos.class);
+                    Intent off = new Intent(Nav.this, Descontos.class);
                     startActivity(off);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -121,7 +121,7 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_new_list:
-                    Intent buyList = new Intent(NavActivity.this, Criar_Lista.class);
+                    Intent buyList = new Intent(Nav.this, Criar_Lista.class);
                     startActivity(buyList);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -129,7 +129,7 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_my_buy:
-                    Intent my_buy = new Intent(NavActivity.this, Minhas_Listas.class);
+                    Intent my_buy = new Intent(Nav.this, Minhas_Listas.class);
                     startActivity(my_buy);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -137,7 +137,7 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_my_nfe:
-                    Intent my_nfe = new Intent(NavActivity.this, Minhas_NFes.class);
+                    Intent my_nfe = new Intent(Nav.this, Minhas_NFes.class);
                     startActivity(my_nfe);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
@@ -157,14 +157,14 @@ public class NavActivity extends AppCompatActivity {
                     break;
 
                 case R.id.nav_logout:
-                    if (Utils.logout(NavActivity.this)) {
-                        Intent main = new Intent(NavActivity.this, MainActivity.class);
+                    if (Utils.logout(Nav.this)) {
+                        Intent main = new Intent(Nav.this, Main.class);
                         startActivity(main);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                         drawerLayout.closeDrawers();
                     } else {
-                        Toast.makeText(NavActivity.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Nav.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
                     }
                     break;
 
@@ -208,7 +208,7 @@ public class NavActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         if (navNome.getText().equals("")) {
-            Intent main = new Intent(NavActivity.this, MainActivity.class);
+            Intent main = new Intent(Nav.this, Main.class);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             startActivity(main);
             finish();

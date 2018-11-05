@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class Fazer_Login extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     private EditText edtEmail, edtPass;
     private TextView txtResult, txtWait;
@@ -86,7 +86,7 @@ public class Fazer_Login extends AppCompatActivity {
         txtForgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Fazer_Login.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -118,7 +118,7 @@ public class Fazer_Login extends AppCompatActivity {
 
         Usuario u = Utils.loadFromSharedPreferences(this);
         if(u.getId_usuario() != 0){
-            Intent content = new Intent(Fazer_Login.this, Descontos.class);
+            Intent content = new Intent(Login.this, Descontos.class);
             content.putExtra("usuario", u);
             startActivity(content);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -169,12 +169,12 @@ public class Fazer_Login extends AppCompatActivity {
                 progWait.setVisibility(View.GONE);
                 txtWait.setVisibility(View.GONE);
                 if (usuario == null) {
-                    Toast.makeText(Fazer_Login.this, R.string.toast_invalidade_login, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, R.string.toast_invalidade_login, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent content = new Intent(Fazer_Login.this, Descontos.class);
+                Intent content = new Intent(Login.this, Descontos.class);
                 usuario.setSenha(senha);
-                Utils.saveToSharedPreferences(usuario, Fazer_Login.this);
+                Utils.saveToSharedPreferences(usuario, Login.this);
                 content.putExtra("usuario", usuario);
                 startActivity(content);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -184,7 +184,7 @@ public class Fazer_Login extends AppCompatActivity {
     }
 
     public void btnRegister(View view) {
-        Intent register = new Intent(Fazer_Login.this, RegisterActivity.class);
+        Intent register = new Intent(Login.this, Cadastrar_Usuario.class);
         startActivity(register);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();
@@ -194,7 +194,7 @@ public class Fazer_Login extends AppCompatActivity {
     //usado para executar o voltar da action
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent main = new Intent(Fazer_Login.this, MainActivity.class);
+        Intent main = new Intent(Login.this, Main.class);
         startActivity(main);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();
@@ -204,7 +204,7 @@ public class Fazer_Login extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(Fazer_Login.this, MainActivity.class);
+        Intent main = new Intent(Login.this, Main.class);
         startActivity(main);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         this.finish();

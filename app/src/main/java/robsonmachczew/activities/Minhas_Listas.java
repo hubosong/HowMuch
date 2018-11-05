@@ -31,7 +31,7 @@ import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class Minhas_Listas extends NavActivity {
+public class Minhas_Listas extends Nav {
 
     private ProgressBar progWait;
     private TextView txtResult, txtWait;
@@ -49,7 +49,7 @@ public class Minhas_Listas extends NavActivity {
 
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_my_buy, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_minhas_listas, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(2).setChecked(true);
 
@@ -148,7 +148,7 @@ public class Minhas_Listas extends NavActivity {
 
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(Minhas_Listas.this, MainActivity.class);
+        Intent main = new Intent(Minhas_Listas.this, Main.class);
         startActivity(main);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

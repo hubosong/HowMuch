@@ -45,7 +45,7 @@ import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class VerNFe extends NavActivity {
+public class VerNFe extends Nav {
 
     private ProgressBar progWait;
     private TextView txtQRCode, txtWait, txtMercado, txtData;

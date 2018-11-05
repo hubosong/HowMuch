@@ -34,7 +34,7 @@ import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class Minhas_NFes extends NavActivity {
+public class Minhas_NFes extends Nav {
 
     private Usuario usuario;
     private ProgressBar progWait;
@@ -50,7 +50,7 @@ public class Minhas_NFes extends NavActivity {
 
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_my_nfe, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_minhas_nfes, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(3).setChecked(true);
 
@@ -183,7 +183,7 @@ public class Minhas_NFes extends NavActivity {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(Minhas_NFes.this, MainActivity.class);
+        Intent main = new Intent(Minhas_NFes.this, Main.class);
         startActivity(main);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
