@@ -14,17 +14,48 @@
         android:layout_height="2dp"
         android:background="@drawable/gradient_list"/>
 
-    <TextView
-        android:id="@+id/txtList"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/txtDialogList"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Produtos Add: 0"
+        android:orientation="vertical"
         android:layout_marginBottom="32dp"
-        android:textColor="@color/text_color"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        style="@style/Base.TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toTopOf="@+id/edtSearch"/>
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/edtSearch">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtDescList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Produtos Add  >> "
+                android:textColor="@color/text_color"
+                style="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+            <TextView
+                android:id="@+id/txtList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 0 "
+                android:textColor="@color/text_color"
+                style="@style/Base.TextAppearance.AppCompat.Large"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtInfoList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clique para continuar!"
+            android:textColor="@color/hint_nav_login"
+            style="@style/Base.TextAppearance.AppCompat.Small"/>
+
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/edtSearch"
@@ -42,15 +73,12 @@
         android:singleLine="true"
         android:textColor="#000"
         android:textSize="16dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <LinearLayout
-        android:id="@+id/layoutProdutos"
+    <ScrollView
         android:layout_width="300dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -58,7 +86,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtSearch"/>
+        app:layout_constraintTop_toBottomOf="@+id/edtSearch"
+        android:scrollbars="vertical"
+        android:scrollbarSize="2sp"
+        android:scrollbarThumbVertical="@drawable/gradient_list">
+
+        <LinearLayout
+            android:id="@+id/layoutProdutos"
+            android:layout_width="300dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </ScrollView>
+
 
     <ImageView
         android:id="@+id/imgLogo"
@@ -66,6 +109,7 @@
         android:layout_height="200dp"
         android:layout_marginBottom="20dp"
         android:elevation="15dp"
+        android:visibility="visible"
         app:srcCompat="@drawable/deepprices_w"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"

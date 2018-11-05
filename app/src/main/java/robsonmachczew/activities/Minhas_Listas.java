@@ -1,5 +1,6 @@
 package robsonmachczew.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -73,6 +74,7 @@ public class Minhas_Listas extends Nav {
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void pegaListaDeCompras() {
         if (usuario == null) {
             usuario = Utils.loadFromSharedPreferences(this);

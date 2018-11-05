@@ -147,6 +147,7 @@ public class VerNFe extends Nav {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void pegaNotaDoSite(final String code){
         NFe nota = new NFe_DAO(this).getByChave(code);
         if(nota != null) {

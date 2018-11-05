@@ -77,7 +77,7 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
         holder.txtMediumPrice.setText(String.valueOf(nfe.getLista_items().size()));
         holder.txtOff.setText("");
         holder.txtDescOff.setText("");
-        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
         holder.txtPrice.setText(String.valueOf(nfe.getValor()));
         holder.titleItens.setText("Quantidade de Itens:");
         holder.txtPriceDescription.setText("Valor da NFe:");
@@ -118,12 +118,12 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
             }
         });
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(context, "Produto: " + nfe, Toast.LENGTH_SHORT).show();
-                remove(position);
-                return false;
+            public void onClick(View v) {
+                Intent intent = new Intent(context, VerNFe.class);
+                intent.putExtra("NFE", nfe);
+                context.startActivity(intent);
             }
         });
     }

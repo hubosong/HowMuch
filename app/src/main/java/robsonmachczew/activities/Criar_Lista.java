@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -24,8 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -46,10 +45,9 @@ public class Criar_Lista extends Nav {
 
     private TextView txtList;
     private EditText edtSearch;
-    private LinearLayout layoutProdutos;
+    private LinearLayout layoutProdutos, txtDialogList;
     private ArrayList<Produto> lista_compras;
 
-    private MaterialSearchView searchView;
     private final Activity activity = this;
     private Animation alpha_in, alpha_out;
     private Usuario usuario;
@@ -66,6 +64,7 @@ public class Criar_Lista extends Nav {
 
         //basic config
         getSupportActionBar().setTitle(R.string.bar_buy_list);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
@@ -73,11 +72,11 @@ public class Criar_Lista extends Nav {
         txtList = findViewById(R.id.txtList);
         usuario = Utils.loadFromSharedPreferences(this);
 
-        txtList.setOnClickListener(new View.OnClickListener() {
+        txtDialogList = findViewById(R.id.txtDialogList);
+        txtDialogList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(Criar_Lista.this);
-                //dialog.setTitle("Produtos Adicionados");
 
                 TextView title = new TextView(Criar_Lista.this);
                 title.setText("Minha Lista de Compras");
@@ -88,7 +87,6 @@ public class Criar_Lista extends Nav {
                 title.setTextSize(20);
                 dialog.setCustomTitle(title);
 
-                //call market data
                 title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -103,27 +101,29 @@ public class Criar_Lista extends Nav {
                     lista[i] = (i + 1) + " | " + lista_compras.get(i).getDescricao() + " | " + lista_compras.get(i).getTransient_quantidade() + " (" + lista_compras.get(i).getUnidade_comercial() + ")";
                 }
                 dialog.setItems(lista, null);
+                dialog.setCancelable(true);
 
-                dialog.setCancelable(false);
                 dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Toast.makeText(activity, "Cancelado!", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-
                 dialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
 
+                    @SuppressLint("StaticFieldLeak")
                     public void onClick(DialogInterface dialog, int id) {
                         new AsyncTask<String, Void, Long>() {
                             @Override
                             protected void onPreExecute() {
                                 layoutProdutos.removeAllViews();
+
                                 TextView txtCarregando = new TextView(Criar_Lista.this);
                                 txtCarregando.setText(R.string.txt_progress);
                                 txtCarregando.setTextSize(16);
                                 txtCarregando.setTextColor(Color.parseColor("#ffffff"));
                                 layoutProdutos.addView(txtCarregando);
+
                                 super.onPreExecute();
                             }
 
@@ -182,12 +182,20 @@ public class Criar_Lista extends Nav {
             }
         });
 
-
         layoutProdutos = (LinearLayout) findViewById(R.id.layoutProdutos);
         lista_compras = new ArrayList<>();
 
-
         edtSearch = findViewById(R.id.edtSearch);
+        edtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView imgLogo = findViewById(R.id.imgLogo);
+                imgLogo.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
+                imgLogo.setAnimation(alpha_out);
+                fab.setAnimation(alpha_out);
+            }
+        });
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -266,7 +274,7 @@ public class Criar_Lista extends Nav {
                     l.setOrientation(LinearLayout.HORIZONTAL);
 
                     Button btnAdd = new Button(Criar_Lista.this);
-                    btnAdd.setText("+ Add");
+                    btnAdd.setText("+");
                     btnAdd.setMinimumHeight(0);
                     btnAdd.setHeight(80);
                     btnAdd.setGravity(Gravity.CENTER);
@@ -302,9 +310,10 @@ public class Criar_Lista extends Nav {
                             if (!adicionado) {
                                 lista_compras.add(produto);
                             }
-                            txtList.setText("Produtos Add: (" + lista_compras.size() + ")");
+                            txtList.setText(" "+ lista_compras.size() +" ");
                         }
                     });
+
                 }
             }
         }.execute();

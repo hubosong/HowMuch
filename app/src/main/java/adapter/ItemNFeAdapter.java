@@ -17,12 +17,9 @@ import robsonmachczew.activities.R;
 
 public class ItemNFeAdapter extends RecyclerView.Adapter<ItemNFeAdapter.ProductViewHolder> {
 
-    //this context we will use to inflate the layout
     private Context mCtx;
-    //we are storing all the products in a list
     private List<Item_NFe> productList;
 
-    //getting the context and product list with constructor
     public ItemNFeAdapter(Context mCtx, List<Item_NFe> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
@@ -30,7 +27,6 @@ public class ItemNFeAdapter extends RecyclerView.Adapter<ItemNFeAdapter.ProductV
 
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(mCtx);
         View view = inflater.inflate(R.layout.layout_item_nfe, null);
         return new ProductViewHolder(view);
@@ -57,24 +53,10 @@ public class ItemNFeAdapter extends RecyclerView.Adapter<ItemNFeAdapter.ProductV
         return productList.size();
     }
 
-    /*
-    public void add(int position, String product) {
-        productList.add(position, product);
-        notifyItemInserted(position);
-    }
-    */
-
-    public void remove(int position) {
-        productList.remove(position);
-        notifyItemRemoved(position);
-    }
-
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        //getting the productQRCode of the specified position
         final Item_NFe item = productList.get(position);
 
-        //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
         holder.txtTitle.setText(item.getProduto().getDescricao().toUpperCase());
@@ -84,23 +66,6 @@ public class ItemNFeAdapter extends RecyclerView.Adapter<ItemNFeAdapter.ProductV
         holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
         holder.txtUnitPriceDesc.setText("Valor " + item.getProduto().getUnidade_comercial() + ":");
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + item.getProduto(), Toast.LENGTH_SHORT).show();
-                remove(position);
-                return false;
-            }
-        });
-
-        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(productQRCode.getImage()));
 
     }
 
