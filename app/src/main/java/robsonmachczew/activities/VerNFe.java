@@ -308,6 +308,8 @@ public class VerNFe extends Nav {
         });
     }
 
+
+    // NÃO APAGAR ESSE MÉTODO
     private void sendChaveToPHP(final String chave) {
         new AsyncTask<String, Void, JSONArray>() {
             @Override
