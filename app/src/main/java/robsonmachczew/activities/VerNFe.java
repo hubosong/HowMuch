@@ -18,19 +18,24 @@ import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import org.json.JSONArray;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -87,18 +92,19 @@ public class VerNFe extends Nav {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if(nfe != null) {
+        if (nfe != null) {
             origem = "MINHAS_NFES";
             preencherViewsProdutosNFe(nfe);
-        }else {
+        } else {
             String code = getIntent().getStringExtra("code");
+            //getNFeFromPHP(code);
             pegaNotaDoSite(code);
         }
     }
 
     @SuppressLint("StaticFieldLeak")
     public void postHttpQRCode(final String code) {
-        if( (code != null) && (code.length() == 44) ) {
+        if ((code != null) && (code.length() == 44)) {
             new AsyncTask<String, Void, NFe>() {
                 @Override
                 protected void onPreExecute() {
@@ -129,7 +135,7 @@ public class VerNFe extends Nav {
                         ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
                         nfe = (NFe) ois.readObject();
                         ois.close();
-                        if(nfe.getId_nfe() != 0) {
+                        if (nfe.getId_nfe() != 0) {
                             new NFe_DAO(VerNFe.this).insertFromServer(nfe);
                         }
                     } catch (ClassNotFoundException | IOException e) {
@@ -148,11 +154,11 @@ public class VerNFe extends Nav {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void pegaNotaDoSite(final String code){
+    private void pegaNotaDoSite(final String code) {
         NFe nota = new NFe_DAO(this).getByChave(code);
-        if(nota != null) {
+        if (nota != null) {
             preencherViewsProdutosNFe(nota);
-        }else {
+        } else {
             new AsyncTask<String, Integer, NFe>() {
                 @Override
                 protected void onPreExecute() {
@@ -236,10 +242,10 @@ public class VerNFe extends Nav {
                             ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
                             nfe = (NFe) ois.readObject();
                             ois.close();
-                            if(nfe.getId_nfe() != 0) {
+                            if (nfe.getId_nfe() != 0) {
                                 new NFe_DAO(VerNFe.this).insertFromServer(nfe);
                             }
-                        }else{
+                        } else {
                             Toast.makeText(VerNFe.this, "Servidor Down", Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
@@ -252,7 +258,7 @@ public class VerNFe extends Nav {
                 protected void onPostExecute(NFe nfe) {
                     txtWait.setText("Carregando..");
                     final Intent intent = new Intent(activity, VerNFe.class);
-                    if (nfe != null) {
+                    if (nfe != null && nfe.getLista_items() != null && nfe.getLista_items().size() > 0) {
                         System.out.println("NFe Recebida do servidor: " + nfe);
                         preencherViewsProdutosNFe(nfe);
                     } else {
@@ -302,14 +308,73 @@ public class VerNFe extends Nav {
         });
     }
 
+    private void sendChaveToPHP(final String chave) {
+        new AsyncTask<String, Void, JSONArray>() {
+            @Override
+            protected void onPreExecute() {
+
+            }
+
+            @Override
+            protected JSONArray doInBackground(String... params) {
+                try {
+                    URL url = new URL("http://192.168.0.99/mercado/dao/nfe/select_nfe_completa_by_chave.php");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true); // to be able to write.
+                    urlCon.setDoInput(true); // to be able to read.
+                    OutputStream out = urlCon.getOutputStream();
+
+                    out.write(("&" + URLEncoder.encode("chave", "UTF-8") + "=" + URLEncoder.encode(chave, "UTF-8")
+                    + "&" + URLEncoder.encode("id_usuario", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(usuario.getId_usuario()), "UTF-8")).getBytes());
+                    out.close();
+                    out.flush();
+
+                    InputStream ois = urlCon.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(ois));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    //NO ANDROID USAR JSONARRAY:
+                    JSONArray array = new JSONArray(result.toString());
+                    ois.close();
+                    return array;
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(JSONArray array) {
+                try {
+                    NFe nfe = new NFe();
+
+                    //System.out.println("NAMES >> " + array.getJSONObject(0).names());
+                    //nfe.setId_nfe();
+                    ArrayList<NFe> lista = new ArrayList<>();
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONArray j = new JSONArray(array.get(i));
+                        System.out.println(array.get(i).getClass());
+                    }
+                } catch (Exception e) {
+                    System.out.println(">>> ERRO: " + e.getMessage());
+                }
+            }
+        }.execute(chave);
+    }
 
     //onBack
     @Override
     public void onBackPressed() {
         Intent intent;
-        if(origem == "MINHAS_NFES"){
+        if (origem == "MINHAS_NFES") {
             intent = new Intent(VerNFe.this, Minhas_NFes.class);
-        }else{
+        } else {
             intent = new Intent(VerNFe.this, Descontos.class);
         }
         startActivity(intent);
