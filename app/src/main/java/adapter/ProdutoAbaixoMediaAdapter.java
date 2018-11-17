@@ -123,6 +123,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
+                            //Adicionar a Nova Lista
                             case R.id.option1:
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
                                 builder.setTitle("Adicionar " + prodBelowAverage.getDescricao_produto() + " à uma Nova Lista");
@@ -151,6 +152,8 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                 });
                                 builder.create().show();
                                 break;
+
+                            //Adicionar produto a Lista Existente
                             case R.id.option2:
                                 final Usuario usuario = Utils.loadFromSharedPreferences(mCtx);
                                 if (usuario != null && usuario.getId_usuario() > 0) {
@@ -247,7 +250,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                 }
                                 break;
 
-
+                            //Compartilhar Oferta
                             case R.id.option3:
                                 Intent sendIntent = new Intent();
                                 sendIntent.setAction(Intent.ACTION_SEND);
@@ -256,6 +259,12 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                 sendIntent.putExtra(Intent.EXTRA_TEXT, s);
                                 sendIntent.setType("text/plain");
                                 mCtx.startActivity(sendIntent);
+                                break;
+
+
+                            //Criar Alerta
+                            case R.id.option4:
+                                Toast.makeText(mCtx, "Não Implementado.", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                         return false;

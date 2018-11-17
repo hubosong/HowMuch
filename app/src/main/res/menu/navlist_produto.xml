@@ -9,4 +9,7 @@
     <item
         android:id="@+id/option3"
         android:title="Compartilhar Oferta" />
+    <item
+        android:id="@+id/option4"
+        android:title="Criar Alerta" />
 </menu>
