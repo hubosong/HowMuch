@@ -2,9 +2,11 @@ package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,11 +20,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +39,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import entidade.Lista;
 import entidade.Produto;
@@ -76,8 +81,114 @@ public class Criar_Lista extends Nav {
         txtDialogList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(Criar_Lista.this);
+                final Dialog dialog = new Dialog(Criar_Lista.this);
+                dialog.setContentView(R.layout.dialog_minha_lista);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+                TextView txtTitle = dialog.findViewById(R.id.txt_title);
+                txtTitle.setText("Minha Lista de Compras");
+
+                //Lista de Compras Adicionada
+                ListView listView = dialog.findViewById(R.id.list_dialog);
+                listView.setVisibility(View.VISIBLE);
+                /*String[] lista = new String[lista_compras.size()];
+                for (int i = 0; i < lista_compras.size(); i++) {
+                    lista[i] = (i + 1) + " | " + lista_compras.get(i).getDescricao() + " | " + lista_compras.get(i).getTransient_quantidade() + " (" + lista_compras.get(i).getUnidade_comercial() + ")";
+                }
+                */
+                String animalList[] = {"Lion","Tiger","Monkey","Elephant","Dog","Cat","Camel","Tiger","Monkey","Elephant","Dog","Cat","Camel"};
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(Criar_Lista.this, android.R.layout.simple_list_item_1, animalList);
+                listView.setAdapter(adapter);
+
+
+
+                //funcoes
+                Button btnSalvar = dialog.findViewById(R.id.btn_salvar);
+                btnSalvar.setVisibility(View.VISIBLE);
+                btnSalvar.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("StaticFieldLeak")
+                    public void onClick(View v) {
+                        new AsyncTask<String, Void, Long>() {
+                            @Override
+                            protected void onPreExecute() {
+                                layoutProdutos.removeAllViews();
+
+                                TextView txtCarregando = new TextView(Criar_Lista.this);
+                                txtCarregando.setText(R.string.txt_progress);
+                                txtCarregando.setTextSize(16);
+                                txtCarregando.setTextColor(Color.parseColor("#ffffff"));
+                                layoutProdutos.addView(txtCarregando);
+
+                                super.onPreExecute();
+                            }
+
+                            @Override
+                            protected Long doInBackground(String... params) {
+                                try {
+                                    String urlParameters = "funcao=SALVAR_LISTA&id_usuario=" + usuario.getId_usuario();
+                                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                                    URL url = new URL(Utils.URL+"lista");
+                                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                                    urlCon.setRequestMethod("POST");
+                                    urlCon.setDoOutput(true);
+                                    urlCon.setDoInput(true);
+
+                                    OutputStream os = urlCon.getOutputStream();
+                                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                                    objectOutputStream.writeUTF("SALVAR_LISTA");
+                                    objectOutputStream.writeLong(usuario.getId_usuario());
+                                    Lista lista = new Lista();
+                                    lista.setNome("LISTA TESTE");
+                                    lista.setListaProdutos(lista_compras);
+                                    objectOutputStream.writeObject(lista);
+
+                                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                                    long id_lista = (long) ois.readLong();
+                                    ois.close();
+                                    objectOutputStream.close();
+                                    objectOutputStream.flush();
+                                    return id_lista;
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                return new Long(0);
+                            }
+
+                            @Override
+                            protected void onPostExecute(Long id_lista) {
+                                if (id_lista > 0) {
+                                    Toast.makeText(activity, "Lista Salva!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }.execute();
+                    }
+                });
+
+                Button btnCancelar = dialog.findViewById(R.id.btn_cancelar);
+                btnCancelar.setVisibility(View.VISIBLE);
+                btnCancelar.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Toast.makeText(activity, "Cancelado!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+                Button btnSalvarComparar = dialog.findViewById(R.id.btn_salvar_comparar);
+                btnSalvarComparar.setVisibility(View.VISIBLE);
+                btnSalvarComparar.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.create();
+                dialog.show();
+
+
+                /*
+                AlertDialog.Builder dialog = new AlertDialog.Builder(Criar_Lista.this);
                 TextView title = new TextView(Criar_Lista.this);
                 title.setText("Minha Lista de Compras");
                 title.setBackgroundColor(ContextCompat.getColor(Criar_Lista.this, R.color.toolbar_status));
@@ -86,13 +197,6 @@ public class Criar_Lista extends Nav {
                 title.setTextColor(Color.WHITE);
                 title.setTextSize(20);
                 dialog.setCustomTitle(title);
-
-                title.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(Criar_Lista.this, "Mercado Hu", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
                 //list
                 dialog.setView(LayoutInflater.from(Criar_Lista.this).inflate(android.R.layout.simple_list_item_1, null));
@@ -110,7 +214,6 @@ public class Criar_Lista extends Nav {
                 });
 
                 dialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
-
                     @SuppressLint("StaticFieldLeak")
                     public void onClick(DialogInterface dialog, int id) {
                         new AsyncTask<String, Void, Long>() {
@@ -179,6 +282,9 @@ public class Criar_Lista extends Nav {
 
                 AlertDialog alert = dialog.create();
                 alert.show();
+
+                */
+
             }
         });
 

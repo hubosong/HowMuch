@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:background="@drawable/dialog_title"
+        android:text="Opções da Lista"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="@color/text_color"
+        android:layout_marginBottom="10dp"/>
+
+
+    <ListView
+        android:id="@+id/list_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:alwaysDrawnWithCache="true"
+        android:dividerHeight="1dp"
+        android:horizontalSpacing="3dp"
+        android:scrollingCache="true"
+        android:smoothScrollbar="true"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttons_layout">
+    </ListView>
+
+
+    <LinearLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp">
+
+        <Button
+            android:id="@+id/btn_salvar"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Salvar"
+            android:textColor="@color/toolbar_status"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btn_cancelar"/>
+
+        <Button
+            android:id="@+id/btn_cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Cancelar"
+            android:textColor="@color/toolbar_status"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btn_salvar_comparar"/>
+
+        <Button
+            android:id="@+id/btn_salvar_comparar"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Salvar e Comparar"
+            android:textColor="@color/toolbar_status"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btn_comparar_lista"/>
+
+        <Button
+            android:id="@+id/btn_comparar_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Comparar em Mercado"
+            android:textColor="@color/toolbar_status"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btn_excluir_lista"/>
+
+        <Button
+            android:id="@+id/btn_excluir_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Excluir Lista"
+            android:textColor="@color/toolbar_status"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btn_editar_lista"/>
+
+        <Button
+            android:id="@+id/btn_editar_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Editar Lista"
+            android:textColor="@color/toolbar_status"
+            android:visibility="gone"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
