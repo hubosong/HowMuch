@@ -19,6 +19,7 @@
         <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -50,13 +51,12 @@
             android:name=".VerComparacaoLista"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
         <!-- change orientation of scan -->
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
-
+        <activity android:name=".VerProduto"></activity>
     </application>
 
 </manifest>

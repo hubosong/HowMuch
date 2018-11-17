@@ -14,7 +14,7 @@
             android:title="@string/nav_new_list" />
         <item
             android:id="@+id/nav_my_buy"
-            android:icon="@drawable/ic_graphic"
+            android:icon="@drawable/ic_contact"
             android:title="@string/nav_my_buy" />
         <item
             android:id="@+id/nav_my_nfe"
@@ -24,6 +24,11 @@
             android:id="@+id/nav_send_nfe"
             android:icon="@drawable/ic_focus"
             android:title="@string/nav_send_nfe" />
+
+        <item
+            android:id="@+id/financas"
+            android:icon="@drawable/ic_graphic"
+            android:title="Finanças" />
     </group>
 
     <group android:id="@+id/two">

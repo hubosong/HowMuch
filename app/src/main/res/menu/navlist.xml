@@ -5,8 +5,8 @@
         android:title="Detalhes" />
     <item
         android:id="@+id/option2"
-        android:title="Excluir NFe" />
+        android:title="Adicionar à Nova Lista" />
     <item
         android:id="@+id/option3"
-        android:title="Transformar em Lista" />
+        android:title="Adicionar à Lista Existente" />
 </menu>

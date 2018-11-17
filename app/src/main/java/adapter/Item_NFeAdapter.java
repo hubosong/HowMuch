@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import entidade.Item_NFe;
 import robsonmachczew.activities.R;
+import robsonmachczew.activities.VerProduto;
 
 public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.ProductViewHolder> {
 
@@ -62,20 +64,20 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-        final Item_NFe item = productList.get(position);
+        final Item_NFe item_nfe = productList.get(position);
 
         //convert double to R$
         DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
-        holder.txtTitle.setText(item.getProduto().getDescricao());
-        holder.txtMarket.setText(item.getTransient_mercado().getNome());
-        holder.txtDate.setText(item.getTransient_data());
+        holder.txtTitle.setText(item_nfe.getProduto().getDescricao());
+        holder.txtMarket.setText(item_nfe.getTransient_mercado().getNome());
+        holder.txtDate.setText(item_nfe.getTransient_data());
         holder.txtMediumPrice.setText("");
         holder.txtOff.setText("");
         holder.txtDescOff.setText("");
         holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
         holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
-        holder.txtPrice.setText(String.valueOf(decFormat.format(item.getValor() / item.getQuantidade())) + " ("+item.getProduto().getUnidade_comercial()+")");
+        holder.txtPrice.setText(String.valueOf(decFormat.format(item_nfe.getValor() / item_nfe.getQuantidade())) + " ("+item_nfe.getProduto().getUnidade_comercial()+")");
 
 
 
@@ -93,13 +95,15 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.option1:
-                                //Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(mCtx, R.string.toast_off_options1, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(mCtx, VerProduto.class);
+                                intent.putExtra("ITEM", item_nfe);
+                                mCtx.startActivity(intent);
                                 break;
                             case R.id.option2:
                                 Toast.makeText(mCtx, "Item adicionado", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option3:
+
                                 Toast.makeText(mCtx, "Lista acessada!123456", Toast.LENGTH_SHORT).show();
                                 break;
                         }
@@ -114,20 +118,11 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(mCtx, "Produto: " + item, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCtx, "Produto: " + item_nfe, Toast.LENGTH_SHORT).show();
                 remove(position);
                 return false;
             }
         });
-        /*
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mCtx, "P.M. = Preço Médio" + "\n" + "P.A. =  Preço Atual", Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
-
     }
 
     public void remove(int position) {
