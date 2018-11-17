@@ -3,19 +3,15 @@ package robsonmachczew.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -39,7 +35,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 import entidade.Lista;
 import entidade.Produto;
@@ -61,6 +56,8 @@ public class Criar_Lista extends Nav {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         //called by nav
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_criar_lista, contentFrameLayout);
@@ -77,6 +74,12 @@ public class Criar_Lista extends Nav {
         txtList = findViewById(R.id.txtList);
         usuario = Utils.loadFromSharedPreferences(this);
 
+        Lista l = (Lista) getIntent().getSerializableExtra("LISTA");
+        if (l != null) {
+            lista_compras = l.getListaProdutos();
+            txtList.setText(" " + lista_compras.size() + " ");
+        }
+
         txtDialogList = findViewById(R.id.txtDialogList);
         txtDialogList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,16 +94,15 @@ public class Criar_Lista extends Nav {
                 //Lista de Compras Adicionada
                 ListView listView = dialog.findViewById(R.id.list_dialog);
                 listView.setVisibility(View.VISIBLE);
-                /*String[] lista = new String[lista_compras.size()];
+                String[] lista = new String[lista_compras.size()];
                 for (int i = 0; i < lista_compras.size(); i++) {
                     lista[i] = (i + 1) + " | " + lista_compras.get(i).getDescricao() + " | " + lista_compras.get(i).getTransient_quantidade() + " (" + lista_compras.get(i).getUnidade_comercial() + ")";
                 }
-                */
-                String animalList[] = {"Lion","Tiger","Monkey","Elephant","Dog","Cat","Camel","Tiger","Monkey","Elephant","Dog","Cat","Camel"};
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(Criar_Lista.this, android.R.layout.simple_list_item_1, animalList);
+                //String animalList[] = {"Lion", "Tiger", "Monkey", "Elephant", "Dog", "Cat", "Camel", "Tiger", "Monkey", "Elephant", "Dog", "Cat", "Camel"};
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(Criar_Lista.this, android.R.layout.simple_list_item_1, lista);
                 listView.setAdapter(adapter);
-
 
 
                 //funcoes
@@ -129,7 +131,7 @@ public class Criar_Lista extends Nav {
                                     String urlParameters = "funcao=SALVAR_LISTA&id_usuario=" + usuario.getId_usuario();
                                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                                    URL url = new URL(Utils.URL+"lista");
+                                    URL url = new URL(Utils.URL + "lista");
                                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                                     urlCon.setRequestMethod("POST");
                                     urlCon.setDoOutput(true);
@@ -289,7 +291,9 @@ public class Criar_Lista extends Nav {
         });
 
         layoutProdutos = (LinearLayout) findViewById(R.id.layoutProdutos);
-        lista_compras = new ArrayList<>();
+        if(lista_compras == null) {
+            lista_compras = new ArrayList<>();
+        }
 
         edtSearch = findViewById(R.id.edtSearch);
         edtSearch.setOnClickListener(new View.OnClickListener() {
@@ -416,7 +420,7 @@ public class Criar_Lista extends Nav {
                             if (!adicionado) {
                                 lista_compras.add(produto);
                             }
-                            txtList.setText(" "+ lista_compras.size() +" ");
+                            txtList.setText(" " + lista_compras.size() + " ");
                         }
                     });
 

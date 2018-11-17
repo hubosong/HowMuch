@@ -6,12 +6,30 @@ public class ProdutoAbaixoMedia implements Serializable {
 
     private long id_produto;
     private String descricao_produto;
+    private String descricao_produto2;
     private float valor_medio;
     private float valor;
     private String unidade_comercial;
     private long id_mercado;
     private String nome_mercado;
     private String data;
+
+    public Produto converterEmProduto() {
+        Produto p = new Produto();
+        p.setId_produto(id_produto);
+        p.setDescricao(descricao_produto);
+        p.setDescricao2(descricao_produto2);
+        p.setUnidade_comercial(unidade_comercial);
+        return p;
+    }
+
+    public String getDescricao_produto2() {
+        return descricao_produto2;
+    }
+
+    public void setDescricao_produto2(String descricao_produto2) {
+        this.descricao_produto2 = descricao_produto2;
+    }
 
     public long getId_produto() {
         return id_produto;
