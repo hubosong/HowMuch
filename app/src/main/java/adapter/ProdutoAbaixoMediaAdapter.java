@@ -125,7 +125,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                         switch (item.getItemId()) {
                             case R.id.option1:
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
-                                builder.setTitle("Adicionar Produto à Nova Lista");
+                                builder.setTitle("Adicionar " + prodBelowAverage.getDescricao_produto() + " à uma Nova Lista");
                                 LinearLayout layout = new LinearLayout(mCtx);
                                 layout.setOrientation(LinearLayout.VERTICAL);
                                 final EditText editText = new EditText(mCtx);
@@ -191,7 +191,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                         protected void onPostExecute(ArrayList<Lista> list) {
                                             final AlertDialog.Builder builder2 = new AlertDialog.Builder(mCtx);
                                             if (list != null) {
-                                                builder2.setTitle("Adicionar Produto à Lista Existente");
+                                                builder2.setTitle("Adicionar " + prodBelowAverage.getDescricao_produto() + " à Lista Existente");
                                                 LinearLayout layout2 = new LinearLayout(mCtx);
                                                 layout2.setOrientation(LinearLayout.VERTICAL);
                                                 for (final Lista l : list) {
@@ -201,7 +201,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                                         @Override
                                                         public void onClick(View view) {
                                                             final AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
-                                                            builder.setTitle("Adicionar Produto à Lista \"" + l.getNome() + "\"");
+                                                            builder.setTitle("Adicionar " + prodBelowAverage.getDescricao_produto() + " à Lista \"" + l.getNome() + "\"");
                                                             LinearLayout layout = new LinearLayout(mCtx);
                                                             layout.setOrientation(LinearLayout.VERTICAL);
                                                             final EditText editText = new EditText(mCtx);
