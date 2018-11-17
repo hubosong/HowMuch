@@ -101,7 +101,7 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProductV
                                 Toast.makeText(mCtx, "Item adicionado", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option3:
-                                Toast.makeText(mCtx, "Lista acessada!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mCtx, "Lista acessada!11", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 

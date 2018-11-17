@@ -100,7 +100,7 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
                                 Toast.makeText(mCtx, "Item adicionado", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.option3:
-                                Toast.makeText(mCtx, "Lista acessada!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mCtx, "Lista acessada!123456", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
