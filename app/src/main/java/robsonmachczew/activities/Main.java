@@ -28,8 +28,14 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        usuario = Utils.loadFromSharedPreferences(this);
+        //basic confg
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
+        //verify user login
+        usuario = Utils.loadFromSharedPreferences(this);
         if(usuario.getId_usuario() != 0){
             Intent content = new Intent(this, Descontos.class);
             startActivity(content);
@@ -37,10 +43,6 @@ public class Main extends AppCompatActivity {
             finish();
         }
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().hide();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //background video
         mVideoView = findViewById(R.id.bgVideoView);

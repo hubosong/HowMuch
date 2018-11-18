@@ -43,5 +43,6 @@ dependencies {
     //imageCircle
     implementation 'de.hdodenhof:circleimageview:2.1.0'
 
+    //jsoup
     implementation 'org.jsoup:jsoup:1.11.3'
 }
