@@ -36,7 +36,8 @@
             android:layout_height="200dp"
             android:scaleType="fitCenter"
             android:layout_gravity="center"
-            android:src="@drawable/deepprices_w_com"/>
+            android:src="@drawable/filtrapreco_com_br"/>
+
 
         <ProgressBar
             android:id="@+id/splash_screen_progress_bar"

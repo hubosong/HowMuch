@@ -186,21 +186,6 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgLogo"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:layout_marginBottom="20dp"
-            android:elevation="15dp"
-            app:srcCompat="@drawable/deepprices_green"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:adjustViewBounds="?attr/isLightTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
     </android.support.constraint.ConstraintLayout>
 
 

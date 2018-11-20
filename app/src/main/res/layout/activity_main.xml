@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/buttons"
-        app:srcCompat="@drawable/deepprices_w_com" />
+        app:srcCompat="@drawable/filtrapreco_com_br" />
     <!-- 325, 320-->
 
 
