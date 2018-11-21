@@ -44,6 +44,7 @@ public class Main extends AppCompatActivity {
         }
 
 
+        /*
         //background video
         mVideoView = findViewById(R.id.bgVideoView);
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.market);
@@ -55,6 +56,7 @@ public class Main extends AppCompatActivity {
                 mediaPlayer.setLooping(true);
             }
         });
+        */
 
 
         //button access
