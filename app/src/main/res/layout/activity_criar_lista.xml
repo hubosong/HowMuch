@@ -110,7 +110,7 @@
         android:layout_marginBottom="20dp"
         android:elevation="15dp"
         android:visibility="visible"
-        app:srcCompat="@drawable/deepprices_w"
+        app:srcCompat="@drawable/filtrapreco"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
