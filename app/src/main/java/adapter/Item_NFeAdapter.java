@@ -71,7 +71,7 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
 
         holder.txtTitle.setText(item_nfe.getProduto().getDescricao());
         holder.txtMarket.setText(item_nfe.getTransient_mercado().getNome());
-        holder.txtDate.setText(item_nfe.getTransient_data());
+        holder.txtDate.setText(item_nfe.getData());
         holder.txtMediumPrice.setText("");
         holder.txtOff.setText("");
         holder.txtDescOff.setText("");

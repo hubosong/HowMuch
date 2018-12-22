@@ -8,10 +8,10 @@ public class Item_NFe implements Serializable {
     private Produto produto;
     private float valor;
     private float quantidade;
+    private String data;
 
     //Transient Fields;
     private Mercado transient_mercado;
-    private String transient_data;
 
     @Override
     public String toString() {
@@ -28,14 +28,6 @@ public class Item_NFe implements Serializable {
 
     public void setTransient_mercado(Mercado transient_mercado) {
         this.transient_mercado = transient_mercado;
-    }
-
-    public String getTransient_data() {
-        return transient_data;
-    }
-
-    public void setTransient_data(String transient_data) {
-        this.transient_data = transient_data;
     }
 
     public long getId_nfe() {
@@ -70,4 +62,11 @@ public class Item_NFe implements Serializable {
         this.quantidade = quantidade;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 }

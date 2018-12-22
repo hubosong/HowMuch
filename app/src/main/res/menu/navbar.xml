@@ -24,7 +24,6 @@
             android:id="@+id/nav_send_nfe"
             android:icon="@drawable/ic_focus"
             android:title="@string/nav_send_nfe" />
-
         <item
             android:id="@+id/financas"
             android:icon="@drawable/ic_graphic"

@@ -93,7 +93,7 @@ public class Minhas_NFes extends Nav {
                 @Override
                 protected ArrayList<NFe> doInBackground(String... params) {
                     ArrayList<NFe> list = null;
-                    if (Utils.servidorDePe()) {
+                    //if (Utils.servidorDePe()) {
 
                         try {
                             String urlParameters = "funcao=GET_ALL_BY_ID_USUARIO&id_usuario=" + usuario.getId_usuario();
@@ -117,10 +117,10 @@ public class Minhas_NFes extends Nav {
                         } catch (ClassNotFoundException | IOException e) {
                             e.printStackTrace();
                         }
-                    } else {
+                    //} else {
                         // SE O SERVIDOR NÃO ESTIVER DE PÉ OU NÃO HOUVER CONEXÃO COM INTERNET, TENTA PEGAR AS NFES DO APP.
-                        list = new NFe_DAO(Minhas_NFes.this).getAllNFes();
-                    }
+                        //list = new NFe_DAO(Minhas_NFes.this).getAllNFes();
+                    //}
                     return list;
                 }
 

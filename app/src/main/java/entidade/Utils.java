@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -15,7 +16,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
 
-    public static final String URL = "http://177.143.220.92:8080/Mercado/";
+    public static final String IP_SERVIDOR = "177.143.220.92";
+    public static final String URL = "http://" + IP_SERVIDOR + ":8080/Mercado/";
     public static final String URL2 = "http://192.168.0.99/mercado/";
 
     public static Usuario loadFromSharedPreferences(Context context) {
@@ -57,19 +59,28 @@ public class Utils {
     }
 
     public static boolean servidorDePe() {
+        boolean state = false;
+        try {
+            state = InetAddress.getByName(IP_SERVIDOR).isReachable(2500);
+        } catch (IOException e) {
+            System.out.println("Erro Utils.java: servidorDePe(): " + e.getMessage());
+        }
+        return state;
+    }
+
+    public static boolean servidorDePe_OLD() {
         boolean isAlive = false;
-        SocketAddress socketAddress = new InetSocketAddress("177.143.220.92", 8080);
+        SocketAddress socketAddress = new InetSocketAddress("http://" + IP_SERVIDOR, 8080);
         Socket socket = new Socket();
         int timeout = 2000;
         try {
             socket.connect(socketAddress, timeout);
             socket.close();
             isAlive = true;
-
         } catch (SocketTimeoutException exception) {
             System.out.println("Server Timeout...");
         } catch (IOException exception) {
-            System.out.println("IOException: "+exception.getMessage());
+            System.out.println("IOException: " + exception.getMessage());
         }
         return isAlive;
     }

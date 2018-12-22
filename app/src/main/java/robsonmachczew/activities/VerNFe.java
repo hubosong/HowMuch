@@ -226,7 +226,7 @@ public class VerNFe extends Nav {
                         //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
                         System.out.println("Enviando nfe: " + nfe);
                         publishProgress(4);
-                        if (Utils.servidorDePe()) {
+                        //if (Utils.servidorDePe()) {
                             URL url3 = new URL(Utils.URL + "enviar_nfe");
                             HttpURLConnection urlCon = (HttpURLConnection) url3.openConnection();
                             urlCon.setRequestMethod("POST");
@@ -245,9 +245,9 @@ public class VerNFe extends Nav {
                             if (nfe.getId_nfe() != 0) {
                                 new NFe_DAO(VerNFe.this).insertFromServer(nfe);
                             }
-                        } else {
-                            Toast.makeText(VerNFe.this, "Servidor Down", Toast.LENGTH_LONG).show();
-                        }
+                        //} else {
+                            //Toast.makeText(VerNFe.this, "Servidor Down", Toast.LENGTH_LONG).show();
+                        //}
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

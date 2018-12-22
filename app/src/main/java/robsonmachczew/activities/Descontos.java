@@ -262,7 +262,7 @@ public class Descontos extends Nav {
             @Override
             protected ArrayList<ProdutoAbaixoMedia> doInBackground(String... params) {
                 ArrayList<ProdutoAbaixoMedia> list = null;
-                if(Utils.servidorDePe()) {
+                //if(Utils.servidorDePe()) {
                     try {
                         String urlParameters = "funcao=GET_PRODUTOS_ABAIXO_MEDIA";
                         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
@@ -285,7 +285,7 @@ public class Descontos extends Nav {
                     } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
-                }
+                //}
                 return list;
             }
 
