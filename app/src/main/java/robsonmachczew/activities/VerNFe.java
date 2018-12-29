@@ -135,7 +135,7 @@ public class VerNFe extends Nav {
                         ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
                         nfe = (NFe) ois.readObject();
                         ois.close();
-                        if (nfe.getId_nfe() != 0) {
+                        if (nfe != null && nfe.getId_nfe() != 0) {
                             new NFe_DAO(VerNFe.this).insertFromServer(nfe);
                         }
                     } catch (ClassNotFoundException | IOException e) {
@@ -155,8 +155,10 @@ public class VerNFe extends Nav {
 
     @SuppressLint("StaticFieldLeak")
     private void pegaNotaDoSite(final String code) {
+        //Verifica se a nota já foi processada do site e colocada no BD
         NFe nota = new NFe_DAO(this).getByChave(code);
         if (nota != null) {
+            //Caso a nota já esteja no BD...
             preencherViewsProdutosNFe(nota);
         } else {
             new AsyncTask<String, Integer, NFe>() {
@@ -206,27 +208,27 @@ public class VerNFe extends Nav {
                         //Pega os dados da Nota Fiscal Eletronica
                         Element divNFe = doc.getElementById("NFe");
                         nfe = getNFe(divNFe);
-                        nfe.setChave(code);
-                        if (usuario.getId_usuario() != 0) {
-                            nfe.setId_usuario(usuario.getId_usuario());
-                        }
+                        if(divNFe != null) {
+                            nfe.setChave(code);
+                            if (usuario.getId_usuario() != 0) {
+                                nfe.setId_usuario(usuario.getId_usuario());
+                            }
 
-                        //Pega os dados do Mercado
-                        Element divEminente = doc.getElementById("Emitente");
-                        Mercado mercado = getMercado(divEminente);
-                        nfe.setMercado(mercado);
+                            //Pega os dados do Mercado
+                            Element divEminente = doc.getElementById("Emitente");
+                            Mercado mercado = getMercado(divEminente);
+                            nfe.setMercado(mercado);
 
-                        //Pega os items e produtos da Nota Fiscal Eletrônica e os cadastra no BD
-                        publishProgress(3);
-                        Element divProd = doc.getElementById("Prod");
-                        ArrayList<Item_NFe> lista_itens = getItemsNFe(divProd);
-                        nfe.setLista_items(lista_itens);
+                            //Pega os items e produtos da Nota Fiscal Eletrônica e os cadastra no BD
+                            publishProgress(3);
+                            Element divProd = doc.getElementById("Prod");
+                            ArrayList<Item_NFe> lista_itens = getItemsNFe(divProd);
+                            nfe.setLista_items(lista_itens);
 
 
-                        //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
-                        System.out.println("Enviando nfe: " + nfe);
-                        publishProgress(4);
-                        //if (Utils.servidorDePe()) {
+                            //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
+                            System.out.println("Enviando nfe: " + nfe);
+                            publishProgress(4);
                             URL url3 = new URL(Utils.URL + "enviar_nfe");
                             HttpURLConnection urlCon = (HttpURLConnection) url3.openConnection();
                             urlCon.setRequestMethod("POST");
@@ -245,9 +247,7 @@ public class VerNFe extends Nav {
                             if (nfe.getId_nfe() != 0) {
                                 new NFe_DAO(VerNFe.this).insertFromServer(nfe);
                             }
-                        //} else {
-                            //Toast.makeText(VerNFe.this, "Servidor Down", Toast.LENGTH_LONG).show();
-                        //}
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -262,7 +262,7 @@ public class VerNFe extends Nav {
                         System.out.println("NFe Recebida do servidor: " + nfe);
                         preencherViewsProdutosNFe(nfe);
                     } else {
-                        //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue no site.
+                        //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue-a no site.
                         postHttpQRCode(code);
                     }
                 }
@@ -273,6 +273,10 @@ public class VerNFe extends Nav {
     public void preencherViewsProdutosNFe(NFe nfe) {
         progWait.setVisibility(View.GONE);
         txtWait.setVisibility(View.GONE);
+        if (nfe == null) {
+            Toast.makeText(this, "NFe não encontrada", Toast.LENGTH_LONG).show();
+            return;
+        }
         txtMercado.setText(nfe.getMercado().getNome());
         txtData.setText(nfe.getData());
         txtQRCode.setText(nfe.getChave());
@@ -328,7 +332,7 @@ public class VerNFe extends Nav {
                     OutputStream out = urlCon.getOutputStream();
 
                     out.write(("&" + URLEncoder.encode("chave", "UTF-8") + "=" + URLEncoder.encode(chave, "UTF-8")
-                    + "&" + URLEncoder.encode("id_usuario", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(usuario.getId_usuario()), "UTF-8")).getBytes());
+                            + "&" + URLEncoder.encode("id_usuario", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(usuario.getId_usuario()), "UTF-8")).getBytes());
                     out.close();
                     out.flush();
 
@@ -454,6 +458,9 @@ public class VerNFe extends Nav {
     }
 
     private static NFe getNFe(Element div) {
+        if (div == null) {
+            return null;
+        }
         NFe nfe = new NFe();
         Elements els = div.getElementsByTag("td");
         for (Element e : els) {

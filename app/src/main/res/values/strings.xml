@@ -30,10 +30,10 @@
 
     <!-- nav (menu) -->
     <string name="nav_off">Descontos</string>
-    <string name="nav_new_list">Nova Lista de Compras</string>
-    <string name="nav_my_buy">Listas de Compras</string>
-    <string name="nav_my_nfe">Minhas NFe</string>
-    <string name="nav_send_nfe">Enviar NFe (QRCode)</string>
+    <string name="nav_new_list">Criar Lista de Compras</string>
+    <string name="nav_my_buy">Minhas Listas de Compras</string>
+    <string name="nav_my_nfe">Minhas Notas</string>
+    <string name="nav_send_nfe">Enviar Nota (QRCode)</string>
     <string name="nav_logout">Sair</string>
     <!-- nav (header) -->
     <string name="nav_header_desc">Navigation header</string>
