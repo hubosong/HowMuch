@@ -25,11 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Main"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Login"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -42,6 +40,11 @@
         <activity
             android:name=".Criar_Lista"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".Lista_Compras"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Minhas_Listas"
             android:theme="@style/AppTheme.NoActionBar" />

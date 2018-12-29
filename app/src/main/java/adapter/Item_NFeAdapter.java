@@ -38,7 +38,7 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle, txtMarket, txtDate, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
+        TextView txtTitle, txtMarket, txtDate, txtMediumPriceDescription, txtMediumPrice,  txtOff, txtPrice, txtOption, txtDescOff;
         //ImageView imageView;
 
         public ProductViewHolder(View itemView) {
@@ -46,6 +46,7 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
             txtTitle = itemView.findViewById(R.id.txtNomeLista);
             txtMarket = itemView.findViewById(R.id.txtDataLista);
             txtDate = itemView.findViewById(R.id.txtQtdItems);
+            txtMediumPriceDescription = itemView.findViewById(R.id.txtMediumPriceDescription);
             txtMediumPrice = itemView.findViewById(R.id.txtMediumPrice);
             txtOff = itemView.findViewById(R.id.txtOff);
             txtPrice = itemView.findViewById(R.id.txtPrice);
@@ -72,18 +73,24 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
         holder.txtTitle.setText(item_nfe.getProduto().getDescricao());
         holder.txtMarket.setText(item_nfe.getTransient_mercado().getNome());
         holder.txtDate.setText(item_nfe.getData());
+        holder.txtMediumPriceDescription.setText("");
         holder.txtMediumPrice.setText("");
         holder.txtOff.setText("");
         holder.txtDescOff.setText("");
-        holder.txtOff.setTextColor(Color.parseColor("#fe0303"));
-        holder.txtPrice.setTextColor(Color.parseColor("#fe0303"));
+        holder.txtPrice.setTextColor(Color.parseColor("#34a503"));
         holder.txtPrice.setText(String.valueOf(decFormat.format(item_nfe.getValor() / item_nfe.getQuantidade())) + " ("+item_nfe.getProduto().getUnidade_comercial()+")");
 
 
 
-        //A imagem ainda não tá implementada na classe ProdutoAbaixoMedia...
-        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
+        holder.txtOption.setText("+");
+        holder.txtOption.setBackgroundResource(R.drawable.ic_add);
+        holder.txtOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mCtx, "item adicionado", Toast.LENGTH_SHORT).show();            }
+        });
 
+        /*
         holder.txtOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +130,7 @@ public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.Produc
                 return false;
             }
         });
+        */
     }
 
     public void remove(int position) {

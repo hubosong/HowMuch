@@ -56,8 +56,6 @@ public class Criar_Lista extends Nav {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         //called by nav
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_criar_lista, contentFrameLayout);
