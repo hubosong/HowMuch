@@ -1,14 +1,11 @@
 package adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +14,6 @@ import java.util.List;
 
 import entidade.Item_NFe;
 import robsonmachczew.activities.R;
-import robsonmachczew.activities.VerProduto;
 
 public class Item_NFeAdapter extends RecyclerView.Adapter<Item_NFeAdapter.ProductViewHolder> {
 
