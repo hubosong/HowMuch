@@ -96,6 +96,12 @@ public class Login extends AppCompatActivity {
     //logar
     @SuppressLint("StaticFieldLeak")
     public void btnLogin(View view) {
+        if (!Utils.estaConectado(this)) {
+            Toast.makeText(this, "Sem conexão", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         //clear focus --> created edittext Vazio
         EditText edt = findViewById(R.id.edtVazio);
         edtPass.clearFocus();
@@ -117,7 +123,7 @@ public class Login extends AppCompatActivity {
         }
 
         Usuario u = Utils.loadFromSharedPreferences(this);
-        if(u.getId_usuario() != 0){
+        if (u.getId_usuario() != 0) {
             Intent content = new Intent(Login.this, Descontos.class);
             content.putExtra("usuario", u);
             startActivity(content);
@@ -142,7 +148,7 @@ public class Login extends AppCompatActivity {
                     String urlParameters = "email=" + email + "&senha=" + senha;
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL(Utils.URL+"login");
+                    URL url = new URL(Utils.URL + "login");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
                     urlCon.setDoOutput(true);

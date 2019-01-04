@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,14 +35,9 @@ import entidade.Utils;
 
 public class Minhas_Listas extends Nav {
 
-    private ProgressBar progWait;
-    private TextView txtResult, txtWait;
-    private MaterialSearchView searchView;
-    private RecyclerView recyclerView;
-    private final Activity activity = this;
-    private Animation alpha_in, alpha_out;
     private Usuario usuario;
-    private ArrayList<Lista> listas;
+    private LinearLayout layout_listas_de_listas;
+    private TextView tv_quant_listas;
 
 
     @Override
@@ -57,21 +53,14 @@ public class Minhas_Listas extends Nav {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_my_buys);
 
-        progWait = findViewById(R.id.progWait);
-        txtWait = findViewById(R.id.txtWait);
+        layout_listas_de_listas = findViewById(R.id.layout_listas_de_listas);
+        tv_quant_listas = findViewById(R.id.tv_quant_listas);
 
-        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
-        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
-
-        //recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ProdutoAbaixoMediaAdapter tmp_adapter = new ProdutoAbaixoMediaAdapter(this, new ArrayList<ProdutoAbaixoMedia>());
-        recyclerView.setAdapter(tmp_adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        pegaListaDeCompras();
-
+        if(!Utils.estaConectado(this)){
+            Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
+        }else{
+            pegaListaDeCompras();
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -84,8 +73,6 @@ public class Minhas_Listas extends Nav {
 
                 @Override
                 protected void onPreExecute() {
-                    progWait.setVisibility(View.VISIBLE);
-                    txtWait.setVisibility(View.VISIBLE);
                     super.onPreExecute();
                 }
 
@@ -117,30 +104,7 @@ public class Minhas_Listas extends Nav {
 
                 @Override
                 protected void onPostExecute(ArrayList<Lista> list) {
-                    progWait.setVisibility(View.GONE);
-                    txtWait.setVisibility(View.GONE);
-                    if (list != null) {
-                        Toast.makeText(Minhas_Listas.this, list.size() + " itens encontrados", Toast.LENGTH_LONG).show();
-                        ListaAdapter adapter = new ListaAdapter(Minhas_Listas.this, list);
-                        recyclerView.setAdapter(adapter);
-
-                        //hide floating button when scroll
-                        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                            @Override
-                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                                super.onScrolled(recyclerView, dx, dy);
-                                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                                    fab.hide();
-                                    fab.startAnimation(alpha_out);
-                                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                                    fab.show();
-                                    fab.startAnimation(alpha_in);
-                                }
-                            }
-                        });
-                    } else {
-                        Toast.makeText(Minhas_Listas.this, "Nenhuma Lista Encontrada", Toast.LENGTH_LONG).show();
-                    }
+                    rederizaListas(list);
                 }
             }.execute();
         } else {
@@ -156,5 +120,30 @@ public class Minhas_Listas extends Nav {
         finish();
     }
 
+    private void rederizaListas(ArrayList<Lista> list){
+        if (list != null) {
+            layout_listas_de_listas.removeAllViews();
+            tv_quant_listas.setText("Listas Encontradas ("+list.size()+"):");
+            for(Lista lista : list){
+                String s = lista.getNome();
+                if(!s.trim().equalsIgnoreCase("")){
+                    s += " - ";
+                }
+                s += lista.getData();
+                String s2 = lista.getListaProdutos().size()+" Produtos";
+                LinearLayout ll = new LinearLayout(this);
+                ll.setOrientation(LinearLayout.VERTICAL);
+                TextView tv1 = new TextView(this);
+                TextView tv2 = new TextView(this);
+                tv1.setText(s);
+                tv2.setText(s2);
+                ll.addView(tv1);
+                ll.addView(tv2);
+                layout_listas_de_listas.addView(ll);
+            }
+        } else {
+            Toast.makeText(Minhas_Listas.this, "Nenhuma Lista Encontrada", Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

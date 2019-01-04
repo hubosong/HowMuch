@@ -37,9 +37,6 @@
         <activity
             android:name=".Descontos"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Criar_Lista"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".Lista_Compras"

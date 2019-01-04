@@ -82,8 +82,9 @@ public class Descontos extends Nav {
         if(!Utils.estaConectado(this)){
             Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
             return;
+        }else{
+            rvListStart();
         }
-        rvListStart();
     }
 
     //searchView

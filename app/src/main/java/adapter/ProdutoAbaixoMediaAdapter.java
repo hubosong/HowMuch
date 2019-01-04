@@ -32,7 +32,7 @@ import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
-import robsonmachczew.activities.Criar_Lista;
+import robsonmachczew.activities.Lista_Compras;
 import robsonmachczew.activities.R;
 
 public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaixoMediaAdapter.ProductViewHolder> {
@@ -140,7 +140,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                         Produto p = prodBelowAverage.converterEmProduto();
                                         p.setTransient_quantidade(Float.valueOf(editText.getText().toString()));
                                         lista.getListaProdutos().add(p);
-                                        Intent intent = new Intent(mCtx, Criar_Lista.class);
+                                        Intent intent = new Intent(mCtx, Lista_Compras.class);
                                         intent.putExtra("LISTA", lista);
                                         mCtx.startActivity(intent);
                                     }
@@ -218,7 +218,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                                                     Produto p = prodBelowAverage.converterEmProduto();
                                                                     p.setTransient_quantidade(Float.valueOf(editText.getText().toString()));
                                                                     lista.getListaProdutos().add(p);
-                                                                    Intent intent = new Intent(mCtx, Criar_Lista.class);
+                                                                    Intent intent = new Intent(mCtx, Lista_Compras.class);
                                                                     intent.putExtra("LISTA", lista);
                                                                     mCtx.startActivity(intent);
                                                                 }
