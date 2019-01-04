@@ -289,7 +289,7 @@ public class Criar_Lista extends Nav {
         });
 
         layoutProdutos = (LinearLayout) findViewById(R.id.layoutProdutos);
-        if(lista_compras == null) {
+        if (lista_compras == null) {
             lista_compras = new ArrayList<>();
         }
 

@@ -14,6 +14,7 @@
         android:gravity="center"
         android:hint="Pesquisar Produto"
         android:inputType="textPersonName"
+        android:textColor="@color/text_color"
         android:textColorHint="@color/hint_nav_login" />
 
     <LinearLayout
@@ -32,7 +33,7 @@
             android:text="Cancelar" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btConcluirPesq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -48,6 +49,7 @@
         android:layout_alignParentStart="true">
 
         <LinearLayout
+            android:id="@+id/layout_produtos_pesquisados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
