@@ -3,6 +3,7 @@ package adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import entidade.Lista;
 import entidade.Utils;
+import robsonmachczew.activities.Lista_Compras;
 import robsonmachczew.activities.R;
 
 public class ComparacaoListasAdapter extends RecyclerView.Adapter<ComparacaoListasAdapter.ProductViewHolder> {
@@ -70,14 +72,14 @@ public class ComparacaoListasAdapter extends RecyclerView.Adapter<ComparacaoList
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(mCtx);
-                TextView title = new TextView(mCtx);
+                /*TextView title = new TextView(mCtx);
                 title.setText("Opções da Lista");
                 title.setBackgroundColor(ContextCompat.getColor(mCtx, R.color.toolbar_status));
                 title.setPadding(10, 10, 10, 10);
                 title.setGravity(Gravity.CENTER);
                 title.setTextColor(Color.WHITE);
                 title.setTextSize(20);
-                dialog.setCustomTitle(title);
+                dialog.setCustomTitle(title);*/
                 dialog.setNeutralButton("Comparar em Mercados", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -131,11 +133,14 @@ public class ComparacaoListasAdapter extends RecyclerView.Adapter<ComparacaoList
                 dialog.setPositiveButton("Editar Lista", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println("AAAA");
+                        Intent intent = new Intent(mCtx, Lista_Compras.class);
+                        intent.putExtra("LISTA", lista);
+                        mCtx.startActivity(intent);
 
                     }
                 });
-                AlertDialog alert = dialog.create();
-                alert.show();
+                dialog.show();
             }
         });
 
