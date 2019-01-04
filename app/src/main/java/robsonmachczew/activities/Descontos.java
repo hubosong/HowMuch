@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,12 +41,9 @@ import entidade.Utils;
 
 public class Descontos extends Nav {
 
-    private ProgressBar progWait;
-    private TextView txtResult, txtWait;
-    private MaterialSearchView searchView;
-    private RecyclerView recyclerView;
-    private final Activity activity = this;
-    public Animation alpha_in, alpha_out;
+    private LinearLayout layout_produtos_desconto;
+    private TextView tv_quant_prods_desconto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,193 +58,15 @@ public class Descontos extends Nav {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_off);
 
-        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
-        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
-
-        progWait = findViewById(R.id.progWait);
-        txtWait = findViewById(R.id.txtWait);
-        txtResult = findViewById(R.id.txtResult);
-
-        //searchview
-        searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        searchView();
-
-        //recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ProdutoAbaixoMediaAdapter tmp_adapter = new ProdutoAbaixoMediaAdapter(this, new ArrayList<ProdutoAbaixoMedia>());
-        recyclerView.setAdapter(tmp_adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
+        tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
 
         //test internet connection
         if(!Utils.estaConectado(this)){
             Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
-            return;
         }else{
             rvListStart();
         }
-    }
-
-    //searchView
-    public void searchView() {
-        searchView.setHint("Consultar Produto..");
-        searchView.setHintTextColor(R.color.hint_nav_login);
-        searchView.setVoiceSearch(true);
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @SuppressLint("StaticFieldLeak")
-            @Override
-            public boolean onQueryTextSubmit(final String query) {
-                new AsyncTask<String, Void, ArrayList<Item_NFe>>() {
-
-                    @Override
-                    protected void onPreExecute() {
-                        progWait.setVisibility(View.VISIBLE);
-                        txtWait.setVisibility(View.VISIBLE);
-                        super.onPreExecute();
-                    }
-
-                    @Override
-                    protected ArrayList<Item_NFe> doInBackground(String... params) {
-                        ArrayList<Item_NFe> list = null;
-                        try {
-                            String urlParameters = "funcao=GET_PRODUTOS_PESQUISA_APP&descricao=" + query;
-                            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-
-                            URL url = new URL(Utils.URL+"produto");
-                            HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                            urlCon.setRequestMethod("POST");
-                            urlCon.setDoOutput(true);
-                            urlCon.setDoInput(true);
-
-                            DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                            wr.write(postData);
-                            wr.close();
-                            wr.flush();
-
-                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                            list = (ArrayList<Item_NFe>) ois.readObject();
-                            ois.close();
-
-                        } catch (ClassNotFoundException | IOException e) {
-                            e.printStackTrace();
-                        }
-                        return list;
-                    }
-
-                    @Override
-                    protected void onPostExecute(ArrayList<Item_NFe> list) {
-                        progWait.setVisibility(View.GONE);
-                        txtWait.setVisibility(View.GONE);
-                        //Se voltar nulo é porque deu algum erro
-                        if (list != null) {
-                            Toast.makeText(Descontos.this, list.size() + " itens encontrados", Toast.LENGTH_LONG).show();
-                            Item_NFeAdapter adapter = new Item_NFeAdapter(Descontos.this, list);
-                            recyclerView.setAdapter(adapter);
-
-                            //hide floating button when scroll
-                            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                @Override
-                                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                                    super.onScrolled(recyclerView, dx, dy);
-                                    if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                                        fab.hide();
-                                        fab.startAnimation(alpha_out);
-                                    } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                                        fab.show();
-                                        fab.startAnimation(alpha_in);
-                                    }
-                                }
-                            });
-                        } else {
-                            Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                }.execute();
-                return false;
-            }
-
-            @SuppressLint("StaticFieldLeak")
-            @Override
-            public boolean onQueryTextChange(final String newText) {
-                if(newText.length() == 3){
-                    new AsyncTask<String, Void, ArrayList<Produto>>() {
-
-                        @Override
-                        protected void onPreExecute() {
-                            progWait.setVisibility(View.VISIBLE);
-                            txtWait.setVisibility(View.VISIBLE);
-                            super.onPreExecute();
-                        }
-
-                        @Override
-                        protected ArrayList<Produto> doInBackground(String... params) {
-                            ArrayList<Produto> list = null;
-                            try {
-                                String urlParameters = "funcao=GET_BY_DESCRICAO&descricao=" + newText;
-                                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-
-                                URL url = new URL(Utils.URL+"produto");
-                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                                urlCon.setRequestMethod("POST");
-                                urlCon.setDoOutput(true);
-                                urlCon.setDoInput(true);
-
-                                DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                                wr.write(postData);
-                                wr.close();
-                                wr.flush();
-
-                                ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                                list = (ArrayList<Produto>) ois.readObject();
-                                ois.close();
-
-                            } catch (ClassNotFoundException | IOException e) {
-                                e.printStackTrace();
-                            }
-                            return list;
-                        }
-
-                        @Override
-                        protected void onPostExecute(ArrayList<Produto> list) {
-                            progWait.setVisibility(View.GONE);
-                            txtWait.setVisibility(View.GONE);
-                            String[] listaProds = new String[list.size()];
-                            for(int i=0; i<list.size(); i++){
-                                listaProds[i] = list.get(i).getDescricao();
-                            }
-                            searchView.setSuggestions(listaProds);
-                        }
-                    }.execute();
-
-                }
-                return false;
-            }
-        });
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                Window window = activity.getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(ContextCompat.getColor(activity, R.color.searchview_status));
-
-                fab.setVisibility(View.GONE);
-                fab.startAnimation(alpha_out);
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                Window window = activity.getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(ContextCompat.getColor(activity, R.color.toolbar_status));
-
-                fab.setVisibility(View.VISIBLE);
-                fab.startAnimation(alpha_in);
-            }
-        });
     }
 
     //recyclerview list off == Descontos
@@ -255,8 +75,6 @@ public class Descontos extends Nav {
         new AsyncTask<String, Void, ArrayList<ProdutoAbaixoMedia>>() {
             @Override
             protected void onPreExecute() {
-                progWait.setVisibility(View.VISIBLE);
-                txtWait.setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
 
@@ -292,34 +110,21 @@ public class Descontos extends Nav {
 
             @Override
             protected void onPostExecute(ArrayList<ProdutoAbaixoMedia> list) {
-                progWait.setVisibility(View.GONE);
-                txtWait.setVisibility(View.GONE);
-                //Se voltar nulo é porque deu algum erro
-                if (list != null) {
-                    Toast.makeText(Descontos.this, list.size() + " itens encontrados", Toast.LENGTH_LONG).show();
-                    ProdutoAbaixoMediaAdapter adapter = new ProdutoAbaixoMediaAdapter(Descontos.this, list);
-                    recyclerView.setAdapter(adapter);
-
-                    //hide floating button when scroll
-                    recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                        @Override
-                        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                            super.onScrolled(recyclerView, dx, dy);
-                            if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                                fab.hide();
-                                fab.startAnimation(alpha_out);
-                            } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                                fab.show();
-                                fab.startAnimation(alpha_in);
-                            }
-                        }
-                    });
-                } else {
-                    Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
-                }
+                renderizaProdutosComDesconto(list);
             }
         }.execute();
 
+    }
+
+    private void renderizaProdutosComDesconto(ArrayList<ProdutoAbaixoMedia> list){
+        if (list != null) {
+            tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio ("+list.size()+"):");
+            for(ProdutoAbaixoMedia produto : list){
+
+            }
+        } else {
+            Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
+        }
     }
 
     //menu
