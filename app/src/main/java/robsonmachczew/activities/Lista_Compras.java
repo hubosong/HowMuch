@@ -223,7 +223,7 @@ public class Lista_Compras extends Nav {
         if (dialog_pesquisa != null && dialog_pesquisa.isShowing()) {
             dialog_pesquisa.dismiss();
         }
-        if (!lista_compras.getData().trim().equalsIgnoreCase("")) {
+        if (lista_compras.getData() != null && !lista_compras.getData().trim().equalsIgnoreCase("")) {
             tvQuantProdutosLista.setText(lista_compras.getData().substring(0, 19) + " - Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
         } else {
             tvQuantProdutosLista.setText("Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
