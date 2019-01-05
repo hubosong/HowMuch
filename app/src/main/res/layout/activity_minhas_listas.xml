@@ -30,6 +30,7 @@
             android:id="@+id/layout_listas_de_listas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
             android:orientation="vertical" />
     </ScrollView>
 
