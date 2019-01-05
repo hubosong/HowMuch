@@ -377,14 +377,6 @@ public class VerNFe extends Nav {
     //onBack
     @Override
     public void onBackPressed() {
-        Intent intent;
-        if (origem == "MINHAS_NFES") {
-            intent = new Intent(VerNFe.this, Minhas_NFes.class);
-        } else {
-            intent = new Intent(VerNFe.this, Descontos.class);
-        }
-        startActivity(intent);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 

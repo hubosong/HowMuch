@@ -4,11 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +21,7 @@ import java.util.List;
 
 import entidade.Lista;
 import entidade.Utils;
-import robsonmachczew.activities.Lista_Compras;
+import robsonmachczew.activities.Criar_Lista_Compras;
 import robsonmachczew.activities.R;
 
 public class ComparacaoListasAdapter extends RecyclerView.Adapter<ComparacaoListasAdapter.ProductViewHolder> {
@@ -134,7 +131,7 @@ public class ComparacaoListasAdapter extends RecyclerView.Adapter<ComparacaoList
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         System.out.println("AAAA");
-                        Intent intent = new Intent(mCtx, Lista_Compras.class);
+                        Intent intent = new Intent(mCtx, Criar_Lista_Compras.class);
                         intent.putExtra("LISTA", lista);
                         mCtx.startActivity(intent);
 

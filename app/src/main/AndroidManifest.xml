@@ -43,7 +43,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Lista_Compras"
+            android:name=".Criar_Lista_Compras"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

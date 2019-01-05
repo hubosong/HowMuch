@@ -24,7 +24,7 @@ import java.util.List;
 
 import entidade.Lista;
 import entidade.Utils;
-import robsonmachczew.activities.Lista_Compras;
+import robsonmachczew.activities.Criar_Lista_Compras;
 import robsonmachczew.activities.R;
 import robsonmachczew.activities.VerComparacaoLista;
 
@@ -140,7 +140,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ProductViewH
                 btnEditar.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         System.out.println("AAAA");
-                        Intent intent = new Intent(mCtx, Lista_Compras.class);
+                        Intent intent = new Intent(mCtx, Criar_Lista_Compras.class);
                         intent.putExtra("LISTA", lista);
                         mCtx.startActivity(intent);
                     }

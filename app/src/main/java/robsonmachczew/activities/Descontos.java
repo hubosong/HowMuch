@@ -1,58 +1,36 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import adapter.Item_NFeAdapter;
-import adapter.ProdutoAbaixoMediaAdapter;
-import entidade.Item_NFe;
 import entidade.Lista;
-import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
@@ -205,7 +183,7 @@ public class Descontos extends Nav {
                         ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(Descontos.this, Lista_Compras.class);
+                                Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
                                 intent.putExtra("PRODUTO", produto);
                                 startActivity(intent);
                             }
@@ -214,7 +192,7 @@ public class Descontos extends Nav {
                             @Override
                             public void onClick(View view) {
                                 if (lista_de_listas != null) {
-                                    Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
+                                    final Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
                                     dialog_adicionar_produto_lista.setContentView(R.layout.dialog_pesquisa_lista_de_listas_add_produto);
                                     ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog)).setText("Adicionar \"" + produto.getDescricao_produto() + "\" à Lista:");
                                     final LinearLayout layout_lista_de_listas = dialog_adicionar_produto_lista.findViewById(R.id.layout_lista_de_listas);
@@ -234,11 +212,37 @@ public class Descontos extends Nav {
                                                     ids_listas.add(lista_de_listas.get(i).getId_lista());
                                                 }
                                             }
+                                            adicionarProdutoListas(ids_listas, produto.getId_produto());
+                                            dialog_adicionar_produto_lista.cancel();
                                         }
                                     });
                                     dialog_opcoes_produto.cancel();
                                     dialog_adicionar_produto_lista.show();
                                 }
+                            }
+                        });
+                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_compartilhar_produto_abaixo_media)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent sendIntent = new Intent();
+                                sendIntent.setAction(Intent.ACTION_SEND);
+                                String s = "Olá, talvez você goste desta oferta: " + produto.getDescricao_produto() + " - R$ " + produto.getValor();
+                                s += "\nBaixe o app HowMuch e confira: www.howmuch.com";
+                                sendIntent.putExtra(Intent.EXTRA_TEXT, s);
+                                sendIntent.setType("text/plain");
+                                startActivity(sendIntent);
+                            }
+                        });
+                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_criar_alerta)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(Descontos.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_historico_precos_produto)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(Descontos.this, "Não Implementado", Toast.LENGTH_LONG).show();
                             }
                         });
                         dialog_opcoes_produto.show();
@@ -250,6 +254,52 @@ public class Descontos extends Nav {
         } else {
             Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void adicionarProdutoListas(final ArrayList<Long> ids_listas, final Long id_produto){
+        new AsyncTask<String, Void, Long>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Long doInBackground(String... params) {
+                try {
+                    URL url = new URL(Utils.URL + "lista");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true);
+                    urlCon.setDoInput(true);
+
+                    OutputStream os = urlCon.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                    objectOutputStream.writeUTF("ADD_PROD_LISTAS");
+                    objectOutputStream.writeLong(usuario.getId_usuario());
+                    objectOutputStream.writeLong(id_produto);
+                    objectOutputStream.writeObject(ids_listas);
+
+                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                    long id_lista = (long) ois.readLong();
+                    ois.close();
+                    objectOutputStream.close();
+                    objectOutputStream.flush();
+                    return id_lista;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return new Long(0);
+            }
+
+            @Override
+            protected void onPostExecute(Long id_lista) {
+                if (id_lista > 0) {
+                    Toast.makeText(Descontos.this, "Produto Adicionado!", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(Descontos.this, "Erro ao Adicionar Produto", Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
     }
 
     //menu
@@ -268,10 +318,7 @@ public class Descontos extends Nav {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent main = new Intent(Descontos.this, Main.class);
-        startActivity(main);
         finish();
-
     }
 
 }

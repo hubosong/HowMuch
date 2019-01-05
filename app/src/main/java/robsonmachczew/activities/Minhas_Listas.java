@@ -1,27 +1,19 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -30,10 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import adapter.ListaAdapter;
-import adapter.ProdutoAbaixoMediaAdapter;
 import entidade.Lista;
-import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
@@ -143,7 +132,7 @@ public class Minhas_Listas extends Nav {
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista) ).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(Minhas_Listas.this, Lista_Compras.class);
+                                Intent intent = new Intent(Minhas_Listas.this, Criar_Lista_Compras.class);
                                 intent.putExtra("LISTA", lista);
                                 startActivity(intent);
                             }

@@ -122,7 +122,7 @@ public class Nav extends AppCompatActivity {
 
                 case R.id.nav_new_list:
                     //Intent buyList = new Intent(Nav.this, Criar_Lista.class);
-                    Intent buyList = new Intent(Nav.this, Lista_Compras.class);
+                    Intent buyList = new Intent(Nav.this, Criar_Lista_Compras.class);
                     startActivity(buyList);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();

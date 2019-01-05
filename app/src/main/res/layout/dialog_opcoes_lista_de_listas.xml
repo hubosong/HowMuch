@@ -34,28 +34,28 @@
             android:orientation="vertical" >
 
             <Button
-                android:id="@+id/bt_comparar_precos_em_mercados"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Comparar Preços em Mercados" />
-
-            <Button
-                android:id="@+id/bt_excluir_lista"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Excluir Lista" />
-
-            <Button
                 android:id="@+id/bt_editar_lista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Editar Lista" />
 
             <Button
+                android:id="@+id/bt_comparar_precos_em_mercados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comparar Preços em Mercados" />
+
+            <Button
                 android:id="@+id/br_compartilhar_lista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Compartilhar Lista" />
+
+            <Button
+                android:id="@+id/bt_excluir_lista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Excluir Lista" />
 
         </LinearLayout>
     </ScrollView>

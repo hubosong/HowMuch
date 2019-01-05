@@ -61,4 +61,9 @@ public class VerProduto extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

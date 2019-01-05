@@ -29,7 +29,7 @@ import entidade.Lista;
 import entidade.NFe;
 import entidade.Usuario;
 import entidade.Utils;
-import robsonmachczew.activities.Lista_Compras;
+import robsonmachczew.activities.Criar_Lista_Compras;
 import robsonmachczew.activities.R;
 import robsonmachczew.activities.VerNFe;
 
@@ -185,7 +185,7 @@ public class NFeAdapter extends RecyclerView.Adapter<NFeAdapter.ProductViewHolde
                                     lista.getListaProdutos().add(nfe.getLista_items().get(i).getProduto());
                                     lista.getListaProdutos().get(i).setTransient_quantidade(nfe.getLista_items().get(i).getQuantidade());
                                 }
-                                Intent intent1 = new Intent(context, Lista_Compras.class);
+                                Intent intent1 = new Intent(context, Criar_Lista_Compras.class);
                                 intent1.putExtra("LISTA", lista);
                                 context.startActivity(intent1);
                                 break;

@@ -1,27 +1,19 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -31,11 +23,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import adapter.NFeAdapter;
-import adapter.ProdutoAbaixoMediaAdapter;
-import dao.NFe_DAO;
 import entidade.NFe;
-import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
@@ -132,7 +120,7 @@ public class Minhas_NFes extends Nav {
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Dialog dialog_opcoes_nfe = new Dialog(Minhas_NFes.this);
+                        final Dialog dialog_opcoes_nfe = new Dialog(Minhas_NFes.this);
                         dialog_opcoes_nfe.setContentView(R.layout.dialog_opcoes_da_nfe);
                         dialog_opcoes_nfe.show();
                         ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes) ).setOnClickListener(new View.OnClickListener() {
@@ -141,14 +129,17 @@ public class Minhas_NFes extends Nav {
                                 Intent intent = new Intent(Minhas_NFes.this, VerNFe.class);
                                 intent.putExtra("NFE", nfe);
                                 startActivity(intent);
+                                dialog_opcoes_nfe.cancel();
                             }
                         });
                         ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_transformar_em_lista) ).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(Minhas_NFes.this, Lista_Compras.class);
+                                Intent intent = new Intent(Minhas_NFes.this, Criar_Lista_Compras.class);
                                 intent.putExtra("NFE", nfe);
                                 startActivity(intent);
+                                dialog_opcoes_nfe.cancel();
+                                finish();
                             }
                         });
                     }
