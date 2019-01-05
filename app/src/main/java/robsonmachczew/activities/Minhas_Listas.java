@@ -2,15 +2,19 @@ package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -124,22 +128,31 @@ public class Minhas_Listas extends Nav {
         if (list != null) {
             layout_listas_de_listas.removeAllViews();
             tv_quant_listas.setText("Listas Encontradas ("+list.size()+"):");
-            for(Lista lista : list){
-                String s = lista.getNome();
-                if(!s.trim().equalsIgnoreCase("")){
-                    s += " - ";
-                }
-                s += lista.getData();
-                String s2 = lista.getListaProdutos().size()+" Produtos";
-                LinearLayout ll = new LinearLayout(this);
-                ll.setOrientation(LinearLayout.VERTICAL);
-                TextView tv1 = new TextView(this);
-                TextView tv2 = new TextView(this);
-                tv1.setText(s);
-                tv2.setText(s2);
-                ll.addView(tv1);
-                ll.addView(tv2);
-                layout_listas_de_listas.addView(ll);
+            for(final Lista lista : list){
+                View item; // Creating an instance for View Object
+                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                item = inflater.inflate(R.layout.layout_lista_de_listas, null);
+                ((TextView) item.findViewById(R.id.txtNomeLista)).setText(lista.getNome());
+                ((TextView) item.findViewById(R.id.txtQtdItems)).setText(lista.getListaProdutos().size()+" Produtos");
+                ((TextView) item.findViewById(R.id.txtDataLista)).setText(lista.getData());
+                ((TextView) item.findViewById(R.id.txtOptions)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dialog dialog_opcoes_lista = new Dialog(Minhas_Listas.this);
+                        dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_de_listas);
+                        ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista) ).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Minhas_Listas.this, Lista_Compras.class);
+                                intent.putExtra("LISTA", lista);
+                                startActivity(intent);
+                            }
+                        });
+
+                        dialog_opcoes_lista.show();
+                    }
+                });
+                layout_listas_de_listas.addView(item);
             }
         } else {
             Toast.makeText(Minhas_Listas.this, "Nenhuma Lista Encontrada", Toast.LENGTH_LONG).show();

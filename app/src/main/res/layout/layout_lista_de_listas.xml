@@ -3,8 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="300dp">
 
-    <!-- ?android:attr/listPreferredItemHeight -->
-
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,38 +24,55 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:ems="11"
-                android:text="@string/txt_product_name"
+                android:text="Nome da Lista"
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/text_color"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtDataLista"
+                android:id="@+id/txtQtdItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtNomeLista"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:ems="15"
                 android:maxLines="1"
-                android:text="@string/txt_market_name"
+                android:text="Quantidade de Itens"
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/hint_nav_login"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtQtdItems"
+                android:id="@+id/txtDataLista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtDataLista"
+                android:layout_below="@+id/txtQtdItems"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:text="@string/txt_date"
                 android:textAlignment="center"
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="right|top">
+
+                <TextView
+                    android:id="@+id/txtOptions"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="&#8942;"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    android:textColor="@color/hint_nav_login" />
+
+            </LinearLayout>
 
         </RelativeLayout>
 

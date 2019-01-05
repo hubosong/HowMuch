@@ -2,6 +2,10 @@ package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +13,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +24,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,16 +39,20 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import adapter.Item_NFeAdapter;
 import adapter.ProdutoAbaixoMediaAdapter;
 import entidade.Item_NFe;
+import entidade.Lista;
 import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
+import entidade.Usuario;
 import entidade.Utils;
 
 public class Descontos extends Nav {
@@ -61,10 +77,9 @@ public class Descontos extends Nav {
         layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
         tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
 
-        //test internet connection
-        if(!Utils.estaConectado(this)){
+        if (!Utils.estaConectado(this)) {
             Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             rvListStart();
         }
     }
@@ -82,28 +97,28 @@ public class Descontos extends Nav {
             protected ArrayList<ProdutoAbaixoMedia> doInBackground(String... params) {
                 ArrayList<ProdutoAbaixoMedia> list = null;
                 //if(Utils.servidorDePe()) {
-                    try {
-                        String urlParameters = "funcao=GET_PRODUTOS_ABAIXO_MEDIA";
-                        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                try {
+                    String urlParameters = "funcao=GET_PRODUTOS_ABAIXO_MEDIA";
+                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                        URL url = new URL(Utils.URL + "produto");
-                        HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                        urlCon.setRequestMethod("POST");
-                        urlCon.setDoOutput(true);
-                        urlCon.setDoInput(true);
+                    URL url = new URL(Utils.URL + "produto");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true);
+                    urlCon.setDoInput(true);
 
-                        DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                        wr.write(postData);
-                        wr.close();
-                        wr.flush();
+                    DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                    wr.write(postData);
+                    wr.close();
+                    wr.flush();
 
-                        ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                        list = (ArrayList<ProdutoAbaixoMedia>) ois.readObject();
-                        ois.close();
+                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                    list = (ArrayList<ProdutoAbaixoMedia>) ois.readObject();
+                    ois.close();
 
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
-                    }
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
                 //}
                 return list;
             }
@@ -116,12 +131,40 @@ public class Descontos extends Nav {
 
     }
 
-    private void renderizaProdutosComDesconto(ArrayList<ProdutoAbaixoMedia> list){
+    private void renderizaProdutosComDesconto(ArrayList<ProdutoAbaixoMedia> list) {
         if (list != null) {
-            tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio ("+list.size()+"):");
-            for(ProdutoAbaixoMedia produto : list){
-
+            tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio (" + list.size() + "):");
+            layout_produtos_desconto.removeAllViews();
+            DecimalFormat df = new DecimalFormat("0.00");
+            for (final ProdutoAbaixoMedia produto : list) {
+                View item; // Creating an instance for View Object
+                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                item = inflater.inflate(R.layout.layout_products, null);
+                ((TextView) item.findViewById(R.id.txtNomeProduto)).setText(produto.getDescricao_produto());
+                ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(produto.getNome_mercado());
+                ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
+                ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$: " + produto.getValor_medio());
+                ((TextView) item.findViewById(R.id.txtOff)).setText("R$: " + df.format(produto.getValor_medio() - produto.getValor()).replace(",","."));
+                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + produto.getValor());
+                ((TextView) item.findViewById(R.id.txtOptions)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dialog dialog_opcoes_produto = new Dialog(Descontos.this);
+                        dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
+                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Descontos.this, Lista_Compras.class);
+                                intent.putExtra("PRODUTO", produto);
+                                startActivity(intent);
+                            }
+                        });
+                        dialog_opcoes_produto.show();
+                    }
+                });
+                layout_produtos_desconto.addView(item);
             }
+            layout_produtos_desconto.requestFocus();
         } else {
             Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
         }
@@ -131,13 +174,7 @@ public class Descontos extends Nav {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-
-        //search bar
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-
         return true;
-
     }
 
     @Override
@@ -148,12 +185,7 @@ public class Descontos extends Nav {
     //onBack
     @Override
     public void onBackPressed() {
-        if (searchView.isSearchOpen()) {
-            searchView.closeSearch();
-        } else {
-            super.onBackPressed();
-        }
-
+        super.onBackPressed();
         Intent main = new Intent(Descontos.this, Main.class);
         startActivity(main);
         finish();

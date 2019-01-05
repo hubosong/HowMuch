@@ -3,7 +3,6 @@ package robsonmachczew.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -13,32 +12,31 @@ import android.support.design.widget.NavigationView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 import entidade.Lista;
+import entidade.NFe;
 import entidade.Produto;
+import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
@@ -61,7 +59,7 @@ public class Lista_Compras extends Nav {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(1).setChecked(true);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Lista Compras");
+        getSupportActionBar().setTitle("Criar Lista de Compras");
 
         usuario = Utils.loadFromSharedPreferences(this);
         layout_produtos_lista = findViewById(R.id.layout_produtos_da_lista);
@@ -72,14 +70,41 @@ public class Lista_Compras extends Nav {
             Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
             return;
         }
-        lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
-        if (lista_compras == null) {
+
+        if (getIntent().getSerializableExtra("NFE") != null) {
+            //SE É PARA TRANSFORMAR NFe EM LISTA DE COMPRAS
             lista_compras = new Lista();
-        } else {
-            Button btFinalizar = findViewById(R.id.button3);
-            btFinalizar.setText("SALVAR");
-            atualizaListaProdutos();
+            NFe nfe = (NFe) getIntent().getSerializableExtra("NFE");
+            for (int i = 0; i < nfe.getLista_items().size(); i++) {
+                lista_compras.getListaProdutos().add(nfe.getLista_items().get(i).getProduto());
+            }
+        } else if(getIntent().getSerializableExtra("PRODUTO") != null) {
+            //SE É PARA ADICIONAR UM PRODUTO À UMA LISTA
+            if(getIntent().getSerializableExtra("LISTA") != null){
+                //ADICIONAR À UMA LISTA EXISTENTE
+                lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
+                getSupportActionBar().setTitle("Editar Lista de Compras");
+            }else{
+                //ADICIONAR À UMA NOVA LISTA
+                lista_compras = new Lista();
+            }
+            ProdutoAbaixoMedia produtoAbaixoMedia =(ProdutoAbaixoMedia) getIntent().getSerializableExtra("PRODUTO");
+            Produto p = new Produto();
+            p.setId_produto(produtoAbaixoMedia.getId_produto());
+            p.setDescricao(produtoAbaixoMedia.getDescricao_produto());
+            p.setDescricao2(produtoAbaixoMedia.getDescricao_produto2());
+            lista_compras.getListaProdutos().add(p);
+        } else{
+            lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
+            if (lista_compras == null) {
+                lista_compras = new Lista();
+            } else {
+                Button btFinalizar = findViewById(R.id.button3);
+                btFinalizar.setText("SALVAR");
+                getSupportActionBar().setTitle("Editar Lista de Compras");
+            }
         }
+        renderizaListaDeProdutos();
     }
 
     public void adicionarProduto(View v) {
@@ -144,6 +169,51 @@ public class Lista_Compras extends Nav {
 
     private void finalizarLista() {
         lista_compras.setNome(editTextNomeLista.getText().toString());
+        new AsyncTask<String, Void, Long>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Long doInBackground(String... params) {
+                try {
+                    String urlParameters = "funcao=SALVAR_LISTA&id_usuario=" + usuario.getId_usuario();
+                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                    URL url = new URL(Utils.URL + "lista");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true);
+                    urlCon.setDoInput(true);
+
+                    OutputStream os = urlCon.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                    objectOutputStream.writeUTF("SALVAR_LISTA");
+                    objectOutputStream.writeLong(usuario.getId_usuario());
+                    objectOutputStream.writeObject(lista_compras);
+
+                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                    long id_lista = (long) ois.readLong();
+                    ois.close();
+                    objectOutputStream.close();
+                    objectOutputStream.flush();
+                    return id_lista;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return new Long(0);
+            }
+
+            @Override
+            protected void onPostExecute(Long id_lista) {
+                if (id_lista > 0) {
+                    Toast.makeText(Lista_Compras.this, "Lista Salva!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
+        Button btFinalizar = findViewById(R.id.button3);
+        btFinalizar.setText("SALVAR");
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -212,14 +282,14 @@ public class Lista_Compras extends Nav {
                                 lista_compras.getListaProdutos().add(list.get(i));
                             }
                         }
-                        atualizaListaProdutos();
+                        renderizaListaDeProdutos();
                     }
                 });
             }
         }.execute();
     }
 
-    private void atualizaListaProdutos() {
+    private void renderizaListaDeProdutos() {
         if (dialog_pesquisa != null && dialog_pesquisa.isShowing()) {
             dialog_pesquisa.dismiss();
         }
@@ -230,6 +300,7 @@ public class Lista_Compras extends Nav {
         }
 
         layout_produtos_lista.removeAllViews();
+        editTextNomeLista.setText(lista_compras.getNome());
         for (Produto prod : lista_compras.getListaProdutos()) {
             TextView tv = new TextView(this);
             tv.setText(prod.getDescricao());

@@ -2,16 +2,21 @@ package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,12 +42,8 @@ import entidade.Utils;
 public class Minhas_NFes extends Nav {
 
     private Usuario usuario;
-    private ProgressBar progWait;
-    private TextView txtResult, txtWait;
-    private MaterialSearchView searchView;
-    private RecyclerView recyclerView;
-    private final Activity activity = this;
-    public Animation alpha_in, alpha_out;
+    private LinearLayout layout_lista_de_nfes;
+    private TextView tv_quant_nfes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +58,8 @@ public class Minhas_NFes extends Nav {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_my_nfe);
 
-        progWait = findViewById(R.id.progWait);
-        txtWait = findViewById(R.id.txtWait);
-
-        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
-        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
-
-        //recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ProdutoAbaixoMediaAdapter tmp_adapter = new ProdutoAbaixoMediaAdapter(this, new ArrayList<ProdutoAbaixoMedia>());
-        recyclerView.setAdapter(tmp_adapter);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layout_lista_de_nfes = findViewById(R.id.layout_lista_de_nfes);
+        tv_quant_nfes = findViewById(R.id.tv_minhas_nfes);
 
         carregaMinhasNFes();
     }
@@ -85,8 +76,6 @@ public class Minhas_NFes extends Nav {
 
                 @Override
                 protected void onPreExecute() {
-                    progWait.setVisibility(View.VISIBLE);
-                    txtWait.setVisibility(View.VISIBLE);
                     super.onPreExecute();
                 }
 
@@ -120,52 +109,7 @@ public class Minhas_NFes extends Nav {
 
                 @Override
                 protected void onPostExecute(final ArrayList<NFe> list) {
-                    progWait.setVisibility(View.GONE);
-                    txtWait.setVisibility(View.GONE);
-                    if (list != null) {
-                        Toast.makeText(Minhas_NFes.this, list.size() + " NFes Encontrados", Toast.LENGTH_LONG).show();
-                        NFeAdapter adapter = new NFeAdapter(Minhas_NFes.this, list);
-                        recyclerView.setAdapter(adapter);
-
-                        //hide floating button when scroll
-                        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                            @Override
-                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                                super.onScrolled(recyclerView, dx, dy);
-                                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                                    fab.hide();
-                                    fab.startAnimation(alpha_out);
-                                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                                    fab.show();
-                                    fab.startAnimation(alpha_in);
-                                }
-                            }
-                        });
-
-                        //Thread para sincronizar as nfes do servidor com as nfes locais
-                        new Thread() {
-                            public void run() {
-                                NFe_DAO nFe_dao = new NFe_DAO(getApplicationContext());
-                                ArrayList<Long> lista_ids_nfes = nFe_dao.getIdsNFesCadastradasLocamente();
-                                if(lista_ids_nfes.size() < list.size()){
-                                    if(lista_ids_nfes.size() == 0) {
-                                        nFe_dao.insertAllFromServer(list);
-                                    }else{
-                                        int cadastros = 0;
-                                        for (int i = 0; i < list.size(); i++) {
-                                            if (!lista_ids_nfes.contains(list.get(i).getId_nfe()) && cadastros < 20) {
-                                                nFe_dao.insertFromServer(list.get(i));
-                                                cadastros++;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }.start();
-
-                    } else {
-                        Toast.makeText(Minhas_NFes.this, "Nenhuma NFe Encontrada", Toast.LENGTH_LONG).show();
-                    }
+                    renderizaNFes(list);
                 }
             }.execute();
         } else {
@@ -173,6 +117,48 @@ public class Minhas_NFes extends Nav {
         }
     }
 
+    private void renderizaNFes(ArrayList<NFe> list){
+        if (list != null) {
+            layout_lista_de_nfes.removeAllViews();
+            tv_quant_nfes.setText("Minhas Notas Fiscais ("+list.size()+"):");
+            for(final NFe nfe : list){
+                View item; // Creating an instance for View Object
+                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                item = inflater.inflate(R.layout.layout_my_buys_nfes, null);
+                ((TextView) item.findViewById(R.id.txtNomeLista)).setText(nfe.getMercado().getNome());
+                ((TextView) item.findViewById(R.id.txtHowMany)).setText(" "+nfe.getLista_items().size());
+                ((TextView) item.findViewById(R.id.txtUnitPrice)).setText(nfe.getData());
+                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ "+nfe.getValor());
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Dialog dialog_opcoes_nfe = new Dialog(Minhas_NFes.this);
+                        dialog_opcoes_nfe.setContentView(R.layout.dialog_opcoes_da_nfe);
+                        dialog_opcoes_nfe.show();
+                        ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes) ).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Minhas_NFes.this, VerNFe.class);
+                                intent.putExtra("NFE", nfe);
+                                startActivity(intent);
+                            }
+                        });
+                        ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_transformar_em_lista) ).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Minhas_NFes.this, Lista_Compras.class);
+                                intent.putExtra("NFE", nfe);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                });
+                layout_lista_de_nfes.addView(item);
+            }
+        } else {
+            Toast.makeText(Minhas_NFes.this, "Nenhuma NFe Encontrada", Toast.LENGTH_LONG).show();
+        }
+    }
 
     //onBack
     @Override

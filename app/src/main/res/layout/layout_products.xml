@@ -21,24 +21,24 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/txtNomeLista"
+                android:id="@+id/txtNomeProduto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="@string/txt_product_name"
+                android:text="Descrição do Produto"
                 android:ems="11"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/text_color"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtDataLista"
+                android:id="@+id/txtNomeMercado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtNomeLista"
+                android:layout_below="@+id/txtNomeProduto"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/txt_market_name"
+                android:text="Nome do Mercado"
                 android:maxLines="1"
                 android:ems="15"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
@@ -46,13 +46,13 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtQtdItems"
+                android:id="@+id/txtDataNFe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtDataLista"
+                android:layout_below="@+id/txtNomeMercado"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/txt_date"
+                android:text="Data da Nota Fiscal"
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
@@ -60,7 +60,7 @@
                 android:id="@+id/txtMediumPriceDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtQtdItems"
+                android:layout_below="@+id/txtDataNFe"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/txt_desc_medium_price"
@@ -71,7 +71,7 @@
                 android:id="@+id/txtMediumPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtQtdItems"
+                android:layout_below="@+id/txtDataNFe"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="6dp"
                 android:layout_toEndOf="@+id/txtMediumPriceDescription"
@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@string/txt_desc_price"
+                    android:text="Preço Nessa NFe:"
                     android:textColor="@color/hint_nav_login"
                     android:textSize="12sp" />
 
