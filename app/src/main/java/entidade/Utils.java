@@ -11,6 +11,11 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import robsonmachczew.activities.Minhas_Listas;
+import robsonmachczew.activities.Minhas_NFes;
 
 import static android.content.Context.MODE_PRIVATE;
 

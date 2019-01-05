@@ -58,7 +58,6 @@ public class VerNFe extends Nav {
     private RecyclerView recyclerView;
     private final Activity activity = this;
     public Animation alpha_in, alpha_out;
-    private String origem = "DESCONTOS";
     private Usuario usuario;
 
     @Override
@@ -93,7 +92,6 @@ public class VerNFe extends Nav {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         if (nfe != null) {
-            origem = "MINHAS_NFES";
             preencherViewsProdutosNFe(nfe);
         } else {
             String code = getIntent().getStringExtra("code");
@@ -374,11 +372,6 @@ public class VerNFe extends Nav {
         }.execute(chave);
     }
 
-    //onBack
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 
     // Métodos que buscam a NFe no site do sefaz. A ideia é distribuir esse processamento
     // (de buscar a nota) para desafogar o servidor.

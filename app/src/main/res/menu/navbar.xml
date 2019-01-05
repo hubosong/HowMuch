@@ -29,7 +29,7 @@
             android:icon="@drawable/ic_suggestion"
             android:title="Alertas" />
         <item
-            android:id="@+id/financas"
+            android:id="@+id/nav_financas"
             android:icon="@drawable/ic_graphic"
             android:title="Finanças" />
     </group>

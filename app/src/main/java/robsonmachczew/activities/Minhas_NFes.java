@@ -151,13 +151,9 @@ public class Minhas_NFes extends Nav {
         }
     }
 
-    //onBack
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(Minhas_NFes.this, Main.class);
-        startActivity(main);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        finish();
+
     }
 
 }

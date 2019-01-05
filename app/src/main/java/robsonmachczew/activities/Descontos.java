@@ -31,6 +31,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import entidade.Lista;
+import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
@@ -186,6 +187,7 @@ public class Descontos extends Nav {
                                 Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
                                 intent.putExtra("PRODUTO", produto);
                                 startActivity(intent);
+                                finish();
                             }
                         });
                         ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setOnClickListener(new View.OnClickListener() {
@@ -214,6 +216,7 @@ public class Descontos extends Nav {
                                             }
                                             adicionarProdutoListas(ids_listas, produto.getId_produto());
                                             dialog_adicionar_produto_lista.cancel();
+                                            finish();
                                         }
                                     });
                                     dialog_opcoes_produto.cancel();
@@ -242,7 +245,15 @@ public class Descontos extends Nav {
                         ((Button) dialog_opcoes_produto.findViewById(R.id.bt_historico_precos_produto)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(Descontos.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(Descontos.this, VerProduto.class);
+                                Produto p = new Produto();
+                                p.setId_produto(produto.getId_produto());
+                                p.setDescricao(produto.getDescricao_produto());
+                                p.setUnidade_comercial(produto.getUnidade_comercial());
+                                intent.putExtra("PRODUTO", p);
+                                startActivity(intent);
+                                dialog_opcoes_produto.cancel();
+                                finish();
                             }
                         });
                         dialog_opcoes_produto.show();
@@ -314,11 +325,9 @@ public class Descontos extends Nav {
         return super.onOptionsItemSelected(item);
     }
 
-    //onBack
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+
     }
 
 }

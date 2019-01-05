@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Opções do Produto"
+        android:text="Opções Da Lista"
         android:textSize="18sp"
         android:inputType="textPersonName"
         android:padding="8dp"
@@ -34,34 +34,12 @@
             android:orientation="vertical" >
 
             <Button
-                android:id="@+id/bt_historico_precos_produto"
+                android:id="@+id/bt_precos_detalhados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ver Detalhes / Histórico de Preços" />
+                android:text="Detalhar Preços" />
 
-            <Button
-                android:id="@+id/bt_adiciona_produto_nova_lista"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Adicionar à Nova Lista" />
 
-            <Button
-                android:id="@+id/bt_adiciona_produto_lista_existente"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Adicionar à Lista Existente" />
-
-            <Button
-                android:id="@+id/bt_compartilhar_produto_abaixo_media"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Compartilhar" />
-
-            <Button
-                android:id="@+id/bt_criar_alerta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Criar Alerta" />
 
         </LinearLayout>
     </ScrollView>

@@ -107,10 +107,7 @@ public class Minhas_Listas extends Nav {
 
     @Override
     public void onBackPressed() {
-        Intent main = new Intent(Minhas_Listas.this, Main.class);
-        startActivity(main);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        finish();
+
     }
 
     private void rederizaListas(ArrayList<Lista> list){
@@ -137,7 +134,14 @@ public class Minhas_Listas extends Nav {
                                 startActivity(intent);
                             }
                         });
-
+                        ((Button) dialog_opcoes_lista.findViewById(R.id.bt_comparar_precos_em_mercados)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(Minhas_Listas.this, VerComparacaoLista.class);
+                                intent.putExtra("LISTA", lista);
+                                startActivity(intent);
+                            }
+                        });
                         dialog_opcoes_lista.show();
                     }
                 });

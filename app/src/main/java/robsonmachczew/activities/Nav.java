@@ -157,6 +157,12 @@ public class Nav extends AppCompatActivity {
                     drawerLayout.closeDrawers();
                     break;
 
+                case R.id.nav_alertas:
+                    break;
+
+                case R.id.nav_financas:
+                    break;
+
                 case R.id.nav_logout:
                     if (Utils.logout(Nav.this)) {
                         Intent main = new Intent(Nav.this, Main.class);

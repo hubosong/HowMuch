@@ -1,5 +1,6 @@
 package robsonmachczew.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -19,15 +20,9 @@ import entidade.Utils;
 
 public class VerProduto extends AppCompatActivity {
 
-    private Item_NFe item_nFe;
     private Produto produto;
-
-    private ProgressBar progWait;
-    private TextView txtQRCode, txtWait, txtMercado, txtData;
-    private MaterialSearchView searchView;
-    private RecyclerView recyclerView;
-    public Animation alpha_in, alpha_out;
     private Usuario usuario;
+    private TextView tv_descricao_produto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +36,24 @@ public class VerProduto extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Detalhes de Produto");
 
-        getIntent().getSerializableExtra("ITEM");
-        if(item_nFe != null){
-            produto = item_nFe.getProduto();
-        }
-
-        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
-        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
-
-        progWait = findViewById(R.id.progWait);
-        txtWait = findViewById(R.id.txtWait);
-        txtQRCode = findViewById(R.id.txtQRCode);
-        txtMercado = findViewById(R.id.txtDataLista);
-        txtData = findViewById(R.id.txtQtdItems);
+        tv_descricao_produto = findViewById(R.id.tv_descricao_produto);
 
         usuario = Utils.loadFromSharedPreferences(this);
+        produto = (Produto) getIntent().getSerializableExtra("PRODUTO");
 
-        //recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        renderizaProduto();
+    }
 
+    private void renderizaProduto(){
+        if(produto != null){
+            tv_descricao_produto.setText(produto.getDescricao());
+        }
     }
 
     @Override
     public void onBackPressed() {
+        Intent intent = new Intent(this, Descontos.class);
+        startActivity(intent);
         finish();
     }
 }
