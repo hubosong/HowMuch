@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Opções Da Lista"
+        android:text="Opções Da Simulação"
         android:textSize="18sp"
         android:inputType="textPersonName"
         android:padding="8dp"
@@ -39,7 +39,11 @@
                 android:layout_height="wrap_content"
                 android:text="Detalhar Preços" />
 
-
+            <Button
+                android:id="@+id/bt_detalhes_mercado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Detalhes do Mercado" />
 
         </LinearLayout>
     </ScrollView>

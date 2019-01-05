@@ -30,6 +30,8 @@ public class VerComparacaoLista extends Nav {
 
     private Lista lista;
     private LinearLayout layout_listas_comparadas;
+    private TextView txt_nome_da_lista_de_compras;
+    private TextView txt_mercados_simulados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +42,12 @@ public class VerComparacaoLista extends Nav {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle(R.string.bar_qrcode);
+        getSupportActionBar().setTitle("Simular Lista em Mercados");
 
         lista = (Lista) getIntent().getSerializableExtra("LISTA");
         layout_listas_comparadas = findViewById(R.id.layout_listas_comparadas);
+        txt_nome_da_lista_de_compras = findViewById(R.id.txt_nome_da_lista_de_compras);
+        txt_mercados_simulados = findViewById(R.id.txt_mercados_simulados);
 
         compararLista();
     }
@@ -94,6 +98,8 @@ public class VerComparacaoLista extends Nav {
     private void renderizaComparacao(ArrayList<Lista> list) {
         if (list != null) {
             layout_listas_comparadas.removeAllViews();
+            txt_mercados_simulados.setText("Mercados Simulados ("+list.size() + "):");
+            txt_nome_da_lista_de_compras.setText(lista.getNome());
             Collections.sort(list, new Comparator<Lista>() {
                 @Override
                 public int compare(Lista o1, Lista o2) {
@@ -108,13 +114,13 @@ public class VerComparacaoLista extends Nav {
                     return xx1.compareTo(xx2);
                 }
             });
-            for(Lista l : list){
+            for (Lista l : list) {
                 View item; // Creating an instance for View Object
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 item = inflater.inflate(R.layout.layout_item_comparacao_listas, null);
                 ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(l.getMercado().getNome());
-                ((TextView) item.findViewById(R.id.txtHowMany)).setText(l.getListaProdutos().size()+"");
-                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ "+l.getValor_total());
+                ((TextView) item.findViewById(R.id.txtHowMany)).setText(l.getListaProdutos().size() + " / " + lista.getListaProdutos().size());
+                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + l.getValor_total());
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
