@@ -40,25 +40,25 @@
                 android:text="Adicionar à Nova Lista" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/bt_adiciona_produto_lista_existente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Adicionar à Lista Existente" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/bt_compartilhar_produto_abaixo_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Compartilhar" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/bt_criar_alerta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Criar Alerta" />
 
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/bt_historico_precos_produto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Histórico de Preços" />
