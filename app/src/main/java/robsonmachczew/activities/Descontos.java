@@ -38,6 +38,7 @@ import entidade.Utils;
 
 public class Descontos extends Nav {
 
+    private boolean permiteVoltar = false;
     private LinearLayout layout_produtos_desconto;
     private TextView tv_quant_prods_desconto;
     private ArrayList<Lista> lista_de_listas;
@@ -103,6 +104,7 @@ public class Descontos extends Nav {
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_off);
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
         tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
@@ -185,6 +187,7 @@ public class Descontos extends Nav {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
+                                intent.putExtra("PERMITE_VOLTAR", true);
                                 intent.putExtra("PRODUTO", produto);
                                 startActivity(intent);
                                 finish();
@@ -216,7 +219,6 @@ public class Descontos extends Nav {
                                             }
                                             adicionarProdutoListas(ids_listas, produto.getId_produto());
                                             dialog_adicionar_produto_lista.cancel();
-                                            finish();
                                         }
                                     });
                                     dialog_opcoes_produto.cancel();
@@ -253,7 +255,6 @@ public class Descontos extends Nav {
                                 intent.putExtra("PRODUTO", p);
                                 startActivity(intent);
                                 dialog_opcoes_produto.cancel();
-                                finish();
                             }
                         });
                         dialog_opcoes_produto.show();
@@ -327,6 +328,7 @@ public class Descontos extends Nav {
 
     @Override
     public void onBackPressed() {
-
+        if(permiteVoltar)
+            super.onBackPressed();
     }
 }

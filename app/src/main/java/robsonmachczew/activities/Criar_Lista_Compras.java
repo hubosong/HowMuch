@@ -41,6 +41,7 @@ import entidade.Utils;
 
 public class Criar_Lista_Compras extends Nav {
 
+    private boolean permiteVoltar;
     private String activity_origem;
     private Usuario usuario;
     private Lista lista_compras;
@@ -60,6 +61,8 @@ public class Criar_Lista_Compras extends Nav {
         navigationView.getMenu().getItem(1).setChecked(true);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Criar Lista de Compras");
+
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         usuario = Utils.loadFromSharedPreferences(this);
         layout_produtos_lista = findViewById(R.id.layout_produtos_da_lista);
@@ -305,6 +308,7 @@ public class Criar_Lista_Compras extends Nav {
 
     @Override
     public void onBackPressed() {
-
+        if(permiteVoltar)
+            super.onBackPressed();
     }
 }

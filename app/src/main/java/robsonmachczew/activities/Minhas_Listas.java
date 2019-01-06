@@ -28,6 +28,7 @@ import entidade.Utils;
 
 public class Minhas_Listas extends Nav {
 
+    private boolean permiteVoltar;
     private Usuario usuario;
     private LinearLayout layout_listas_de_listas;
     private TextView tv_quant_listas;
@@ -45,6 +46,8 @@ public class Minhas_Listas extends Nav {
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_my_buys);
+
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         layout_listas_de_listas = findViewById(R.id.layout_listas_de_listas);
         tv_quant_listas = findViewById(R.id.tv_quant_listas);
@@ -150,6 +153,7 @@ public class Minhas_Listas extends Nav {
 
     @Override
     public void onBackPressed() {
-
+        if(permiteVoltar)
+            super.onBackPressed();
     }
 }

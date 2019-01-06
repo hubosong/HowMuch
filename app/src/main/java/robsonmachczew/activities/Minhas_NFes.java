@@ -29,6 +29,7 @@ import entidade.Utils;
 
 public class Minhas_NFes extends Nav {
 
+    private boolean permiteVoltar;
     private Usuario usuario;
     private LinearLayout layout_lista_de_nfes;
     private TextView tv_quant_nfes;
@@ -45,6 +46,8 @@ public class Minhas_NFes extends Nav {
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_my_nfe);
+
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         layout_lista_de_nfes = findViewById(R.id.layout_lista_de_nfes);
         tv_quant_nfes = findViewById(R.id.tv_minhas_nfes);
@@ -153,6 +156,7 @@ public class Minhas_NFes extends Nav {
 
     @Override
     public void onBackPressed() {
-
+        if(permiteVoltar)
+            super.onBackPressed();
     }
 }
