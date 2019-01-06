@@ -93,12 +93,7 @@ public class Criar_Lista_Compras extends Nav {
                 //ADICIONAR À UMA NOVA LISTA
                 lista_compras = new Lista();
             }
-            ProdutoAbaixoMedia produtoAbaixoMedia = (ProdutoAbaixoMedia) getIntent().getSerializableExtra("PRODUTO");
-            Produto p = new Produto();
-            p.setId_produto(produtoAbaixoMedia.getId_produto());
-            p.setDescricao(produtoAbaixoMedia.getDescricao_produto());
-            p.setDescricao2(produtoAbaixoMedia.getDescricao_produto2());
-            lista_compras.getListaProdutos().add(p);
+            lista_compras.getListaProdutos().add((Produto) getIntent().getSerializableExtra("PRODUTO"));
         } else {
             activity_origem = "NAV";
             lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
