@@ -190,7 +190,7 @@ public class Descontos extends Nav {
                                 intent.putExtra("PERMITE_VOLTAR", true);
                                 intent.putExtra("PRODUTO", produto);
                                 startActivity(intent);
-                                finish();
+                                dialog_opcoes_produto.cancel();
                             }
                         });
                         ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setOnClickListener(new View.OnClickListener() {
@@ -236,6 +236,7 @@ public class Descontos extends Nav {
                                 sendIntent.putExtra(Intent.EXTRA_TEXT, s);
                                 sendIntent.setType("text/plain");
                                 startActivity(sendIntent);
+                                dialog_opcoes_produto.cancel();
                             }
                         });
                         ((Button) dialog_opcoes_produto.findViewById(R.id.bt_criar_alerta)).setOnClickListener(new View.OnClickListener() {

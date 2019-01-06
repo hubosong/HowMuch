@@ -139,10 +139,10 @@ public class Minhas_NFes extends Nav {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(Minhas_NFes.this, Criar_Lista_Compras.class);
+                                intent.putExtra("PERMITE_VOLTAR", true);
                                 intent.putExtra("NFE", nfe);
                                 startActivity(intent);
                                 dialog_opcoes_nfe.cancel();
-                                finish();
                             }
                         });
                     }

@@ -123,22 +123,26 @@ public class Minhas_Listas extends Nav {
                 ((TextView) item.findViewById(R.id.txtOptions)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Dialog dialog_opcoes_lista = new Dialog(Minhas_Listas.this);
+                        final Dialog dialog_opcoes_lista = new Dialog(Minhas_Listas.this);
                         dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_de_listas);
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista) ).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(ctx, Criar_Lista_Compras.class);
+                                intent.putExtra("PERMITE_VOLTAR", true);
                                 intent.putExtra("LISTA", lista);
                                 startActivity(intent);
+                                dialog_opcoes_lista.cancel();
                             }
                         });
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_comparar_precos_em_mercados)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(ctx, VerComparacaoLista.class);
+                                intent.putExtra("PERMITE_VOLTAR", true);
                                 intent.putExtra("LISTA", lista);
                                 startActivity(intent);
+                                dialog_opcoes_lista.cancel();
                             }
                         });
                         dialog_opcoes_lista.show();
