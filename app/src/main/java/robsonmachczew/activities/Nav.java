@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -113,35 +114,34 @@ public class Nav extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_off:
-                    Intent off = new Intent(Nav.this, Descontos.class);
+                    Intent off = new Intent(activity, Descontos.class);
+                    off.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //Limpar todas as stacks de activities
                     startActivity(off);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();
                     drawerLayout.closeDrawers();
                     break;
 
                 case R.id.nav_new_list:
-                    //Intent buyList = new Intent(Nav.this, Criar_Lista.class);
-                    Intent buyList = new Intent(Nav.this, Criar_Lista_Compras.class);
+                    Intent buyList = new Intent(activity, Criar_Lista_Compras.class);
+                    buyList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(buyList);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();
                     drawerLayout.closeDrawers();
                     break;
 
                 case R.id.nav_my_buy:
-                    Intent my_buy = new Intent(Nav.this, Minhas_Listas.class);
+                    Intent my_buy = new Intent(activity, Minhas_Listas.class);
+                    my_buy.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(my_buy);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();
                     drawerLayout.closeDrawers();
                     break;
 
                 case R.id.nav_my_nfe:
-                    Intent my_nfe = new Intent(Nav.this, Minhas_NFes.class);
+                    Intent my_nfe = new Intent(activity, Minhas_NFes.class);
+                    my_nfe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(my_nfe);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    finish();
                     drawerLayout.closeDrawers();
                     break;
 
@@ -164,11 +164,11 @@ public class Nav extends AppCompatActivity {
                     break;
 
                 case R.id.nav_logout:
-                    if (Utils.logout(Nav.this)) {
+                    if (Utils.logout(activity)) {
                         Intent main = new Intent(Nav.this, Main.class);
+                        main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(main);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        finish();
                         drawerLayout.closeDrawers();
                     } else {
                         Toast.makeText(Nav.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
@@ -193,7 +193,6 @@ public class Nav extends AppCompatActivity {
                 readQRcode.putExtra("code", code);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(readQRcode);
-                finish();
                 drawerLayout.closeDrawers();
             } else {
                 Toast.makeText(activity, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
@@ -209,27 +208,6 @@ public class Nav extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
     }
-
-    //onBack
-    @Override
-    public void onBackPressed() {
-
-        if (navNome.getText().equals("")) {
-            Intent main = new Intent(Nav.this, Main.class);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            startActivity(main);
-            finish();
-        } else {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-            System.exit(0);
-        }
-
-    }
-
 
 
 

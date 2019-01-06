@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 for (int progress=0; progress<=100; progress+=10) {
                     try {
-                        Thread.sleep(350);
+                        Thread.sleep(250);
                         progressBar.setProgress(progress);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -85,30 +85,6 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }).start();
-
-        /*
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int progress=0; progress<=100; progress+=10) {
-                    try {
-                        Thread.sleep(350);
-                        progressBar.setProgress(progress);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(usuario.getId_usuario() != 0){
-                    startActivity(new Intent(mCtx, Descontos.class));
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                } else{
-                    startActivity(new Intent(mCtx, Main.class));
-                    overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
-                }
-                finish();
-            }
-        }, 2000);
-        */
 
     }
 }

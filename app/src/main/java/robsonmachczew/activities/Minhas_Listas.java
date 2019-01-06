@@ -105,13 +105,9 @@ public class Minhas_Listas extends Nav {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
-
     private void rederizaListas(ArrayList<Lista> list){
         if (list != null) {
+            final Context ctx = this;
             layout_listas_de_listas.removeAllViews();
             tv_quant_listas.setText("Listas Encontradas ("+list.size()+"):");
             for(final Lista lista : list){
@@ -129,7 +125,7 @@ public class Minhas_Listas extends Nav {
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista) ).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(Minhas_Listas.this, Criar_Lista_Compras.class);
+                                Intent intent = new Intent(ctx, Criar_Lista_Compras.class);
                                 intent.putExtra("LISTA", lista);
                                 startActivity(intent);
                             }
@@ -137,7 +133,7 @@ public class Minhas_Listas extends Nav {
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_comparar_precos_em_mercados)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(Minhas_Listas.this, VerComparacaoLista.class);
+                                Intent intent = new Intent(ctx, VerComparacaoLista.class);
                                 intent.putExtra("LISTA", lista);
                                 startActivity(intent);
                             }
@@ -152,4 +148,8 @@ public class Minhas_Listas extends Nav {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -94,7 +93,6 @@ public class VerComparacaoLista extends Nav {
         }.execute();
     }
 
-
     private void renderizaComparacao(ArrayList<Lista> list) {
         if (list != null) {
             layout_listas_comparadas.removeAllViews();
@@ -114,7 +112,7 @@ public class VerComparacaoLista extends Nav {
                     return xx1.compareTo(xx2);
                 }
             });
-            for (Lista l : list) {
+            for (final Lista l : list) {
                 View item; // Creating an instance for View Object
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 item = inflater.inflate(R.layout.layout_item_comparacao_listas, null);
@@ -129,7 +127,18 @@ public class VerComparacaoLista extends Nav {
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_precos_detalhados)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(VerComparacaoLista.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(VerComparacaoLista.this, VerSimulacaoListaEmMercado.class);
+                                intent.putExtra("MERCADO", l.getMercado());
+                                startActivity(intent);
+                                dialog_opcoes_lista.cancel();
+                            }
+                        });
+                        ((Button) dialog_opcoes_lista.findViewById(R.id.bt_detalhes_mercado)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(VerComparacaoLista.this, VerMercado.class);
+                                intent.putExtra("MERCADO", l.getMercado());
+                                startActivity(intent);
                                 dialog_opcoes_lista.cancel();
                             }
                         });
@@ -142,4 +151,8 @@ public class VerComparacaoLista extends Nav {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

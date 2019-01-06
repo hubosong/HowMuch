@@ -150,12 +150,4 @@ public class Cadastrar_Usuario extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent login = new Intent(Cadastrar_Usuario.this, Login.class);
-        startActivity(login);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        this.finish();
-    }
-
 }

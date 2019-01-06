@@ -78,12 +78,4 @@ public class Editar_Cadastros extends Nav {
 
     }
 
-    //onBack
-    @Override
-    public void onBackPressed() {
-        Intent off = new Intent(Editar_Cadastros.this, Descontos.class);
-        startActivity(off);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        finish();
-    }
 }
