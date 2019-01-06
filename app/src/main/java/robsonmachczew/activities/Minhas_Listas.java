@@ -52,9 +52,9 @@ public class Minhas_Listas extends Nav {
         layout_listas_de_listas = findViewById(R.id.layout_listas_de_listas);
         tv_quant_listas = findViewById(R.id.tv_quant_listas);
 
-        if(!Utils.estaConectado(this)){
+        if (!Utils.estaConectado(this)) {
             Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             pegaListaDeCompras();
         }
     }
@@ -108,24 +108,24 @@ public class Minhas_Listas extends Nav {
         }
     }
 
-    private void rederizaListas(ArrayList<Lista> list){
+    private void rederizaListas(ArrayList<Lista> list) {
         if (list != null) {
             final Context ctx = this;
             layout_listas_de_listas.removeAllViews();
-            tv_quant_listas.setText("Listas Encontradas ("+list.size()+"):");
-            for(final Lista lista : list){
+            tv_quant_listas.setText("Listas Encontradas (" + list.size() + "):");
+            for (final Lista lista : list) {
                 View item; // Creating an instance for View Object
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 item = inflater.inflate(R.layout.layout_lista_de_listas, null);
                 ((TextView) item.findViewById(R.id.txtNomeLista)).setText(lista.getNome());
-                ((TextView) item.findViewById(R.id.txtQtdItems)).setText(lista.getListaProdutos().size()+" Produtos");
+                ((TextView) item.findViewById(R.id.txtQtdItems)).setText(lista.getListaProdutos().size() + " Produtos");
                 ((TextView) item.findViewById(R.id.txtDataLista)).setText(lista.getData());
-                ((TextView) item.findViewById(R.id.txtOptions)).setOnClickListener(new View.OnClickListener() {
+                item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         final Dialog dialog_opcoes_lista = new Dialog(Minhas_Listas.this);
                         dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_de_listas);
-                        ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista) ).setOnClickListener(new View.OnClickListener() {
+                        ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(ctx, Criar_Lista_Compras.class);
@@ -157,7 +157,7 @@ public class Minhas_Listas extends Nav {
 
     @Override
     public void onBackPressed() {
-        if(permiteVoltar)
+        if (permiteVoltar)
             super.onBackPressed();
     }
 }

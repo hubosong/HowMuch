@@ -158,9 +158,13 @@ public class Nav extends AppCompatActivity {
                     break;
 
                 case R.id.nav_alertas:
+                    drawerLayout.closeDrawers();
+                    Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
                     break;
 
                 case R.id.nav_financas:
+                    drawerLayout.closeDrawers();
+                    Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
                     break;
 
                 case R.id.nav_logout:
@@ -193,11 +197,10 @@ public class Nav extends AppCompatActivity {
                 readQRcode.putExtra("code", code);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(readQRcode);
-                drawerLayout.closeDrawers();
             } else {
                 Toast.makeText(activity, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
-                drawerLayout.closeDrawers();
             }
+            drawerLayout.closeDrawers();
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -209,6 +212,9 @@ public class Nav extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        drawerLayout.closeDrawers();
+        super.onBackPressed();
+    }
 }
