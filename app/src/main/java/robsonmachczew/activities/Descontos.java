@@ -228,6 +228,9 @@ public class Descontos extends Nav {
             layout_produtos_desconto.removeAllViews();
             DecimalFormat df = new DecimalFormat("0.00");
             for (final ProdutoAbaixoMedia produto : list) {
+                if (produto.getDescricao_produto2() != null && !produto.getDescricao_produto2().equalsIgnoreCase("") && !produto.getDescricao_produto2().equalsIgnoreCase("NULL")) {
+                    produto.setDescricao_produto(produto.getDescricao_produto2());
+                }
                 View item; // Creating an instance for View Object
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 item = inflater.inflate(R.layout.layout_products, null);
@@ -236,7 +239,7 @@ public class Descontos extends Nav {
                 ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
                 ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$: " + produto.getValor_medio());
                 ((TextView) item.findViewById(R.id.txtOff)).setText("R$: " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", "."));
-                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + df.format(produto.getValor()).replace(",","."));
+                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + df.format(produto.getValor()).replace(",", "."));
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -338,6 +341,9 @@ public class Descontos extends Nav {
             layout_produtos_desconto.removeAllViews();
             DecimalFormat df = new DecimalFormat("0.00");
             for (final Item_NFe item : list) {
+                if (item.getProduto().getDescricao2() != null && !item.getProduto().getDescricao2().equalsIgnoreCase("") && !item.getProduto().getDescricao2().equalsIgnoreCase("NULL")) {
+                    item.getProduto().setDescricao(item.getProduto().getDescricao2());
+                }
                 View view; // Creating an instance for View Object
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.layout_products, null);
@@ -346,7 +352,7 @@ public class Descontos extends Nav {
                 ((TextView) view.findViewById(R.id.txtDataNFe)).setText(item.getData());
                 ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$: -");
                 ((TextView) view.findViewById(R.id.txtOff)).setText("R$: -");
-                ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getValor()).replace(",","."));
+                ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getValor()).replace(",", "."));
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

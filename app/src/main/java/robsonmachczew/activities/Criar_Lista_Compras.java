@@ -122,6 +122,12 @@ public class Criar_Lista_Compras extends Nav {
         EditText text = dialog_pesquisa.findViewById(R.id.editText_Procura_Prod_Lista);
         final LinearLayout layoutPesq = dialog_pesquisa.findViewById(R.id.layout_produtos_pesquisados);
         final Button btConcluir = dialog_pesquisa.findViewById(R.id.btConcluirPesq);
+        ((Button) dialog_pesquisa.findViewById(R.id.button2)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog_pesquisa.cancel();
+            }
+        });
         text.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -208,7 +214,6 @@ public class Criar_Lista_Compras extends Nav {
 
     @SuppressLint("StaticFieldLeak")
     private void realizaPesquisaProdutos(final String pesquisa, final LinearLayout layoutProdutos, final Button btConcluir) {
-
         new AsyncTask<String, Void, ArrayList<Produto>>() {
             @Override
             protected void onPreExecute() {
@@ -259,6 +264,9 @@ public class Criar_Lista_Compras extends Nav {
                     }
                 });
                 for (final Produto produto : list) {
+                    if (produto.getDescricao2() != null && !produto.getDescricao2().trim().equalsIgnoreCase("") && !produto.getDescricao2().trim().equalsIgnoreCase("NULL")) {
+                        produto.setDescricao(produto.getDescricao2());
+                    }
                     CheckBox cb = new CheckBox(Criar_Lista_Compras.this);
                     cb.setText(produto.getDescricao());
                     cb.setTextColor(Color.parseColor("#ffffff"));
@@ -290,10 +298,14 @@ public class Criar_Lista_Compras extends Nav {
         }
 
         layout_produtos_lista.removeAllViews();
-        if(lista_compras.getNome() != null && !lista_compras.getNome().trim().equalsIgnoreCase("")) {
+        if (lista_compras.getNome() != null && !lista_compras.getNome().trim().equalsIgnoreCase("")) {
             editTextNomeLista.setText(lista_compras.getNome());
         }
         for (Produto prod : lista_compras.getListaProdutos()) {
+            System.out.println("PROD: " + prod);
+            if (prod.getDescricao2() != null && !prod.getDescricao2().trim().equalsIgnoreCase("") && !prod.getDescricao2().trim().equalsIgnoreCase("NULL")) {
+                prod.setDescricao(prod.getDescricao2());
+            }
             TextView tv = new TextView(this);
             tv.setText(prod.getDescricao());
             tv.setTextColor(Color.WHITE);
@@ -303,7 +315,7 @@ public class Criar_Lista_Compras extends Nav {
 
     @Override
     public void onBackPressed() {
-        if(permiteVoltar)
+        if (permiteVoltar)
             super.onBackPressed();
     }
 }

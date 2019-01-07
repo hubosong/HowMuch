@@ -100,7 +100,6 @@ public class Produto implements Serializable {
     }
 
     public void setTransient_quantidade(float transient_quantidade) {
-        System.out.println("CHAMADO");
         this.transient_quantidade = transient_quantidade;
     }
 
