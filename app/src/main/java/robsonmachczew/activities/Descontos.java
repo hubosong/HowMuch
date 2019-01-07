@@ -247,7 +247,7 @@ public class Descontos extends Nav {
                     ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
                     ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$: " + produto.getValor_medio());
                     ((TextView) item.findViewById(R.id.txtOff)).setText("R$: " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", "."));
-                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + df.format(produto.getValor()).replace(",", "."));
+                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + df.format(produto.getValor()).replace(",", ".")  + " " + produto.getUnidade_comercial());
                     item.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -357,8 +357,9 @@ public class Descontos extends Nav {
                     if (item.getProduto().getDescricao2() != null && !item.getProduto().getDescricao2().equalsIgnoreCase("") && !item.getProduto().getDescricao2().equalsIgnoreCase("NULL")) {
                         item.getProduto().setDescricao(item.getProduto().getDescricao2());
                     }
-                    Date date = sdf_bd.parse(item.getProduto().getTransient_data());
-                    item.getProduto().setTransient_data(sdf_exibicao.format(date));
+                    Date date = sdf_bd.parse(item.getData());
+                    item.setData(sdf_exibicao.format(date));
+                    item.setValor(item.getValor() / item.getQuantidade());
                     View view; // Creating an instance for View Object
                     LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     view = inflater.inflate(R.layout.layout_products, null);
@@ -367,7 +368,7 @@ public class Descontos extends Nav {
                     ((TextView) view.findViewById(R.id.txtDataNFe)).setText(item.getData());
                     ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$: -");
                     ((TextView) view.findViewById(R.id.txtOff)).setText("R$: -");
-                    ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getValor()).replace(",", "."));
+                    ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getValor()).replace(",", ".") + " " + item.getProduto().getUnidade_comercial());
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -454,7 +455,7 @@ public class Descontos extends Nav {
                     layout_produtos_desconto.addView(view);
                 }
                 layout_produtos_desconto.requestFocus();
-            }catch (Exception e){
+            } catch (Exception e) {
                 Toast.makeText(this, "Erro ao Exibir Produtos", Toast.LENGTH_LONG).show();
                 System.out.println(">>> Erro: " + e.getMessage());
             }

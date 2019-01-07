@@ -22,7 +22,7 @@ public class VerProduto extends Nav {
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_ver_produto, contentFrameLayout);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Detalhes de Produto");
+        getSupportActionBar().setTitle("Detalhes do Produto");
 
         tv_descricao_produto = findViewById(R.id.tv_descricao_produto);
 

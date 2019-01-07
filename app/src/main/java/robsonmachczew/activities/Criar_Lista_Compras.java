@@ -41,7 +41,6 @@ import entidade.Utils;
 public class Criar_Lista_Compras extends Nav {
 
     private boolean permiteVoltar;
-    private String activity_origem;
     private Usuario usuario;
     private Lista lista_compras;
     private Dialog dialog_pesquisa;
@@ -80,10 +79,8 @@ public class Criar_Lista_Compras extends Nav {
             for (int i = 0; i < nfe.getLista_items().size(); i++) {
                 lista_compras.getListaProdutos().add(nfe.getLista_items().get(i).getProduto());
             }
-            activity_origem = "LISTA_NFES";
         } else if (getIntent().getSerializableExtra("PRODUTO") != null) {
             //SE É PARA ADICIONAR UM PRODUTO À UMA LISTA
-            activity_origem = "DESCONTOS";
             if (getIntent().getSerializableExtra("LISTA") != null) {
                 //ADICIONAR À UMA LISTA EXISTENTE
                 lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
@@ -94,7 +91,6 @@ public class Criar_Lista_Compras extends Nav {
             }
             lista_compras.getListaProdutos().add((Produto) getIntent().getSerializableExtra("PRODUTO"));
         } else {
-            activity_origem = "NAV";
             lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
             if (lista_compras == null) {
                 lista_compras = new Lista();
