@@ -37,31 +37,45 @@
                 android:id="@+id/bt_historico_precos_produto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ver Detalhes / Histórico de Preços" />
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/buttonshape"
+                android:text="Ver Detalhes e\n Histórico de Preços"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/bt_adiciona_produto_nova_lista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Adicionar à Nova Lista" />
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/buttonshape"
+                android:text="Adicionar à\nNova Lista"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/bt_adiciona_produto_lista_existente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Adicionar à Lista Existente" />
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/buttonshape"
+                android:text="Adicionar à\nLista Existente"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/bt_compartilhar_produto_abaixo_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Compartilhar" />
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/buttonshape"
+                android:text="Compartilhar"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/bt_criar_alerta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Criar Alerta" />
+                android:background="@drawable/buttonshape"
+                android:text="Criar Alerta"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
     </ScrollView>

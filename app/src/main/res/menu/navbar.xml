@@ -6,7 +6,7 @@
     <group android:id="@+id/one" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_off"
-            android:icon="@drawable/ic_pie_chart"
+            android:icon="@drawable/ic_icone_discount"
             android:title="@string/nav_off" />
         <item
             android:id="@+id/nav_new_list"
@@ -14,23 +14,23 @@
             android:title="@string/nav_new_list" />
         <item
             android:id="@+id/nav_my_buy"
-            android:icon="@drawable/ic_contact"
+            android:icon="@drawable/ic_clipboard"
             android:title="@string/nav_my_buy" />
         <item
             android:id="@+id/nav_my_nfe"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_bill"
             android:title="@string/nav_my_nfe" />
         <item
             android:id="@+id/nav_send_nfe"
-            android:icon="@drawable/ic_focus"
+            android:icon="@drawable/ic_qr_code"
             android:title="@string/nav_send_nfe" />
         <item
             android:id="@+id/nav_alertas"
-            android:icon="@drawable/ic_suggestion"
+            android:icon="@drawable/ic_alarm"
             android:title="Alertas" />
         <item
             android:id="@+id/nav_financas"
-            android:icon="@drawable/ic_graphic"
+            android:icon="@drawable/ic_debit_card"
             android:title="Finanças" />
     </group>
 
