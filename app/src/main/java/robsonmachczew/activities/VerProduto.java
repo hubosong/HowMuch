@@ -1,6 +1,5 @@
 package robsonmachczew.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.TextView;

@@ -21,7 +21,9 @@ import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entidade.NFe;
 import entidade.Usuario;
@@ -33,6 +35,9 @@ public class Minhas_NFes extends Nav {
     private Usuario usuario;
     private LinearLayout layout_lista_de_nfes;
     private TextView tv_quant_nfes;
+
+    private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,28 +78,28 @@ public class Minhas_NFes extends Nav {
                 @Override
                 protected ArrayList<NFe> doInBackground(String... params) {
                     ArrayList<NFe> list = null;
-                        try {
-                            String urlParameters = "funcao=GET_ALL_BY_ID_USUARIO&id_usuario=" + usuario.getId_usuario();
-                            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                    try {
+                        String urlParameters = "funcao=GET_ALL_BY_ID_USUARIO&id_usuario=" + usuario.getId_usuario();
+                        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                            URL url = new URL(Utils.URL + "nfe");
-                            HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                            urlCon.setRequestMethod("POST");
-                            urlCon.setDoOutput(true);
-                            urlCon.setDoInput(true);
+                        URL url = new URL(Utils.URL + "nfe");
+                        HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                        urlCon.setRequestMethod("POST");
+                        urlCon.setDoOutput(true);
+                        urlCon.setDoInput(true);
 
-                            DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                            wr.write(postData);
-                            wr.close();
-                            wr.flush();
+                        DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                        wr.write(postData);
+                        wr.close();
+                        wr.flush();
 
-                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                            list = (ArrayList<NFe>) ois.readObject();
-                            ois.close();
+                        ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                        list = (ArrayList<NFe>) ois.readObject();
+                        ois.close();
 
-                        } catch (ClassNotFoundException | IOException e) {
-                            e.printStackTrace();
-                        }
+                    } catch (ClassNotFoundException | IOException e) {
+                        e.printStackTrace();
+                    }
                     return list;
                 }
 
@@ -108,46 +113,53 @@ public class Minhas_NFes extends Nav {
         }
     }
 
-    private void renderizaNFes(ArrayList<NFe> list){
+    private void renderizaNFes(ArrayList<NFe> list) {
         if (list != null) {
-            layout_lista_de_nfes.removeAllViews();
-            tv_quant_nfes.setText("Minhas Notas Fiscais ("+list.size()+"):");
-            for(final NFe nfe : list){
-                View item; // Creating an instance for View Object
-                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                item = inflater.inflate(R.layout.layout_my_buys_nfes, null);
-                ((TextView) item.findViewById(R.id.txtNomeLista)).setText(nfe.getMercado().getNome());
-                ((TextView) item.findViewById(R.id.txtHowMany)).setText(" "+nfe.getLista_items().size());
-                ((TextView) item.findViewById(R.id.txtUnitPrice)).setText(nfe.getData());
-                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ "+nfe.getValor());
-                item.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final Dialog dialog_opcoes_nfe = new Dialog(Minhas_NFes.this);
-                        dialog_opcoes_nfe.setContentView(R.layout.dialog_opcoes_da_nfe);
-                        dialog_opcoes_nfe.show();
-                        ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes) ).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(Minhas_NFes.this, VerNFe.class);
-                                intent.putExtra("NFE", nfe);
-                                startActivity(intent);
-                                dialog_opcoes_nfe.cancel();
-                            }
-                        });
-                        ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_transformar_em_lista) ).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(Minhas_NFes.this, Criar_Lista_Compras.class);
-                                intent.putExtra("PERMITE_VOLTAR", true);
-                                intent.putExtra("NFE", nfe);
-                                startActivity(intent);
-                                dialog_opcoes_nfe.cancel();
-                            }
-                        });
-                    }
-                });
-                layout_lista_de_nfes.addView(item);
+            try {
+                layout_lista_de_nfes.removeAllViews();
+                tv_quant_nfes.setText("Minhas Notas Fiscais (" + list.size() + "):");
+                for (final NFe nfe : list) {
+                    Date date = sdf_bd.parse(nfe.getData());
+                    nfe.setData(sdf_exibicao.format(date));
+                    View item; // Creating an instance for View Object
+                    LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    item = inflater.inflate(R.layout.layout_my_buys_nfes, null);
+                    ((TextView) item.findViewById(R.id.txtNomeLista)).setText(nfe.getMercado().getNome());
+                    ((TextView) item.findViewById(R.id.txtHowMany)).setText(" " + nfe.getLista_items().size());
+                    ((TextView) item.findViewById(R.id.txtUnitPrice)).setText(nfe.getData());
+                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + nfe.getValor());
+                    item.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            final Dialog dialog_opcoes_nfe = new Dialog(Minhas_NFes.this);
+                            dialog_opcoes_nfe.setContentView(R.layout.dialog_opcoes_da_nfe);
+                            dialog_opcoes_nfe.show();
+                            ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Minhas_NFes.this, VerNFe.class);
+                                    intent.putExtra("NFE", nfe);
+                                    startActivity(intent);
+                                    dialog_opcoes_nfe.cancel();
+                                }
+                            });
+                            ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_transformar_em_lista)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Minhas_NFes.this, Criar_Lista_Compras.class);
+                                    intent.putExtra("PERMITE_VOLTAR", true);
+                                    intent.putExtra("NFE", nfe);
+                                    startActivity(intent);
+                                    dialog_opcoes_nfe.cancel();
+                                }
+                            });
+                        }
+                    });
+                    layout_lista_de_nfes.addView(item);
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, "Erro ao Exibir Produtos", Toast.LENGTH_LONG).show();
+                System.out.println(">>> Erro: " + e.getMessage());
             }
         } else {
             Toast.makeText(Minhas_NFes.this, "Nenhuma NFe Encontrada", Toast.LENGTH_LONG).show();
@@ -156,7 +168,7 @@ public class Minhas_NFes extends Nav {
 
     @Override
     public void onBackPressed() {
-        if(permiteVoltar)
+        if (permiteVoltar)
             super.onBackPressed();
     }
 }

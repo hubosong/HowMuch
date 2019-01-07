@@ -20,7 +20,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entidade.Lista;
 import entidade.Usuario;
@@ -32,6 +34,8 @@ public class Minhas_Listas extends Nav {
     private Usuario usuario;
     private LinearLayout layout_listas_de_listas;
     private TextView tv_quant_listas;
+    private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
 
     @Override
@@ -110,45 +114,52 @@ public class Minhas_Listas extends Nav {
 
     private void rederizaListas(ArrayList<Lista> list) {
         if (list != null) {
-            final Context ctx = this;
-            layout_listas_de_listas.removeAllViews();
-            tv_quant_listas.setText("Listas Encontradas (" + list.size() + "):");
-            for (final Lista lista : list) {
-                View item; // Creating an instance for View Object
-                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                item = inflater.inflate(R.layout.layout_lista_de_listas, null);
-                ((TextView) item.findViewById(R.id.txtNomeLista)).setText(lista.getNome());
-                ((TextView) item.findViewById(R.id.txtQtdItems)).setText(lista.getListaProdutos().size() + " Produtos");
-                ((TextView) item.findViewById(R.id.txtDataLista)).setText(lista.getData());
-                item.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final Dialog dialog_opcoes_lista = new Dialog(Minhas_Listas.this);
-                        dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_de_listas);
-                        ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(ctx, Criar_Lista_Compras.class);
-                                intent.putExtra("PERMITE_VOLTAR", true);
-                                intent.putExtra("LISTA", lista);
-                                startActivity(intent);
-                                dialog_opcoes_lista.cancel();
-                            }
-                        });
-                        ((Button) dialog_opcoes_lista.findViewById(R.id.bt_comparar_precos_em_mercados)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(ctx, VerComparacaoLista.class);
-                                intent.putExtra("PERMITE_VOLTAR", true);
-                                intent.putExtra("LISTA", lista);
-                                startActivity(intent);
-                                dialog_opcoes_lista.cancel();
-                            }
-                        });
-                        dialog_opcoes_lista.show();
-                    }
-                });
-                layout_listas_de_listas.addView(item);
+            try {
+                final Context ctx = this;
+                layout_listas_de_listas.removeAllViews();
+                tv_quant_listas.setText("Listas Encontradas (" + list.size() + "):");
+                for (final Lista lista : list) {
+                    Date date = sdf_bd.parse(lista.getData());
+                    lista.setData(sdf_exibicao.format(date));
+                    View item; // Creating an instance for View Object
+                    LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    item = inflater.inflate(R.layout.layout_lista_de_listas, null);
+                    ((TextView) item.findViewById(R.id.txtNomeLista)).setText(lista.getNome());
+                    ((TextView) item.findViewById(R.id.txtQtdItems)).setText(lista.getListaProdutos().size() + " Produtos");
+                    ((TextView) item.findViewById(R.id.txtDataLista)).setText(lista.getData());
+                    item.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            final Dialog dialog_opcoes_lista = new Dialog(Minhas_Listas.this);
+                            dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_de_listas);
+                            ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(ctx, Criar_Lista_Compras.class);
+                                    intent.putExtra("PERMITE_VOLTAR", true);
+                                    intent.putExtra("LISTA", lista);
+                                    startActivity(intent);
+                                    dialog_opcoes_lista.cancel();
+                                }
+                            });
+                            ((Button) dialog_opcoes_lista.findViewById(R.id.bt_comparar_precos_em_mercados)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(ctx, VerComparacaoLista.class);
+                                    intent.putExtra("PERMITE_VOLTAR", true);
+                                    intent.putExtra("LISTA", lista);
+                                    startActivity(intent);
+                                    dialog_opcoes_lista.cancel();
+                                }
+                            });
+                            dialog_opcoes_lista.show();
+                        }
+                    });
+                    layout_listas_de_listas.addView(item);
+                }
+            }catch (Exception e){
+                Toast.makeText(this, "Erro ao Exibir Produtos", Toast.LENGTH_LONG).show();
+                System.out.println(">>> Erro: " + e.getMessage());
             }
         } else {
             Toast.makeText(Minhas_Listas.this, "Nenhuma Lista Encontrada", Toast.LENGTH_LONG).show();

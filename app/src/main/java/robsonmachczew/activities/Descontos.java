@@ -31,7 +31,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entidade.Item_NFe;
 import entidade.Lista;
@@ -48,6 +50,9 @@ public class Descontos extends Nav {
     private EditText txt_pesquisa_produtos;
     private ArrayList<Lista> lista_de_listas;
     private Usuario usuario;
+
+    private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
     private void pegaListas() {
         if (usuario == null) {
@@ -224,112 +229,119 @@ public class Descontos extends Nav {
 
     private void renderizaProdutosComDesconto(ArrayList<ProdutoAbaixoMedia> list) {
         if (list != null) {
-            tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio (" + list.size() + "):");
-            layout_produtos_desconto.removeAllViews();
-            DecimalFormat df = new DecimalFormat("0.00");
-            for (final ProdutoAbaixoMedia produto : list) {
-                if (produto.getDescricao_produto2() != null && !produto.getDescricao_produto2().equalsIgnoreCase("") && !produto.getDescricao_produto2().equalsIgnoreCase("NULL")) {
-                    produto.setDescricao_produto(produto.getDescricao_produto2());
-                }
-                View item; // Creating an instance for View Object
-                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                item = inflater.inflate(R.layout.layout_products, null);
-                ((TextView) item.findViewById(R.id.txtNomeProduto)).setText(produto.getDescricao_produto());
-                ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(produto.getNome_mercado());
-                ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
-                ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$: " + produto.getValor_medio());
-                ((TextView) item.findViewById(R.id.txtOff)).setText("R$: " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", "."));
-                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + df.format(produto.getValor()).replace(",", "."));
-                item.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final Dialog dialog_opcoes_produto = new Dialog(Descontos.this);
-                        dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
-                                intent.putExtra("PERMITE_VOLTAR", true);
-                                Produto p = new Produto();
-                                p.setId_produto(produto.getId_produto());
-                                p.setDescricao(produto.getDescricao_produto());
-                                p.setDescricao2(produto.getDescricao_produto2());
-                                intent.putExtra("PRODUTO", p);
-                                startActivity(intent);
-                                dialog_opcoes_produto.cancel();
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (lista_de_listas != null) {
-                                    final Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
-                                    dialog_adicionar_produto_lista.setContentView(R.layout.dialog_pesquisa_lista_de_listas_add_produto);
-                                    ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog)).setText("Adicionar \"" + produto.getDescricao_produto() + "\" à Lista:");
-                                    final LinearLayout layout_lista_de_listas = dialog_adicionar_produto_lista.findViewById(R.id.layout_lista_de_listas);
-                                    layout_lista_de_listas.removeAllViews();
-                                    for (Lista lista : lista_de_listas) {
-                                        CheckBox cb = new CheckBox(dialog_adicionar_produto_lista.getContext());
-                                        cb.setText(lista.getNome() + " " + lista.getData());
-                                        cb.setTextColor(Color.WHITE);
-                                        layout_lista_de_listas.addView(cb);
-                                    }
-                                    ((Button) dialog_adicionar_produto_lista.findViewById(R.id.bt_AdicionarProdutoLista)).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            ArrayList<Long> ids_listas = new ArrayList<>();
-                                            for (int i = 0; i < layout_lista_de_listas.getChildCount(); i++) {
-                                                if (((CheckBox) layout_lista_de_listas.getChildAt(i)).isChecked()) {
-                                                    ids_listas.add(lista_de_listas.get(i).getId_lista());
-                                                }
-                                            }
-                                            adicionarProdutoListas(ids_listas, produto.getId_produto());
-                                            dialog_adicionar_produto_lista.cancel();
-                                        }
-                                    });
-                                    dialog_opcoes_produto.cancel();
-                                    dialog_adicionar_produto_lista.show();
-                                }
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_compartilhar_produto_abaixo_media)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent sendIntent = new Intent();
-                                sendIntent.setAction(Intent.ACTION_SEND);
-                                String s = "Olá, talvez você goste desta oferta: " + produto.getDescricao_produto() + " - R$ " + produto.getValor();
-                                s += "\nBaixe o app HowMuch e confira: www.howmuch.com";
-                                sendIntent.putExtra(Intent.EXTRA_TEXT, s);
-                                sendIntent.setType("text/plain");
-                                startActivity(sendIntent);
-                                dialog_opcoes_produto.cancel();
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_criar_alerta)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(Descontos.this, "Não Implementado", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_historico_precos_produto)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(Descontos.this, VerProduto.class);
-                                Produto p = new Produto();
-                                p.setId_produto(produto.getId_produto());
-                                p.setDescricao(produto.getDescricao_produto());
-                                p.setUnidade_comercial(produto.getUnidade_comercial());
-                                intent.putExtra("PRODUTO", p);
-                                startActivity(intent);
-                                dialog_opcoes_produto.cancel();
-                            }
-                        });
-                        dialog_opcoes_produto.show();
+            try {
+                tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio (" + list.size() + "):");
+                layout_produtos_desconto.removeAllViews();
+                DecimalFormat df = new DecimalFormat("0.00");
+                for (final ProdutoAbaixoMedia produto : list) {
+                    if (produto.getDescricao_produto2() != null && !produto.getDescricao_produto2().equalsIgnoreCase("") && !produto.getDescricao_produto2().equalsIgnoreCase("NULL")) {
+                        produto.setDescricao_produto(produto.getDescricao_produto2());
                     }
-                });
-                layout_produtos_desconto.addView(item);
+                    Date date = sdf_bd.parse(produto.getData());
+                    produto.setData(sdf_exibicao.format(date));
+                    View item; // Creating an instance for View Object
+                    LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    item = inflater.inflate(R.layout.layout_products, null);
+                    ((TextView) item.findViewById(R.id.txtNomeProduto)).setText(produto.getDescricao_produto());
+                    ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(produto.getNome_mercado());
+                    ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
+                    ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$: " + produto.getValor_medio());
+                    ((TextView) item.findViewById(R.id.txtOff)).setText("R$: " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", "."));
+                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + df.format(produto.getValor()).replace(",", "."));
+                    item.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            final Dialog dialog_opcoes_produto = new Dialog(Descontos.this);
+                            dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
+                                    intent.putExtra("PERMITE_VOLTAR", true);
+                                    Produto p = new Produto();
+                                    p.setId_produto(produto.getId_produto());
+                                    p.setDescricao(produto.getDescricao_produto());
+                                    p.setDescricao2(produto.getDescricao_produto2());
+                                    intent.putExtra("PRODUTO", p);
+                                    startActivity(intent);
+                                    dialog_opcoes_produto.cancel();
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (lista_de_listas != null) {
+                                        final Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
+                                        dialog_adicionar_produto_lista.setContentView(R.layout.dialog_pesquisa_lista_de_listas_add_produto);
+                                        ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog)).setText("Adicionar \"" + produto.getDescricao_produto() + "\" à Lista:");
+                                        final LinearLayout layout_lista_de_listas = dialog_adicionar_produto_lista.findViewById(R.id.layout_lista_de_listas);
+                                        layout_lista_de_listas.removeAllViews();
+                                        for (Lista lista : lista_de_listas) {
+                                            CheckBox cb = new CheckBox(dialog_adicionar_produto_lista.getContext());
+                                            cb.setText(lista.getNome() + " " + lista.getData());
+                                            cb.setTextColor(Color.WHITE);
+                                            layout_lista_de_listas.addView(cb);
+                                        }
+                                        ((Button) dialog_adicionar_produto_lista.findViewById(R.id.bt_AdicionarProdutoLista)).setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                ArrayList<Long> ids_listas = new ArrayList<>();
+                                                for (int i = 0; i < layout_lista_de_listas.getChildCount(); i++) {
+                                                    if (((CheckBox) layout_lista_de_listas.getChildAt(i)).isChecked()) {
+                                                        ids_listas.add(lista_de_listas.get(i).getId_lista());
+                                                    }
+                                                }
+                                                adicionarProdutoListas(ids_listas, produto.getId_produto());
+                                                dialog_adicionar_produto_lista.cancel();
+                                            }
+                                        });
+                                        dialog_opcoes_produto.cancel();
+                                        dialog_adicionar_produto_lista.show();
+                                    }
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_compartilhar_produto_abaixo_media)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent sendIntent = new Intent();
+                                    sendIntent.setAction(Intent.ACTION_SEND);
+                                    String s = "Olá, talvez você goste desta oferta: " + produto.getDescricao_produto() + " - R$ " + produto.getValor();
+                                    s += "\nBaixe o app HowMuch e confira: www.howmuch.com";
+                                    sendIntent.putExtra(Intent.EXTRA_TEXT, s);
+                                    sendIntent.setType("text/plain");
+                                    startActivity(sendIntent);
+                                    dialog_opcoes_produto.cancel();
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_criar_alerta)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(Descontos.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_historico_precos_produto)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Descontos.this, VerProduto.class);
+                                    Produto p = new Produto();
+                                    p.setId_produto(produto.getId_produto());
+                                    p.setDescricao(produto.getDescricao_produto());
+                                    p.setUnidade_comercial(produto.getUnidade_comercial());
+                                    intent.putExtra("PRODUTO", p);
+                                    startActivity(intent);
+                                    dialog_opcoes_produto.cancel();
+                                }
+                            });
+                            dialog_opcoes_produto.show();
+                        }
+                    });
+                    layout_produtos_desconto.addView(item);
+                }
+                layout_produtos_desconto.requestFocus();
+            } catch (Exception e) {
+                Toast.makeText(this, "Erro ao Exibir Produtos", Toast.LENGTH_LONG).show();
+                System.out.println(">>> Erro: " + e.getMessage());
             }
-            layout_produtos_desconto.requestFocus();
         } else {
             Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
         }
@@ -337,108 +349,115 @@ public class Descontos extends Nav {
 
     private void renderizaProdutosDaPesquisa(ArrayList<Item_NFe> list) {
         if (list != null) {
-            tv_quant_prods_desconto.setText("Produtos Encontrados (" + list.size() + "):");
-            layout_produtos_desconto.removeAllViews();
-            DecimalFormat df = new DecimalFormat("0.00");
-            for (final Item_NFe item : list) {
-                if (item.getProduto().getDescricao2() != null && !item.getProduto().getDescricao2().equalsIgnoreCase("") && !item.getProduto().getDescricao2().equalsIgnoreCase("NULL")) {
-                    item.getProduto().setDescricao(item.getProduto().getDescricao2());
-                }
-                View view; // Creating an instance for View Object
-                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.layout_products, null);
-                ((TextView) view.findViewById(R.id.txtNomeProduto)).setText(item.getProduto().getDescricao());
-                ((TextView) view.findViewById(R.id.txtNomeMercado)).setText(item.getTransient_mercado().getNome());
-                ((TextView) view.findViewById(R.id.txtDataNFe)).setText(item.getData());
-                ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$: -");
-                ((TextView) view.findViewById(R.id.txtOff)).setText("R$: -");
-                ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getValor()).replace(",", "."));
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final Dialog dialog_opcoes_produto = new Dialog(Descontos.this);
-                        dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
-                                intent.putExtra("PERMITE_VOLTAR", true);
-                                intent.putExtra("PRODUTO", item.getProduto());
-                                startActivity(intent);
-                                dialog_opcoes_produto.cancel();
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (lista_de_listas != null) {
-                                    final Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
-                                    dialog_adicionar_produto_lista.setContentView(R.layout.dialog_pesquisa_lista_de_listas_add_produto);
-                                    ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog)).setText("Adicionar \"" + item.getProduto().getDescricao() + "\" à Lista:");
-                                    final LinearLayout layout_lista_de_listas = dialog_adicionar_produto_lista.findViewById(R.id.layout_lista_de_listas);
-                                    layout_lista_de_listas.removeAllViews();
-                                    for (Lista lista : lista_de_listas) {
-                                        CheckBox cb = new CheckBox(dialog_adicionar_produto_lista.getContext());
-                                        cb.setText(lista.getNome() + " " + lista.getData());
-                                        cb.setTextColor(Color.WHITE);
-                                        layout_lista_de_listas.addView(cb);
-                                    }
-                                    ((Button) dialog_adicionar_produto_lista.findViewById(R.id.bt_AdicionarProdutoLista)).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            ArrayList<Long> ids_listas = new ArrayList<>();
-                                            for (int i = 0; i < layout_lista_de_listas.getChildCount(); i++) {
-                                                if (((CheckBox) layout_lista_de_listas.getChildAt(i)).isChecked()) {
-                                                    ids_listas.add(lista_de_listas.get(i).getId_lista());
-                                                }
-                                            }
-                                            adicionarProdutoListas(ids_listas, item.getProduto().getId_produto());
-                                            dialog_adicionar_produto_lista.cancel();
-                                        }
-                                    });
-                                    dialog_opcoes_produto.cancel();
-                                    dialog_adicionar_produto_lista.show();
-                                }
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_compartilhar_produto_abaixo_media)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent sendIntent = new Intent();
-                                sendIntent.setAction(Intent.ACTION_SEND);
-                                String s = "Olá, talvez você goste desta oferta: " + item.getProduto().getDescricao() + " - R$ " + item.getValor();
-                                s += "\nBaixe o app HowMuch e confira: www.howmuch.com";
-                                sendIntent.putExtra(Intent.EXTRA_TEXT, s);
-                                sendIntent.setType("text/plain");
-                                startActivity(sendIntent);
-                                dialog_opcoes_produto.cancel();
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_criar_alerta)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(Descontos.this, "Não Implementado", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        ((Button) dialog_opcoes_produto.findViewById(R.id.bt_historico_precos_produto)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(Descontos.this, VerProduto.class);
-                                Produto p = new Produto();
-                                p.setId_produto(item.getProduto().getId_produto());
-                                p.setDescricao(item.getProduto().getDescricao());
-                                p.setUnidade_comercial(item.getProduto().getUnidade_comercial());
-                                intent.putExtra("PRODUTO", p);
-                                startActivity(intent);
-                                dialog_opcoes_produto.cancel();
-                            }
-                        });
-                        dialog_opcoes_produto.show();
+            try {
+                tv_quant_prods_desconto.setText("Produtos Encontrados (" + list.size() + "):");
+                layout_produtos_desconto.removeAllViews();
+                DecimalFormat df = new DecimalFormat("0.00");
+                for (final Item_NFe item : list) {
+                    if (item.getProduto().getDescricao2() != null && !item.getProduto().getDescricao2().equalsIgnoreCase("") && !item.getProduto().getDescricao2().equalsIgnoreCase("NULL")) {
+                        item.getProduto().setDescricao(item.getProduto().getDescricao2());
                     }
-                });
-                layout_produtos_desconto.addView(view);
+                    Date date = sdf_bd.parse(item.getProduto().getTransient_data());
+                    item.getProduto().setTransient_data(sdf_exibicao.format(date));
+                    View view; // Creating an instance for View Object
+                    LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    view = inflater.inflate(R.layout.layout_products, null);
+                    ((TextView) view.findViewById(R.id.txtNomeProduto)).setText(item.getProduto().getDescricao());
+                    ((TextView) view.findViewById(R.id.txtNomeMercado)).setText(item.getTransient_mercado().getNome());
+                    ((TextView) view.findViewById(R.id.txtDataNFe)).setText(item.getData());
+                    ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$: -");
+                    ((TextView) view.findViewById(R.id.txtOff)).setText("R$: -");
+                    ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getValor()).replace(",", "."));
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            final Dialog dialog_opcoes_produto = new Dialog(Descontos.this);
+                            dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
+                                    intent.putExtra("PERMITE_VOLTAR", true);
+                                    intent.putExtra("PRODUTO", item.getProduto());
+                                    startActivity(intent);
+                                    dialog_opcoes_produto.cancel();
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (lista_de_listas != null) {
+                                        final Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
+                                        dialog_adicionar_produto_lista.setContentView(R.layout.dialog_pesquisa_lista_de_listas_add_produto);
+                                        ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog)).setText("Adicionar \"" + item.getProduto().getDescricao() + "\" à Lista:");
+                                        final LinearLayout layout_lista_de_listas = dialog_adicionar_produto_lista.findViewById(R.id.layout_lista_de_listas);
+                                        layout_lista_de_listas.removeAllViews();
+                                        for (Lista lista : lista_de_listas) {
+                                            CheckBox cb = new CheckBox(dialog_adicionar_produto_lista.getContext());
+                                            cb.setText(lista.getNome() + " " + lista.getData());
+                                            cb.setTextColor(Color.WHITE);
+                                            layout_lista_de_listas.addView(cb);
+                                        }
+                                        ((Button) dialog_adicionar_produto_lista.findViewById(R.id.bt_AdicionarProdutoLista)).setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                ArrayList<Long> ids_listas = new ArrayList<>();
+                                                for (int i = 0; i < layout_lista_de_listas.getChildCount(); i++) {
+                                                    if (((CheckBox) layout_lista_de_listas.getChildAt(i)).isChecked()) {
+                                                        ids_listas.add(lista_de_listas.get(i).getId_lista());
+                                                    }
+                                                }
+                                                adicionarProdutoListas(ids_listas, item.getProduto().getId_produto());
+                                                dialog_adicionar_produto_lista.cancel();
+                                            }
+                                        });
+                                        dialog_opcoes_produto.cancel();
+                                        dialog_adicionar_produto_lista.show();
+                                    }
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_compartilhar_produto_abaixo_media)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent sendIntent = new Intent();
+                                    sendIntent.setAction(Intent.ACTION_SEND);
+                                    String s = "Olá, talvez você goste desta oferta: " + item.getProduto().getDescricao() + " - R$ " + item.getValor();
+                                    s += "\nBaixe o app HowMuch e confira: www.howmuch.com";
+                                    sendIntent.putExtra(Intent.EXTRA_TEXT, s);
+                                    sendIntent.setType("text/plain");
+                                    startActivity(sendIntent);
+                                    dialog_opcoes_produto.cancel();
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_criar_alerta)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(Descontos.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            ((Button) dialog_opcoes_produto.findViewById(R.id.bt_historico_precos_produto)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(Descontos.this, VerProduto.class);
+                                    Produto p = new Produto();
+                                    p.setId_produto(item.getProduto().getId_produto());
+                                    p.setDescricao(item.getProduto().getDescricao());
+                                    p.setUnidade_comercial(item.getProduto().getUnidade_comercial());
+                                    intent.putExtra("PRODUTO", p);
+                                    startActivity(intent);
+                                    dialog_opcoes_produto.cancel();
+                                }
+                            });
+                            dialog_opcoes_produto.show();
+                        }
+                    });
+                    layout_produtos_desconto.addView(view);
+                }
+                layout_produtos_desconto.requestFocus();
+            }catch (Exception e){
+                Toast.makeText(this, "Erro ao Exibir Produtos", Toast.LENGTH_LONG).show();
+                System.out.println(">>> Erro: " + e.getMessage());
             }
-            layout_produtos_desconto.requestFocus();
         } else {
             Toast.makeText(Descontos.this, "Nenhum Item Encontrado", Toast.LENGTH_LONG).show();
         }

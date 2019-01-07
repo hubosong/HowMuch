@@ -35,7 +35,6 @@ import java.util.Comparator;
 import entidade.Lista;
 import entidade.NFe;
 import entidade.Produto;
-import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
