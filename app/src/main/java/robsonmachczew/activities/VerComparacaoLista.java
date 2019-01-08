@@ -19,9 +19,11 @@ import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import entidade.Lista;
 import entidade.Produto;
@@ -33,6 +35,9 @@ public class VerComparacaoLista extends Nav {
     private LinearLayout layout_listas_comparadas;
     private TextView txt_nome_da_lista_de_compras;
     private TextView txt_mercados_simulados;
+
+    private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,7 @@ public class VerComparacaoLista extends Nav {
         txt_mercados_simulados = findViewById(R.id.txt_mercados_simulados);
 
         ArrayList<Long> ids_produtos = new ArrayList<>();
-        for(Produto p : lista.getListaProdutos()){
+        for (Produto p : lista.getListaProdutos()) {
             ids_produtos.add(p.getId_produto());
         }
         compararLista(ids_produtos);
@@ -94,6 +99,21 @@ public class VerComparacaoLista extends Nav {
 
             @Override
             protected void onPostExecute(ArrayList<Lista> list) {
+                try {
+                    for (Lista ll : list) {
+                        ll.setNome(lista.getNome());
+                        ll.setValor_total(0.0f);
+                        for (Produto p : ll.getListaProdutos()) {
+                            System.out.println(">>>P: " + p.getTransient_valor() + "  " + p.getTransient_quantidade());
+                            p.setTransient_valor(p.getTransient_valor() / p.getTransient_quantidade());
+                            ll.setValor_total(ll.getValor_total() + p.getTransient_valor());
+                            Date date = sdf_bd.parse(p.getTransient_data());
+                            p.setTransient_data(sdf_exibicao.format(date));
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
                 renderizaComparacao(list);
             }
         }.execute();
@@ -102,7 +122,7 @@ public class VerComparacaoLista extends Nav {
     private void renderizaComparacao(ArrayList<Lista> list) {
         if (list != null) {
             layout_listas_comparadas.removeAllViews();
-            txt_mercados_simulados.setText("Mercados Simulados ("+list.size() + "):");
+            txt_mercados_simulados.setText("Mercados Simulados (" + list.size() + "):");
             txt_nome_da_lista_de_compras.setText(lista.getNome());
             Collections.sort(list, new Comparator<Lista>() {
                 @Override
@@ -125,7 +145,7 @@ public class VerComparacaoLista extends Nav {
                 item = inflater.inflate(R.layout.layout_item_comparacao_listas, null);
                 ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(l.getMercado().getNome());
                 ((TextView) item.findViewById(R.id.txtHowMany)).setText(l.getListaProdutos().size() + " / " + lista.getListaProdutos().size());
-                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + df.format(l.getValor_total()).replace(",","."));
+                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + df.format(l.getValor_total()).replace(",", "."));
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -135,7 +155,7 @@ public class VerComparacaoLista extends Nav {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(VerComparacaoLista.this, VerSimulacaoListaEmMercado.class);
-                                intent.putExtra("MERCADO", l.getMercado());
+                                intent.putExtra("LISTA", l);
                                 startActivity(intent);
                                 dialog_opcoes_lista.cancel();
                             }

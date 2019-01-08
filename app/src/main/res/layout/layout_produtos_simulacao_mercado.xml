@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="300dp">
+
+    <!-- ?android:attr/listPreferredItemHeight -->
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="7dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_background"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/txtNomeProduto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Descrição do Produto"
+                android:ems="11"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDataNFe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtNomeProduto"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Data da Compra do Item: "
+                android:maxLines="1"
+                android:ems="15"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@color/hint_nav_login"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtMediumPriceDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDataNFe"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/txt_desc_medium_price"
+                android:textColor="@color/hint_nav_login"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtMediumPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDataNFe"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@+id/txtMediumPriceDescription"
+                android:text="@string/txt_medium_price"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@color/hint_nav_login" />
+
+            <TextView
+                android:id="@+id/txtOffDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtMediumPriceDescription"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/txt_desc_off_price"
+                android:textColor="@color/hint_nav_login"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtMediumPriceDescription"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="3dp"
+                android:layout_toEndOf="@+id/txtOffDescription"
+                android:text="@string/txt_off_price"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@color/hint_nav_login" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:paddingEnd="5dp"
+                android:layout_marginTop="7dp"
+                android:gravity="right|top">
+
+                <TextView
+                    android:id="@+id/txtOptions"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="&#8942;"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    android:textColor="@color/hint_nav_login" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@color/toolbar_status"
+                android:gravity="right|bottom"
+                android:orientation="vertical"
+                android:paddingBottom="7dp"
+                android:paddingEnd="5dp">
+
+                <TextView
+                    android:id="@+id/txtPriceDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Preço Nessa NFe:"
+                    android:textColor="@color/hint_nav_login"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/txtPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_price"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    android:textColor="@color/icons_btns"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
