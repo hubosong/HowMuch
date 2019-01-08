@@ -41,16 +41,26 @@
 
         <Button
             android:id="@+id/button4"
+            android:background="@drawable/buttonshape_small_left"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
             android:onClick="adicionarProduto"
             android:text="Adicionar Produto" />
 
         <Button
             android:id="@+id/button3"
+            android:background="@drawable/buttonshape_small_right"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
             android:onClick="preFinalizarLista"
             android:text="Finalizar Lista" />

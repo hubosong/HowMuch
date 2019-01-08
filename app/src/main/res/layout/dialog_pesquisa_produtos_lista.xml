@@ -29,15 +29,25 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
-            android:text="Cancelar" />
+            android:background="@drawable/buttonshape_small_left"
+            android:text="Cancelar"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btConcluirPesq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
-            android:text="Concluir" />
+            android:background="@drawable/buttonshape_small_right"
+            android:text="Concluir"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <ScrollView

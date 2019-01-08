@@ -18,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -117,13 +118,14 @@ public class VerComparacaoLista extends Nav {
                     return xx1.compareTo(xx2);
                 }
             });
+            DecimalFormat df = new DecimalFormat("0.00");
             for (final Lista l : list) {
                 View item; // Creating an instance for View Object
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 item = inflater.inflate(R.layout.layout_item_comparacao_listas, null);
                 ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(l.getMercado().getNome());
                 ((TextView) item.findViewById(R.id.txtHowMany)).setText(l.getListaProdutos().size() + " / " + lista.getListaProdutos().size());
-                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + l.getValor_total());
+                ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + df.format(l.getValor_total()).replace(",","."));
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

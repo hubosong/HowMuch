@@ -34,12 +34,17 @@
             android:orientation="vertical" >
 
             <Button
+                android:background="@drawable/buttonshape"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="6dp"
                 android:id="@+id/bt_precos_detalhados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Detalhar Preços" />
 
             <Button
+                android:background="@drawable/buttonshape"
+                android:textColor="@android:color/white"
                 android:id="@+id/bt_detalhes_mercado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

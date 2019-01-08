@@ -34,24 +34,35 @@
             android:orientation="vertical" >
 
             <Button
+                android:background="@drawable/buttonshape"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="6dp"
                 android:id="@+id/bt_ver_detalhes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ver Detalhes" />
 
             <Button
+                android:background="@drawable/buttonshape"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="6dp"
                 android:id="@+id/bt_transformar_em_lista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Transformar em Lista de Compras" />
 
             <Button
+                android:background="@drawable/buttonshape"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="6dp"
                 android:id="@+id/bt_compartilhar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Compartilhar" />
 
             <Button
+                android:background="@drawable/buttonshape"
+                android:textColor="@android:color/white"
                 android:id="@+id/bt_excluir_nfe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

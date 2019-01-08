@@ -10,7 +10,7 @@
             android:title="@string/nav_off" />
         <item
             android:id="@+id/nav_new_list"
-            android:icon="@drawable/ic_shopping"
+            android:icon="@drawable/ic_shopping_cart"
             android:title="@string/nav_new_list" />
         <item
             android:id="@+id/nav_my_buy"
@@ -37,7 +37,7 @@
     <group android:id="@+id/two">
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_exit"
+            android:icon="@drawable/ic_logout"
             android:title="@string/nav_logout" />
     </group>
 

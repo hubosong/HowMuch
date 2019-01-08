@@ -23,6 +23,8 @@
         android:orientation="horizontal">
 
         <Button
+            android:background="@drawable/buttonshape"
+            android:textColor="@android:color/white"
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,6 +32,8 @@
             android:text="Cancelar" />
 
         <Button
+            android:background="@drawable/buttonshape"
+            android:textColor="@android:color/white"
             android:id="@+id/bt_AdicionarProdutoLista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
