@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import entidade.Lista;
+import entidade.Produto;
 import entidade.Utils;
 
 public class VerComparacaoLista extends Nav {
@@ -48,10 +49,14 @@ public class VerComparacaoLista extends Nav {
         txt_nome_da_lista_de_compras = findViewById(R.id.txt_nome_da_lista_de_compras);
         txt_mercados_simulados = findViewById(R.id.txt_mercados_simulados);
 
-        compararLista();
+        ArrayList<Long> ids_produtos = new ArrayList<>();
+        for(Produto p : lista.getListaProdutos()){
+            ids_produtos.add(p.getId_produto());
+        }
+        compararLista(ids_produtos);
     }
 
-    private void compararLista() {
+    private void compararLista(final ArrayList<Long> ids_produtos) {
         new AsyncTask<String, Void, ArrayList<Lista>>() {
 
             @Override
@@ -70,8 +75,8 @@ public class VerComparacaoLista extends Nav {
                     urlCon.setDoInput(true);
 
                     ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
-                    wr.writeUTF("COMPARAR_LISTA_ID");
-                    wr.writeLong(lista.getId_lista());
+                    wr.writeUTF("COMPARAR_LISTA_IDS_PRODUTOS");
+                    wr.writeObject(ids_produtos);
                     wr.writeLong(lista.getId_usuario());
                     wr.close();
                     wr.flush();
