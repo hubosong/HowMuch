@@ -179,7 +179,7 @@
                     android:text="@string/btn_register"
                     android:onClick="btnRegisterUser"
                     android:textColor="@color/text_color"
-                    android:background="@drawable/buttons_login"
+                    android:background="@drawable/buttonshape"
                     android:drawableLeft="@drawable/ic_apply"/>
 
             </LinearLayout>

@@ -8,17 +8,23 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +60,10 @@ public class Descontos extends Nav {
     private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
+    public Animation alpha_in, alpha_out;
+    private ScrollView layout_top;
+
+    @SuppressLint("StaticFieldLeak")
     private void pegaListas() {
         if (usuario == null) {
             usuario = Utils.loadFromSharedPreferences(this);
@@ -100,6 +110,7 @@ public class Descontos extends Nav {
         }
     }
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +122,10 @@ public class Descontos extends Nav {
         getLayoutInflater().inflate(R.layout.activity_descontos, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        //alpha effects
+        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
+        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_off);
@@ -131,6 +146,7 @@ public class Descontos extends Nav {
     private void setEditTextProcuraProdutos() {
         txt_pesquisa_produtos = findViewById(R.id.editText);
         TextWatcher tw = new TextWatcher() {
+            @SuppressLint("StaticFieldLeak")
             public void afterTextChanged(final Editable s) {
                 if (s.length() > 2) {
                     new AsyncTask<String, Void, ArrayList<Item_NFe>>() {
@@ -464,6 +480,7 @@ public class Descontos extends Nav {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void adicionarProdutoListas(final ArrayList<Long> ids_listas, final Long id_produto) {
         new AsyncTask<String, Void, Long>() {
             @Override
