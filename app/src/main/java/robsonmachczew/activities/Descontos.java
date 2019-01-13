@@ -343,7 +343,7 @@ public class Descontos extends Nav {
                                     p.setId_produto(produto.getId_produto());
                                     p.setDescricao(produto.getDescricao_produto());
                                     p.setUnidade_comercial(produto.getUnidade_comercial());
-                                    intent.putExtra("PRODUTO", p);
+                                    intent.putExtra("ID_PRODUTO", p.getId_produto());
                                     startActivity(intent);
                                     dialog_opcoes_produto.cancel();
                                 }
@@ -460,7 +460,7 @@ public class Descontos extends Nav {
                                     p.setId_produto(item.getProduto().getId_produto());
                                     p.setDescricao(item.getProduto().getDescricao());
                                     p.setUnidade_comercial(item.getProduto().getUnidade_comercial());
-                                    intent.putExtra("PRODUTO", p);
+                                    intent.putExtra("ID_PRODUTO", p.getId_produto());
                                     startActivity(intent);
                                     dialog_opcoes_produto.cancel();
                                 }
