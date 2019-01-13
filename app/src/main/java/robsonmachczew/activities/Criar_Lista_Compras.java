@@ -166,9 +166,6 @@ public class Criar_Lista_Compras extends Nav {
             @Override
             protected Long doInBackground(String... params) {
                 try {
-                    String urlParameters = "funcao=SALVAR_LISTA&id_usuario=" + usuario.getId_usuario();
-                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-
                     URL url = new URL(Utils.URL + "lista");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
