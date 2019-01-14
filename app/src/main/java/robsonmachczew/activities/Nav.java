@@ -212,9 +212,12 @@ public class Nav extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
+
     @Override
     public void onBackPressed() {
         drawerLayout.closeDrawers();
         super.onBackPressed();
     }
+
+
 }

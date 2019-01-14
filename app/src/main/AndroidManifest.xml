@@ -73,7 +73,8 @@
             android:name=".VerMercado"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".VerSimulacaoListaEmMercado"
+        <activity
+            android:name=".VerSimulacaoListaEmMercado"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 

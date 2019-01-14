@@ -84,7 +84,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:backgroundTint="@color/icons_btns"
-            app:srcCompat="@drawable/ic_focus" />
+            app:srcCompat="@drawable/ic_qr_code" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -123,6 +125,8 @@ public class Descontos extends Nav {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
 
+        fab.hide();
+
         //alpha effects
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
@@ -133,6 +137,7 @@ public class Descontos extends Nav {
 
         layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
         tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
+        txt_pesquisa_produtos = findViewById(R.id.editText);
 
         setEditTextProcuraProdutos();
 
@@ -144,7 +149,6 @@ public class Descontos extends Nav {
     }
 
     private void setEditTextProcuraProdutos() {
-        txt_pesquisa_produtos = findViewById(R.id.editText);
         TextWatcher tw = new TextWatcher() {
             @SuppressLint("StaticFieldLeak")
             public void afterTextChanged(final Editable s) {
@@ -268,7 +272,16 @@ public class Descontos extends Nav {
                         @Override
                         public void onClick(View view) {
                             final Dialog dialog_opcoes_produto = new Dialog(Descontos.this);
+                            dialog_opcoes_produto.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
+
+                            //change alpha intensity
+                            WindowManager.LayoutParams lp = dialog_opcoes_produto.getWindow().getAttributes();
+                            lp.dimAmount=0.8f;
+                            dialog_opcoes_produto.getWindow().setAttributes(lp);
+                            dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -539,10 +552,28 @@ public class Descontos extends Nav {
         return super.onOptionsItemSelected(item);
     }
 
+    //on back
     @Override
     public void onBackPressed() {
-        if (permiteVoltar)
+        if (permiteVoltar) {
             super.onBackPressed();
+        }
+        else {
+            if (usuario.getId_usuario() != 0) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                System.exit(0);
+
+            } else {
+                Intent main = new Intent(Descontos.this, Main.class);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(main);
+                finish();
+            }
+        }
     }
 
 

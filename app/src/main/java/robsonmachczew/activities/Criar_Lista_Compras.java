@@ -62,6 +62,8 @@ public class Criar_Lista_Compras extends Nav {
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
+        fab.hide();
+
         usuario = Utils.loadFromSharedPreferences(this);
         layout_produtos_lista = findViewById(R.id.layout_produtos_da_lista);
         tvQuantProdutosLista = findViewById(R.id.textView2);
@@ -156,6 +158,7 @@ public class Criar_Lista_Compras extends Nav {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void finalizarLista() {
         lista_compras.setNome(editTextNomeLista.getText().toString());
         new AsyncTask<String, Void, Long>() {
@@ -306,9 +309,27 @@ public class Criar_Lista_Compras extends Nav {
         }
     }
 
+    //on back
     @Override
     public void onBackPressed() {
-        if (permiteVoltar)
+        if (permiteVoltar) {
             super.onBackPressed();
+        }
+        else {
+            if (usuario.getId_usuario() != 0) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                System.exit(0);
+
+            } else {
+                Intent main = new Intent(Criar_Lista_Compras.this, Main.class);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(main);
+                finish();
+            }
+        }
     }
 }
