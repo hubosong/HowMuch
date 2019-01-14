@@ -31,7 +31,7 @@ public class VerProduto extends Nav {
     private Item_NFe maior_preco_historico;
     private Item_NFe menor_preco_atual;
     private Item_NFe maior_preco_atual;
-    private float media = 0.0f;
+
 
     private TextView txt_menor_valor_historico;
     private TextView txt_menor_valor_atual;
@@ -63,24 +63,26 @@ public class VerProduto extends Nav {
     private void renderizaProduto_Detalhado() {
         if (produto != null) {
             tv_descricao_produto.setText(produto.getDescricao());
+            float media = 0.0f;
+            float quantidade = 0.0f;
             if (produto.getLista_itens_nfe() != null && produto.getLista_itens_nfe().size() > 0) {
                 ultimo_preco = produto.getLista_itens_nfe().get(0);
                 menor_preco_historico = produto.getLista_itens_nfe().get(0);
                 maior_preco_historico = produto.getLista_itens_nfe().get(0);
                 maior_preco_atual = produto.getLista_itens_nfe().get(0);
                 menor_preco_atual = produto.getLista_itens_nfe().get(0);
-                media = 0.0f;
                 for (Item_NFe item : produto.getLista_itens_nfe()) {
+                    System.out.println("ITEM: "+(item.getValor() / item.getQuantidade())+" - "+item.getData());
                     if ((item.getValor() / item.getQuantidade()) < (menor_preco_historico.getValor() / menor_preco_historico.getQuantidade())) {
                         menor_preco_historico = item;
                     }
                     if ((item.getValor() / item.getQuantidade()) > (maior_preco_historico.getValor() / maior_preco_historico.getQuantidade())) {
                         maior_preco_historico = item;
                     }
-                    if (((item.getValor() / item.getQuantidade()) < (menor_preco_atual.getValor() / menor_preco_atual.getQuantidade())) && (menor_preco_atual.getData().compareTo(item.getData()) > 0)) {
+                    if (((item.getValor() / item.getQuantidade()) < (menor_preco_atual.getValor() / menor_preco_atual.getQuantidade())) && (menor_preco_atual.getData().compareTo(item.getData()) < 0)) {
                         menor_preco_atual = item;
                     }
-                    if (((item.getValor() / item.getQuantidade()) > (maior_preco_atual.getValor() / maior_preco_atual.getQuantidade())) && (maior_preco_atual.getData().compareTo(item.getData()) > 0)) {
+                    if (((item.getValor() / item.getQuantidade()) > (maior_preco_atual.getValor() / maior_preco_atual.getQuantidade())) && (maior_preco_atual.getData().compareTo(item.getData()) < 0)) {
                         maior_preco_atual = item;
                     }
                     if (ultimo_preco.getData().compareTo(menor_preco_historico.getData()) < 0) {
@@ -90,14 +92,14 @@ public class VerProduto extends Nav {
                         item.getTransient_mercado().setNome_fantasia(item.getTransient_mercado().getNome());
                     }
                     media += item.getValor();
+                    quantidade += item.getQuantidade();
                 }
-                media = media / produto.getLista_itens_nfe().size();
             }
-            txt_menor_valor_historico.setText("R$: " + menor_preco_historico.getValor() + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
-            txt_menor_valor_atual.setText("R$: " + menor_preco_atual.getValor() + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_valor_medio.setText("R$: " + media);
-            txt_maior_valor_atual.setText("R$: " + maior_preco_atual.getValor() + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_maior_valor_historico.setText("R$: " + maior_preco_historico.getValor() + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
+            txt_menor_valor_historico.setText("R$: " + (menor_preco_historico.getValor() / menor_preco_historico.getQuantidade()) + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
+            txt_menor_valor_atual.setText("R$: " + (menor_preco_atual.getValor() / menor_preco_atual.getQuantidade()) + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
+            txt_valor_medio.setText("R$: " + media/quantidade);
+            txt_maior_valor_atual.setText("R$: " + (maior_preco_atual.getValor() / maior_preco_atual.getQuantidade()) + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
+            txt_maior_valor_historico.setText("R$: " + (maior_preco_historico.getValor() / maior_preco_historico.getQuantidade()) + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
         }
     }
 
