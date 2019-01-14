@@ -126,6 +126,7 @@ public class Nav extends AppCompatActivity {
                     startActivity(buyList);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     drawerLayout.closeDrawers();
+                    System.out.println("erro4");
                     break;
 
                 case R.id.nav_my_buy:

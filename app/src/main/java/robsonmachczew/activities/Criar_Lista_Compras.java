@@ -103,6 +103,7 @@ public class Criar_Lista_Compras extends Nav {
         renderizaListaDeProdutos();
     }
 
+
     public void adicionarProduto(View v) {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
