@@ -40,6 +40,8 @@ Versão 1.0:
 		-
 
 Versão 2.0:
+    - Servidor em PHP
+    - JSON ao invés de tipos próprios do JAVA
 	- Histórico com gráficos
 		- Preço médio
 		- Maior/Menor preço atual e histórico
