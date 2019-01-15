@@ -19,6 +19,7 @@ Falta fazer:
 
 Antes de lançar:
 	- Certificado SSL
+	- Criar servidor de email (só é possível com o domínio já em mãos), para enviar email de confirmação quando o usuário se cadastra.
 	- Rodar no NO_PARTIAL_GROUP (MYSQL)
 	- Redundância para enviar NFe
 		- Sincronização
@@ -36,8 +37,7 @@ Versão 1.0:
 	- Ver listas anteriores/modificar
 	- Ver NFes anteriores e transformar em lista
 	- Preferências
-	- Cadastro
-		-
+	- Rever Cadastro de Usuário
 
 Versão 2.0:
     - Servidor em PHP
