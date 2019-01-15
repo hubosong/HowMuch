@@ -167,6 +167,11 @@ public class Nav extends AppCompatActivity {
                     Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
                     break;
 
+                case R.id.nav_sobre:
+                    drawerLayout.closeDrawers();
+                    Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                    break;
+
                 case R.id.nav_logout:
                     if (Utils.logout(activity)) {
                         Intent main = new Intent(Nav.this, Main.class);
@@ -205,6 +210,34 @@ public class Nav extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_qrcode:
+                IntentIntegrator integrator = new IntentIntegrator(activity);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                integrator.setPrompt("");
+                integrator.setCameraId(0);
+                integrator.initiateScan();
+                integrator.setBarcodeImageEnabled(false);
+                integrator.setOrientationLocked(false);
+                integrator.setBeepEnabled(true);
+                return  true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

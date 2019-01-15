@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".Criar_Lista_Compras">
 
+
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
@@ -15,7 +16,6 @@
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:gravity="center">
-
 
         <EditText
             android:id="@+id/editText2"
@@ -50,30 +50,7 @@
 
     </LinearLayout>
 
-    <!--
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Nome da Lista"
-        android:inputType="textPersonName"
-        android:textColor="@color/text_color"
-        android:textColorHint="@color/hint_nav_login" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/default_margin"
-        android:text="Produtos da Lista (0)"
-        android:textColor="@color/text_color" />
-
-        -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -116,7 +93,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/botoes_comando"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/layout_top"
         android:layout_marginLeft="@dimen/default_margin">
 
         <LinearLayout
