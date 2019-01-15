@@ -23,11 +23,12 @@ Antes de lançar:
 	- Rodar no NO_PARTIAL_GROUP (MYSQL)
 	- Redundância para enviar NFe
 		- Sincronização
+    - Testar exaustivamente na maior variedade de dispositivos possível
     - Site?
     - iOS?
 
-Versão 1.0:
-	--- Cadastrar nota
+Ideias para Versão 1.0:
+	+++ Cadastrar nota
 	--- Mostrar produtos com grandes descontos
 		--- Calculado na variação do preço médio
 	- Criar lista de compras
