@@ -58,7 +58,7 @@ public class Criar_Lista_Compras extends Nav {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(1).setChecked(true);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Lista Compras");
+        getSupportActionBar().setTitle("Criar Lista");
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
