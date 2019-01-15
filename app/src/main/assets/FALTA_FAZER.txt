@@ -9,6 +9,7 @@ Falta fazer:
     - Em "Descontos", ao lado do Edittext de pesquisar, criar um botão para ordenar a lista. Quando clica no botão abre um dialog perguntando o critério (menor/maior preço, data, mercado etc..)
         - Também achar um lugar para o botão de ordenar no "Criar Lista", "Minhas NFes" e "Minhas Listas"
     - Ver o layout da activity de descrição/histórico de um produto (caminho: Descontos->clicar em um produto->ver detalhes/histórico de preços)
+    - Na activity "Descontos", colocar um botão que pesquisa um produto pelo código de barra usando a camera.
     - Mecanismo que, ao ocorrer falha no envio de uma nota (por qualquer motivo) guarde a chave da nota e tente enviar mais tarde.
 	++ Criar um adapter para mostrar os itens de uma NFe na activity "VerNFe"
 	++ Arrumar os adapters que mostram os objetos nas activities "Minhas NFes" e "Minhas Listas"
@@ -32,7 +33,6 @@ Versão 1.0:
 		- Mostrar no mapa os mercados mais próximos com o preço de cada um deles para uma lista
 		- Comparar o total da lista nos mercados
 		- Ao selecionar um mercado a partir da lista, mostrar o preço de cada produto
-		-
 	- Ver listas anteriores/modificar
 	- Ver NFes anteriores e transformar em lista
 	- Preferências
