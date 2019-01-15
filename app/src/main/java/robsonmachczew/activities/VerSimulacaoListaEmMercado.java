@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -73,7 +75,16 @@ public class VerSimulacaoListaEmMercado extends Nav {
                         @Override
                         public void onClick(View view) {
                             final Dialog dialog_opcoes_produto = new Dialog(VerSimulacaoListaEmMercado.this);
+
+                            dialog_opcoes_produto.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
+
+                            //change alpha intensity
+                            WindowManager.LayoutParams lp = dialog_opcoes_produto.getWindow().getAttributes();
+                            lp.dimAmount=0.8f;
+                            dialog_opcoes_produto.getWindow().setAttributes(lp);
+                            dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setVisibility(View.GONE);
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setVisibility(View.GONE);
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_compartilhar_produto_abaixo_media)).setOnClickListener(new View.OnClickListener() {

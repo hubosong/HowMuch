@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -150,7 +152,16 @@ public class VerComparacaoLista extends Nav {
                     @Override
                     public void onClick(View view) {
                         final Dialog dialog_opcoes_lista = new Dialog(VerComparacaoLista.this);
+
+                        dialog_opcoes_lista.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                         dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_comparada);
+
+                        //change alpha intensity
+                        WindowManager.LayoutParams lp = dialog_opcoes_lista.getWindow().getAttributes();
+                        lp.dimAmount=0.8f;
+                        dialog_opcoes_lista.getWindow().setAttributes(lp);
+                        dialog_opcoes_lista.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_precos_detalhados)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

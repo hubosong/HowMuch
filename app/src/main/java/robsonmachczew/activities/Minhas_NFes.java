@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -53,6 +55,8 @@ public class Minhas_NFes extends Nav {
         getSupportActionBar().setTitle(R.string.bar_my_nfe);
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
+
+        fab.hide();
 
         layout_lista_de_nfes = findViewById(R.id.layout_lista_de_nfes);
         tv_quant_nfes = findViewById(R.id.tv_minhas_nfes);
@@ -132,7 +136,16 @@ public class Minhas_NFes extends Nav {
                         @Override
                         public void onClick(View view) {
                             final Dialog dialog_opcoes_nfe = new Dialog(Minhas_NFes.this);
+
+                            dialog_opcoes_nfe.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_nfe.setContentView(R.layout.dialog_opcoes_da_nfe);
+
+                            //change alpha intensity
+                            WindowManager.LayoutParams lp = dialog_opcoes_nfe.getWindow().getAttributes();
+                            lp.dimAmount=0.8f;
+                            dialog_opcoes_nfe.getWindow().setAttributes(lp);
+                            dialog_opcoes_nfe.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
                             dialog_opcoes_nfe.show();
                             ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes)).setOnClickListener(new View.OnClickListener() {
                                 @Override

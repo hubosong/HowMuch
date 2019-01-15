@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -49,9 +51,11 @@ public class Minhas_Listas extends Nav {
         navigationView.getMenu().getItem(2).setChecked(true);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle(R.string.bar_my_buys);
+        getSupportActionBar().setTitle("Minhas Listas");
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
+
+        fab.hide();
 
         layout_listas_de_listas = findViewById(R.id.layout_listas_de_listas);
         tv_quant_listas = findViewById(R.id.tv_quant_listas);
@@ -131,7 +135,16 @@ public class Minhas_Listas extends Nav {
                         @Override
                         public void onClick(View view) {
                             final Dialog dialog_opcoes_lista = new Dialog(Minhas_Listas.this);
+
+                            dialog_opcoes_lista.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_de_listas);
+
+                            //change alpha intensity
+                            WindowManager.LayoutParams lp = dialog_opcoes_lista.getWindow().getAttributes();
+                            lp.dimAmount=0.8f;
+                            dialog_opcoes_lista.getWindow().setAttributes(lp);
+                            dialog_opcoes_lista.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
                             ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

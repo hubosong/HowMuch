@@ -12,6 +12,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -114,9 +116,16 @@ public class Criar_Lista_Compras extends Nav {
         int height = size.y;
 
         dialog_pesquisa = new Dialog(this);
+        dialog_pesquisa.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
         dialog_pesquisa.setContentView(R.layout.dialog_pesquisa_produtos_lista);
-        dialog_pesquisa.setTitle("Adicionar Produto à Lista");
-        dialog_pesquisa.getWindow().setLayout(width - 16, height - 250);
+
+        //change alpha intensity
+        WindowManager.LayoutParams lp = dialog_pesquisa.getWindow().getAttributes();
+        lp.dimAmount=0.8f;
+        dialog_pesquisa.getWindow().setAttributes(lp);
+        dialog_pesquisa.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+
         EditText text = dialog_pesquisa.findViewById(R.id.editText_Procura_Prod_Lista);
         final LinearLayout layoutPesq = dialog_pesquisa.findViewById(R.id.layout_produtos_pesquisados);
         final Button btConcluir = dialog_pesquisa.findViewById(R.id.btConcluirPesq);
