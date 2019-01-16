@@ -1,0 +1,54 @@
+++ = FEITO
+-  = FALTA FAZER
+
+Falta fazer:
+    - Definir nome e domínio do app
+	- Fluxo inserção de produto:
+		- SE não tiver EAN, precisa verificar se a descrição
+    - Icones de launcher
+    - Em "Descontos", ao lado do Edittext de pesquisar, criar um botão para ordenar a lista. Quando clica no botão abre um dialog perguntando o critério (menor/maior preço, data, mercado etc..)
+        - Também achar um lugar para o botão de ordenar no "Criar Lista", "Minhas NFes" e "Minhas Listas"
+    - Ver o layout da activity de descrição/histórico de um produto (caminho: Descontos->clicar em um produto->ver detalhes/histórico de preços)
+    - Na activity "Descontos", colocar um botão que pesquisa um produto pelo código de barra usando a camera.
+    - Mecanismo que, ao ocorrer falha no envio de uma nota (por qualquer motivo) guarde a chave da nota e tente enviar mais tarde.
+    - Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
+	++ Criar um adapter para mostrar os itens de uma NFe na activity "VerNFe"
+	++ Arrumar os adapters que mostram os objetos nas activities "Minhas NFes" e "Minhas Listas"
+	++ Possibilitar dar nome para a lista de compras;
+	++ Na activity que mostra as listas de compras, aparecer a opção de "Comparar em Mercados"
+	++ Criar a activity que vai mostrar o comparativo da lista de compras nos mercados
+
+Antes de lançar:
+	- Certificado SSL
+	- Criar servidor de email (só é possível com o domínio já em mãos), para enviar email de confirmação quando o usuário se cadastra.
+	- Rodar no NO_PARTIAL_GROUP (MYSQL)
+	- Redundância para enviar NFe
+		- Sincronização
+    - Testar exaustivamente na maior variedade de dispositivos possível
+    - Site?
+    - iOS?
+
+Ideias para Versão 1.0:
+	+++ Cadastrar nota
+	--- Mostrar produtos com grandes descontos
+		--- Calculado na variação do preço médio
+	- Criar lista de compras
+		- Mostrar no mapa os mercados mais próximos com o preço de cada um deles para uma lista
+		- Comparar o total da lista nos mercados
+		- Ao selecionar um mercado a partir da lista, mostrar o preço de cada produto
+	- Ver listas anteriores/modificar
+	- Ver NFes anteriores e transformar em lista
+	- Preferências
+	- Rever Cadastro de Usuário
+
+Versão 2.0:
+    - Servidor em PHP
+    - JSON ao invés de tipos próprios do JAVA
+	- Histórico com gráficos
+		- Preço médio
+		- Maior/Menor preço atual e histórico
+		- Preço histórico em cada mercado
+	- Mostrar Mercados e mapas de localização.
+	- Alertas Definidos pelo Usuário (por exemplo, quando um produto aparecer em um mercado por menos de X reais)
+	- Controle das finanças (quanto gastei em cada mercado, mês/dia, gastos médios, por grupo de produtos...)
+

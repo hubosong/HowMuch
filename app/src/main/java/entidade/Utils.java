@@ -11,6 +11,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -56,6 +57,29 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+    public static boolean salvaNotaLocalmente(Context context, String chave){
+        ArrayList<String> lista_nfes = new ArrayList<>();
+        if(!lista_nfes.contains(chave)){
+            SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
+            SharedPreferences.Editor edit = sharedPreferences.edit();
+            edit.putString("n"+lista_nfes.size(), chave);
+            return edit.commit();
+        }
+        return true;
+    }
+
+    public static ArrayList<String> getNotasLocais(Context context){
+        ArrayList<String> lista_nfes = new ArrayList<>();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("SHARED", MODE_PRIVATE);
+        int n = 0;
+        String s = null;
+        while ((s = sharedPreferences.getString("n"+n, null)) != null){
+            lista_nfes.add(s);
+            n++;
+        }
+        return lista_nfes;
     }
 
     public static boolean servidorDePe() {
