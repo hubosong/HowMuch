@@ -50,13 +50,10 @@ public class Minhas_NFes extends Nav {
         getLayoutInflater().inflate(R.layout.activity_minhas_nfes, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(3).setChecked(true);
-
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_my_nfe);
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
-
-        fab.hide();
 
         layout_lista_de_nfes = findViewById(R.id.layout_lista_de_nfes);
         tv_quant_nfes = findViewById(R.id.tv_minhas_nfes);
@@ -179,9 +176,27 @@ public class Minhas_NFes extends Nav {
         }
     }
 
+    //on back
     @Override
     public void onBackPressed() {
-        if (permiteVoltar)
+        if (permiteVoltar) {
             super.onBackPressed();
+        }
+        else {
+            if (usuario.getId_usuario() != 0) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                System.exit(0);
+
+            } else {
+                Intent main = new Intent(Minhas_NFes.this, Main.class);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(main);
+                finish();
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package robsonmachczew.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -44,11 +45,11 @@ public class VerComparacaoLista extends Nav {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_ver_comparacao_lista, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Simular Lista em Mercados");
 
@@ -64,6 +65,7 @@ public class VerComparacaoLista extends Nav {
         compararLista(ids_produtos);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void compararLista(final ArrayList<Long> ids_produtos) {
         new AsyncTask<String, Void, ArrayList<Lista>>() {
 

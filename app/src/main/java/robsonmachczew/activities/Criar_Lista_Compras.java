@@ -64,8 +64,6 @@ public class Criar_Lista_Compras extends Nav {
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
-        fab.hide();
-
         usuario = Utils.loadFromSharedPreferences(this);
         layout_produtos_lista = findViewById(R.id.layout_produtos_da_lista);
         tvQuantProdutosLista = findViewById(R.id.textView2);

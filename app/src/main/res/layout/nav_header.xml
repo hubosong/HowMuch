@@ -46,7 +46,6 @@
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txtName"
             android:background="@android:color/transparent"
             android:text="--@--"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"

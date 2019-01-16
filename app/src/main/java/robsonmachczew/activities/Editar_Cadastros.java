@@ -31,12 +31,10 @@ public class Editar_Cadastros extends Nav {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //called by nav
+        ////basic config - called by nav
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_editar_cadastros, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        //basic config
         getSupportActionBar().setTitle(R.string.bar_edit_register);
 
         imgUpload = findViewById(R.id.imgUpload);

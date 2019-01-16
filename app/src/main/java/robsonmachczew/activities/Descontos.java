@@ -65,6 +65,42 @@ public class Descontos extends Nav {
     public Animation alpha_in, alpha_out;
     private ScrollView layout_top;
 
+    @SuppressLint("WrongViewCast")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //basic config
+        FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        getLayoutInflater().inflate(R.layout.activity_descontos, contentFrameLayout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        getSupportActionBar().setTitle("Descontos");
+
+        //alpha effects
+        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
+        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
+
+
+        pegaListas();
+
+
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
+
+        layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
+        tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
+        txt_pesquisa_produtos = findViewById(R.id.editText);
+
+        setEditTextProcuraProdutos();
+
+        if (!Utils.estaConectado(this)) {
+            Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
+        } else {
+            rvListStart();
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     private void pegaListas() {
         if (usuario == null) {
@@ -109,42 +145,6 @@ public class Descontos extends Nav {
                     lista_de_listas = list;
                 }
             }.execute();
-        }
-    }
-
-    @SuppressLint("WrongViewCast")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        pegaListas();
-
-        //basic config
-        FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_descontos, contentFrameLayout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Descontos");
-
-        fab.hide();
-
-        //alpha effects
-        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
-        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
-
-        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
-
-        layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
-        tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
-        txt_pesquisa_produtos = findViewById(R.id.editText);
-
-        setEditTextProcuraProdutos();
-
-        if (!Utils.estaConectado(this)) {
-            Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
-        } else {
-            rvListStart();
         }
     }
 
@@ -265,9 +265,9 @@ public class Descontos extends Nav {
                     ((TextView) item.findViewById(R.id.txtNomeProduto)).setText(produto.getDescricao_produto());
                     ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(produto.getNome_mercado());
                     ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
-                    ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$: " + produto.getValor_medio());
-                    ((TextView) item.findViewById(R.id.txtOff)).setText("R$: " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", "."));
-                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$: " + df.format(produto.getValor()).replace(",", ".")  + " " + produto.getUnidade_comercial());
+                    ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$ " + produto.getValor_medio());
+                    ((TextView) item.findViewById(R.id.txtOff)).setText("R$ " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", "."));
+                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + df.format(produto.getValor()).replace(",", ".")  + " " + produto.getUnidade_comercial());
                     item.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -402,7 +402,17 @@ public class Descontos extends Nav {
                         @Override
                         public void onClick(View view) {
                             final Dialog dialog_opcoes_produto = new Dialog(Descontos.this);
+
+                            dialog_opcoes_produto.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
+
+                            //change alpha intensity
+                            WindowManager.LayoutParams lp = dialog_opcoes_produto.getWindow().getAttributes();
+                            lp.dimAmount=0.8f;
+                            dialog_opcoes_produto.getWindow().setAttributes(lp);
+                            dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

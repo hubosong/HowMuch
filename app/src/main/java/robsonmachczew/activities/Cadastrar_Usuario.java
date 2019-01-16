@@ -44,6 +44,13 @@ public class Cadastrar_Usuario extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar);
 
+        //basic config
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        getWindow().setStatusBarColor(this.getResources().getColor(R.color.toolbar_status));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.bar);
         toolbar.setTitle(R.string.bar_register);
@@ -51,11 +58,6 @@ public class Cadastrar_Usuario extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_bg));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //basic config
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        getWindow().setStatusBarColor(this.getResources().getColor(R.color.toolbar_status));
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
 
         imgUpload = findViewById(R.id.imgUpload);

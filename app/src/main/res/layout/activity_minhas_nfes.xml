@@ -14,18 +14,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="20dp"
         android:text="Minhas Notas Fiscais (0):"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tv_minhas_nfes"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin">
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
         <LinearLayout
             android:id="@+id/layout_lista_de_nfes"

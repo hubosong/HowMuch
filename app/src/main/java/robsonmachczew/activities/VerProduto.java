@@ -1,5 +1,7 @@
 package robsonmachczew.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -103,6 +105,7 @@ public class VerProduto extends Nav {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void getDetalhesProduto(final long id_produto) {
         new AsyncTask<String, Void, Produto_Detalhado>() {
             @Override
@@ -149,10 +152,11 @@ public class VerProduto extends Nav {
             }
         }.execute();
 
-
-
-
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

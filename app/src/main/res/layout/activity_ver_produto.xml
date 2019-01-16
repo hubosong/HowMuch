@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tv_descricao_produto"
-        android:layout_marginLeft="@dimen/default_margin">
+        android:layout_marginStart="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"

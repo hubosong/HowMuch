@@ -52,14 +52,14 @@
                 android:layout_height="40dp"
                 android:padding="10dp"
                 android:background="@drawable/button_edttext"
-                android:drawableLeft="@drawable/ic_email"
+                android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:hint="@string/edt_hint_email"
                 android:textColorHint="@color/nav_color"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textColor="#000"
                 android:layout_marginBottom="10dp"
                 android:focusable="true"
@@ -71,14 +71,14 @@
                 android:layout_height="40dp"
                 android:padding="10dp"
                 android:background="@drawable/button_edttext"
-                android:drawableLeft="@drawable/ic_password"
+                android:drawableStart="@drawable/ic_password"
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:hint="@string/edt_hint_pass"
                 android:textColorHint="@color/nav_color"
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textColor="#000"
                 android:layout_marginBottom="10dp"
                 android:focusable="true"
@@ -108,7 +108,7 @@
                     android:textColor="@color/text_color"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/buttonshape"
-                    android:drawableLeft="@drawable/ic_access"/>
+                    android:drawableStart="@drawable/ic_access"/>
 
                 <ImageButton
                     android:id="@+id/btnRegister"
@@ -168,7 +168,8 @@
             android:adjustViewBounds="?attr/isLightTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="RtlHardcoded" />
 
     </android.support.constraint.ConstraintLayout>
 

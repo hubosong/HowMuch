@@ -49,13 +49,11 @@ public class Minhas_Listas extends Nav {
         getLayoutInflater().inflate(R.layout.activity_minhas_listas, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(2).setChecked(true);
-
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Minhas Listas");
 
-        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
-        fab.hide();
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         layout_listas_de_listas = findViewById(R.id.layout_listas_de_listas);
         tv_quant_listas = findViewById(R.id.tv_quant_listas);
@@ -179,9 +177,27 @@ public class Minhas_Listas extends Nav {
         }
     }
 
+    //on back
     @Override
     public void onBackPressed() {
-        if (permiteVoltar)
+        if (permiteVoltar) {
             super.onBackPressed();
+        }
+        else {
+            if (usuario.getId_usuario() != 0) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                System.exit(0);
+
+            } else {
+                Intent main = new Intent(Minhas_Listas.this, Main.class);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(main);
+                finish();
+            }
+        }
     }
 }

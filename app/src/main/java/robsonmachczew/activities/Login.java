@@ -39,6 +39,12 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //basic config
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        getWindow().setStatusBarColor(this.getResources().getColor(R.color.toolbar_status));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         //toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.bar);
         toolbar.setTitle(R.string.bar_login);
@@ -46,15 +52,8 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_bg));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //basic config
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        getWindow().setStatusBarColor(this.getResources().getColor(R.color.toolbar_status));
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
-
 
         edtEmail = findViewById(R.id.edtEmail);
         edtPass = findViewById(R.id.edtPass);

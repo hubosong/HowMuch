@@ -37,6 +37,7 @@ public class VerSimulacaoListaEmMercado extends Nav {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_ver_simulacao_lista_em_mercado, contentFrameLayout);
@@ -125,5 +126,10 @@ public class VerSimulacaoListaEmMercado extends Nav {
                 System.out.println(">>> Erro: " + e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

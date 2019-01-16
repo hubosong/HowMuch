@@ -63,18 +63,20 @@ public class VerNFe extends Nav {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_read_qrcode, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_qrcode);
 
-        NFe nfe = (NFe) getIntent().getSerializableExtra("NFE");
-
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
+
+
+        NFe nfe = (NFe) getIntent().getSerializableExtra("NFE");
+
 
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
@@ -312,6 +314,7 @@ public class VerNFe extends Nav {
 
 
     // NÃO APAGAR ESSE MÉTODO
+    @SuppressLint("StaticFieldLeak")
     private void sendChaveToPHP(final String chave) {
         new AsyncTask<String, Void, JSONArray>() {
             @Override
@@ -524,4 +527,9 @@ public class VerNFe extends Nav {
         return s;
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

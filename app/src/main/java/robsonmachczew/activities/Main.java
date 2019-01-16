@@ -89,7 +89,7 @@ public class Main extends AppCompatActivity {
         t.show();
     }
     public void development(View view) {
-        Toast.makeText(this, "Elton Rasch &\nRobson Machczew", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Desenvolvido por.. \n Elton Rasch &\n Robson Machczew", Toast.LENGTH_SHORT).show();
     }
     public void phone(View view) {
         //gerar um sair do app 哈哈

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center">
 
 
@@ -25,13 +25,13 @@
             android:layout_height="40dp"
             android:padding="10dp"
             android:background="@drawable/button_edttext"
-            android:drawableLeft="@drawable/ic_search"
+            android:drawableStart="@drawable/ic_search"
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint="Pesquisar Produto"
             android:textColorHint="@color/nav_color"
             android:inputType="textPersonName"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="#000"
             android:layout_marginBottom="8dp"
             android:focusable="true"
@@ -41,9 +41,7 @@
             android:id="@+id/tv_quant_prods_abaixo_media"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/default_margin"
+            android:layout_margin="8dp"
             android:text="Produtos Abaixo do Valor Médio (0):"
             android:textAlignment="center"
             android:textColor="@android:color/white" />
@@ -55,8 +53,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_top"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
+        android:layout_margin="8dp"
         android:scrollbars="vertical"
         android:scrollbarSize="2sp"
         android:scrollbarThumbVertical="@drawable/gradient_list">
