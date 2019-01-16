@@ -206,7 +206,7 @@ public class VerNFe extends Nav {
                         //Pega os dados da Nota Fiscal Eletronica
                         Element divNFe = doc.getElementById("NFe");
                         nfe = getNFe(divNFe);
-                        if(divNFe != null) {
+                        if (divNFe != null) {
                             nfe.setChave(code);
                             if (usuario.getId_usuario() != 0) {
                                 nfe.setId_usuario(usuario.getId_usuario());
@@ -258,6 +258,10 @@ public class VerNFe extends Nav {
                     final Intent intent = new Intent(activity, VerNFe.class);
                     if (nfe != null && nfe.getLista_items() != null && nfe.getLista_items().size() > 0) {
                         System.out.println("NFe Recebida do servidor: " + nfe);
+                        if (nfe == null || nfe.getId_nfe() == 0) {
+                            //Se o servidor não conseguiu pegar a nota do site, armazenamos a chave localmente para tentar novamente mais tarde;
+                            Utils.salvaNotaLocalmente(VerNFe.this, code);
+                        }
                         preencherViewsProdutosNFe(nfe);
                     } else {
                         //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue-a no site.
