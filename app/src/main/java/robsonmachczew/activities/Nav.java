@@ -169,7 +169,7 @@ public class Nav extends AppCompatActivity {
 
                 case R.id.nav_sobre:
                     drawerLayout.closeDrawers();
-                    Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Nav.this, "Desenvolvido por.. \n Elton Rasch &\n Robson Machczew", Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.nav_logout:
