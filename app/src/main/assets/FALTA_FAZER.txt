@@ -11,6 +11,7 @@ Falta fazer:
     - Ver o layout da activity de descrição/histórico de um produto (caminho: Descontos->clicar em um produto->ver detalhes/histórico de preços)
     - Na activity "Descontos", colocar um botão que pesquisa um produto pelo código de barra usando a camera.
     - Mecanismo que, ao ocorrer falha no envio de uma nota (por qualquer motivo) guarde a chave da nota e tente enviar mais tarde.
+    - Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
 	++ Criar um adapter para mostrar os itens de uma NFe na activity "VerNFe"
 	++ Arrumar os adapters que mostram os objetos nas activities "Minhas NFes" e "Minhas Listas"
 	++ Possibilitar dar nome para a lista de compras;
