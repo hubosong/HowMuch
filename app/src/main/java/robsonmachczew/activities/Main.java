@@ -90,7 +90,9 @@ public class Main extends AppCompatActivity {
         t.show();
     }
     public void development(View view) {
-        Toast.makeText(this, "Desenvolvido por.. \n Elton Rasch &\n Robson Machczew", Toast.LENGTH_SHORT).show();
+        Toast t = Toast.makeText(this, "Desenvolvido por\nElton Rasch (埃尔顿) &\nRobson Machczew (胡博嵩)", Toast.LENGTH_LONG);
+        t.setGravity(Gravity.CENTER, 0, 50);
+        t.show();
     }
     public void phone(View view) {
         //gerar um sair do app 哈哈

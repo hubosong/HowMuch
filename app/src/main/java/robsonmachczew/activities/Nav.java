@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -169,7 +170,9 @@ public class Nav extends AppCompatActivity {
 
                 case R.id.nav_sobre:
                     drawerLayout.closeDrawers();
-                    Toast.makeText(Nav.this, "Desenvolvido por.. \n Elton Rasch &\n Robson Machczew", Toast.LENGTH_SHORT).show();
+                    Toast t = Toast.makeText(Nav.this, "Desenvolvido por\nElton Rasch (埃尔顿) &\nRobson Machczew (胡博嵩)", Toast.LENGTH_LONG);
+                    t.setGravity(Gravity.CENTER, 0, 50);
+                    t.show();
                     break;
 
                 case R.id.nav_logout:
