@@ -192,7 +192,6 @@ public class Login extends AppCompatActivity {
         Intent register = new Intent(Login.this, Cadastrar_Usuario.class);
         startActivity(register);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        this.finish();
     }
 
 
@@ -206,5 +205,12 @@ public class Login extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        Intent main = new Intent(this, Main.class);
+        startActivity(main);
+        this.finish();
+    }
 }

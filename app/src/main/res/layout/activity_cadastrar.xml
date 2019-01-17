@@ -130,7 +130,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/buttonshape_small_left"
                     android:drawableStart="@drawable/ic_search_upload"
-                    android:drawableTint="@color/text_color"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:layout_marginStart="12dp"

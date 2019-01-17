@@ -2,6 +2,8 @@ package robsonmachczew.activities;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -42,7 +44,6 @@ public class Main extends AppCompatActivity {
         }
 
 
-        /*
         //background video
         mVideoView = findViewById(R.id.bgVideoView);
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.market);
@@ -54,7 +55,6 @@ public class Main extends AppCompatActivity {
                 mediaPlayer.setLooping(true);
             }
         });
-        */
 
 
         //button access
