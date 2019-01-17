@@ -29,7 +29,8 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //basic confg
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(R.anim.right_in, R.anim.right_out);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 

@@ -75,7 +75,8 @@ public class Descontos extends Nav {
         getLayoutInflater().inflate(R.layout.activity_descontos, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(R.anim.right_in, R.anim.right_out);
         getSupportActionBar().setTitle("Descontos");
 
         //alpha effects
