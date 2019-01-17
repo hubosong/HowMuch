@@ -395,9 +395,9 @@ public class Descontos extends Nav {
                     ((TextView) view.findViewById(R.id.txtNomeProduto)).setText(item.getProduto().getDescricao());
                     ((TextView) view.findViewById(R.id.txtNomeMercado)).setText(item.getTransient_mercado().getNome());
                     ((TextView) view.findViewById(R.id.txtDataNFe)).setText(item.getData());
-                    ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$: -");
-                    ((TextView) view.findViewById(R.id.txtOff)).setText("R$: -");
-                    ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getValor()).replace(",", ".") + " " + item.getProduto().getUnidade_comercial());
+                    ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$ -");
+                    ((TextView) view.findViewById(R.id.txtOff)).setText("R$ -");
+                    ((TextView) view.findViewById(R.id.txtPrice)).setText("R$ " + df.format(item.getValor()).replace(",", ".") + " " + item.getProduto().getUnidade_comercial());
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

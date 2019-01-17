@@ -14,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import entidade.Item_NFe;
@@ -41,6 +42,11 @@ public class VerProduto extends Nav {
     private TextView txt_maior_valor_historico;
     private TextView txt_maior_valor_atual;
 
+    private TextView txt_unidade;
+    private TextView txt_codigo;
+
+    private DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +58,20 @@ public class VerProduto extends Nav {
         getSupportActionBar().setTitle("Detalhes do Produto");
 
         tv_descricao_produto = findViewById(R.id.tv_descricao_produto);
-        txt_menor_valor_historico = findViewById(R.id.textView6);
-        txt_menor_valor_atual = findViewById(R.id.textView9);
-        txt_valor_medio = findViewById(R.id.textView4);
-        txt_maior_valor_historico = findViewById(R.id.textView5);
-        txt_maior_valor_atual = findViewById(R.id.textView7);
+        txt_menor_valor_historico = findViewById(R.id.txt_menor_registrado);
+        txt_menor_valor_atual = findViewById(R.id.txt_menor_atual);
+        txt_valor_medio = findViewById(R.id.txt_medio);
+        txt_maior_valor_historico = findViewById(R.id.txt_maior_registrado);
+        txt_maior_valor_atual = findViewById(R.id.txt_maior_atual);
+
+        txt_unidade = findViewById(R.id.txt_unidade);
+        txt_codigo = findViewById(R.id.txt_codigo);
 
         usuario = Utils.loadFromSharedPreferences(this);
         getDetalhesProduto(getIntent().getLongExtra("ID_PRODUTO", 0));
     }
 
+    @SuppressLint("SetTextI18n")
     private void renderizaProduto_Detalhado() {
         if (produto != null) {
             tv_descricao_produto.setText(produto.getDescricao());
@@ -97,11 +107,18 @@ public class VerProduto extends Nav {
                     quantidade += item.getQuantidade();
                 }
             }
-            txt_menor_valor_historico.setText("R$: " + (menor_preco_historico.getValor() / menor_preco_historico.getQuantidade()) + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
-            txt_menor_valor_atual.setText("R$: " + (menor_preco_atual.getValor() / menor_preco_atual.getQuantidade()) + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_valor_medio.setText("R$: " + media/quantidade);
-            txt_maior_valor_atual.setText("R$: " + (maior_preco_atual.getValor() / maior_preco_atual.getQuantidade()) + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_maior_valor_historico.setText("R$: " + (maior_preco_historico.getValor() / maior_preco_historico.getQuantidade()) + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
+            txt_menor_valor_historico.setText(String.valueOf(decFormat.format(menor_preco_historico.getValor() / menor_preco_historico.getQuantidade()))
+                    + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
+            txt_menor_valor_atual.setText(String.valueOf(decFormat.format(menor_preco_atual.getValor() / menor_preco_atual.getQuantidade()))
+                    + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
+            txt_valor_medio.setText(String.valueOf(decFormat.format(media/quantidade)));
+            txt_maior_valor_atual.setText(String.valueOf(decFormat.format(maior_preco_atual.getValor() / maior_preco_atual.getQuantidade()))
+                    + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
+            txt_maior_valor_historico.setText(String.valueOf(decFormat.format(maior_preco_historico.getValor() / maior_preco_historico.getQuantidade()))
+                    + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
+
+            txt_unidade.setText(produto.getUnidade_comercial());
+            txt_codigo.setText(String.valueOf(produto.getCodigo_ncm()));
         }
     }
 

@@ -6,6 +6,7 @@
 
     <!-- colors template -->
     <color name="toolbar_status">#242a31</color>
+    <color name="toolbar_status_grid">#213332</color>
     <color name="searchview_status">#757575</color>
     <color name="text_color">#ffffff</color>
     <color name="hint_nav_login">#a8acb1</color>
