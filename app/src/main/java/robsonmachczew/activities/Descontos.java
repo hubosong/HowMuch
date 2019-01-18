@@ -6,12 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,6 +70,9 @@ public class Descontos extends Nav {
     public Animation alpha_in, alpha_out;
     private ScrollView layout_top;
 
+    private boolean backAlreadyPressed = false;
+
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +83,7 @@ public class Descontos extends Nav {
         getLayoutInflater().inflate(R.layout.activity_descontos, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
-        //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Descontos");
 
         //alpha effects
@@ -572,13 +578,30 @@ public class Descontos extends Nav {
         }
         else {
             if (usuario.getId_usuario() != 0) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                startActivity(intent);
-                finish();
-                System.exit(0);
+
+                //snack
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.layout_principal);
+                if (backAlreadyPressed) {
+                    finish();
+                    System.exit(0);
+                    return;
+                }
+                backAlreadyPressed = true;
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Pressione novamente para SAIR.", Snackbar.LENGTH_LONG);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() { backAlreadyPressed = false; }
+                }, 3000);
+                TextView txtSnackBar = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    txtSnackBar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                else
+                    txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setTextColor(Color.parseColor("#34a503"));
+                snackbar.getView().setBackgroundColor(Color.parseColor("#242a31"));
+                snackbar.show();
+
 
             } else {
                 Intent main = new Intent(Descontos.this, Main.class);
