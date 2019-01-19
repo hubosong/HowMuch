@@ -598,8 +598,9 @@ public class Descontos extends Nav {
                 else
                     txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
                 txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
-                txtSnackBar.setTextColor(Color.parseColor("#34a503"));
-                snackbar.getView().setBackgroundColor(Color.parseColor("#242a31"));
+                txtSnackBar.setTextColor(Color.parseColor("#ffffff"));
+                //snackbar.getView().setBackgroundColor(Color.parseColor("#242a31"));
+                snackbar.getView().setBackgroundResource(R.drawable.gradient_list);
                 snackbar.show();
 
 

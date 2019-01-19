@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:gravity="center">
 
 
@@ -33,7 +33,6 @@
             android:inputType="textPersonName"
             android:textSize="16sp"
             android:textColor="#000"
-            android:layout_marginBottom="8dp"
             android:focusable="true"
             android:focusableInTouchMode="true"/>
 
@@ -46,23 +45,25 @@
             android:textAlignment="center"
             android:textColor="@android:color/white" />
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tv_quant_prods_abaixo_media"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            android:scrollbars="vertical"
+            android:scrollbarSize="2sp"
+            android:scrollbarThumbVertical="@drawable/gradient_list">
+
+            <LinearLayout
+                android:id="@+id/layout_prods_desconto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/layout_top"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
-        android:scrollbars="vertical"
-        android:scrollbarSize="2sp"
-        android:scrollbarThumbVertical="@drawable/gradient_list">
 
-        <LinearLayout
-            android:id="@+id/layout_prods_desconto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
