@@ -39,7 +39,7 @@
                 android:layout_below="@id/txtNomeLista"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="Quantidad de Itense: "
+                android:text="Quantidad de Itens: "
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
