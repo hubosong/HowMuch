@@ -164,13 +164,41 @@ public class Descontos extends Nav {
         findViewById(R.id.btn_barcode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(Descontos.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                integrator.setPrompt("");
+                integrator.setCameraId(0);
+                //integrator.initiateScan();
+                integrator.setBarcodeImageEnabled(false);
+                integrator.setOrientationLocked(true);
+                integrator.setBeepEnabled(true);
+
                 Toast.makeText(Descontos.this, "barcode", Toast.LENGTH_SHORT).show();
+
             }
         });
 
 
+    }
+
+    /*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(requestCode == 2) {
+            if (result != null) {
+                if (result.getContents() != null) {
+                    Toast.makeText(Descontos.this, result.getContents(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Descontos.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
 
     }
+    */
 
 
     @SuppressLint("StaticFieldLeak")
