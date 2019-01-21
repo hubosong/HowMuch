@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,16 +12,13 @@ import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -31,16 +27,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -53,6 +46,8 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import entidade.Item_NFe;
@@ -64,11 +59,15 @@ import entidade.Utils;
 
 public class Descontos extends Nav {
 
+    boolean mostrando_pesquisados = false;
+
     private boolean permiteVoltar = false;
     private LinearLayout layout_produtos_desconto;
     private TextView tv_quant_prods_desconto;
     private EditText txt_pesquisa_produtos;
     private ArrayList<Lista> lista_de_listas;
+    private ArrayList<ProdutoAbaixoMedia> lista_produtos_abaixo_media;
+    private ArrayList<Item_NFe> lista_produtos_pesquisados;
     private Usuario usuario;
 
     private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -98,7 +97,7 @@ public class Descontos extends Nav {
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
 
-        pegaListas();
+        pegaListasDeCompras();
 
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
@@ -115,50 +114,7 @@ public class Descontos extends Nav {
             rvListStart();
         }
 
-
-        //ordenar lista
-        findViewById(R.id.btn_ordenar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final PopupWindow popup = new PopupWindow(Descontos.this);
-                View layout = getLayoutInflater().inflate(R.layout.popup_interface, null);
-                popup.setContentView(layout);
-                popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-                popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
-                popup.setOutsideTouchable(true);
-                popup.setFocusable(true);
-                popup.showAsDropDown(v);
-
-                popup.getContentView().findViewById(R.id.pop_menorPreco).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(Descontos.this, "Menor preco", Toast.LENGTH_SHORT).show();
-                        popup.dismiss();
-                    }
-                });
-                popup.getContentView().findViewById(R.id.pop_maiorPreco).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(Descontos.this, "Maior preco", Toast.LENGTH_SHORT).show();
-                        popup.dismiss();
-                    }
-                });
-                popup.getContentView().findViewById(R.id.pop_data).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(Descontos.this, "Data", Toast.LENGTH_SHORT).show();
-                        popup.dismiss();
-                    }
-                });
-                popup.getContentView().findViewById(R.id.pop_mercado).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(Descontos.this, "Mercado", Toast.LENGTH_SHORT).show();
-                        popup.dismiss();
-                    }
-                });
-            }
-        });
+        setaOrdenacoesListas();
 
         //barcode search
         findViewById(R.id.btn_barcode).setOnClickListener(new View.OnClickListener() {
@@ -174,35 +130,180 @@ public class Descontos extends Nav {
                 integrator.setBeepEnabled(true);
 
                 Toast.makeText(Descontos.this, "barcode", Toast.LENGTH_SHORT).show();
-
             }
         });
+    }
 
 
+    /*
+    Atribui as ordenações das listas de produtos abaixo da média e pesquisados
+     */
+    private void setaOrdenacoesListas() {
+        findViewById(R.id.btn_ordenar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PopupWindow popup = new PopupWindow(Descontos.this);
+                View layout = getLayoutInflater().inflate(R.layout.popup_interface, null);
+                popup.setContentView(layout);
+                popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+                popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+                popup.setOutsideTouchable(true);
+                popup.setFocusable(true);
+                popup.showAsDropDown(v);
+
+                popup.getContentView().findViewById(R.id.pop_menorPreco).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mostrando_pesquisados && lista_produtos_pesquisados != null) {
+                            Collections.sort(lista_produtos_pesquisados, new Comparator<Item_NFe>() {
+                                @Override
+                                public int compare(Item_NFe o1, Item_NFe o2) {
+                                    Float val1 = o1.getValor() / o1.getQuantidade();
+                                    Float val2 = o2.getValor() / o2.getQuantidade();
+                                    return val1.compareTo(val2);
+                                }
+                            });
+                            renderizaProdutosDaPesquisa();
+                        }
+                        if (!mostrando_pesquisados && lista_produtos_abaixo_media != null) {
+                            Collections.sort(lista_produtos_abaixo_media, new Comparator<ProdutoAbaixoMedia>() {
+                                @Override
+                                public int compare(ProdutoAbaixoMedia o1, ProdutoAbaixoMedia o2) {
+                                    Float val1 = o1.getValor();
+                                    Float val2 = o2.getValor();
+                                    return val1.compareTo(val2);
+                                }
+                            });
+                            renderizaProdutosComDesconto();
+                        }
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_maiorPreco).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mostrando_pesquisados && lista_produtos_pesquisados != null) {
+                            Collections.sort(lista_produtos_pesquisados, new Comparator<Item_NFe>() {
+                                @Override
+                                public int compare(Item_NFe o1, Item_NFe o2) {
+                                    Float val1 = o1.getValor() / o1.getQuantidade();
+                                    Float val2 = o2.getValor() / o2.getQuantidade();
+                                    return val2.compareTo(val1);
+                                }
+                            });
+                            renderizaProdutosDaPesquisa();
+                        }
+                        if (!mostrando_pesquisados && lista_produtos_abaixo_media != null) {
+                            Collections.sort(lista_produtos_abaixo_media, new Comparator<ProdutoAbaixoMedia>() {
+                                @Override
+                                public int compare(ProdutoAbaixoMedia o1, ProdutoAbaixoMedia o2) {
+                                    Float val1 = o1.getValor();
+                                    Float val2 = o2.getValor();
+                                    return val2.compareTo(val1);
+                                }
+                            });
+                            renderizaProdutosComDesconto();
+                        }
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_data).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mostrando_pesquisados && lista_produtos_pesquisados != null) {
+                            Collections.sort(lista_produtos_pesquisados, new Comparator<Item_NFe>() {
+                                @Override
+                                public int compare(Item_NFe o1, Item_NFe o2) {
+                                    return o2.getData().compareTo(o1.getData());
+                                }
+                            });
+                            renderizaProdutosDaPesquisa();
+                        }
+                        if (!mostrando_pesquisados && lista_produtos_abaixo_media != null) {
+                            Collections.sort(lista_produtos_abaixo_media, new Comparator<ProdutoAbaixoMedia>() {
+                                @Override
+                                public int compare(ProdutoAbaixoMedia o1, ProdutoAbaixoMedia o2) {
+                                    return o2.getData().compareTo(o1.getData());
+                                }
+                            });
+                            renderizaProdutosComDesconto();
+                        }
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_mercado).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mostrando_pesquisados && lista_produtos_pesquisados != null) {
+                            Collections.sort(lista_produtos_pesquisados, new Comparator<Item_NFe>() {
+                                @Override
+                                public int compare(Item_NFe o1, Item_NFe o2) {
+                                    return o1.getTransient_mercado().getNome().compareTo(o2.getTransient_mercado().getNome());
+                                }
+                            });
+                            renderizaProdutosDaPesquisa();
+                        }
+                        if (!mostrando_pesquisados && lista_produtos_abaixo_media != null) {
+                            Collections.sort(lista_produtos_abaixo_media, new Comparator<ProdutoAbaixoMedia>() {
+                                @Override
+                                public int compare(ProdutoAbaixoMedia o1, ProdutoAbaixoMedia o2) {
+                                    return o1.getNome_mercado().compareTo(o2.getNome_mercado());
+                                }
+                            });
+                            renderizaProdutosComDesconto();
+                        }
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_valor_desconto).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mostrando_pesquisados && lista_produtos_pesquisados != null) {
+                            Toast.makeText(Descontos.this, "Indisponível Para Produtos Pesquisados", Toast.LENGTH_LONG).show();
+                        }
+                        if (!mostrando_pesquisados && lista_produtos_abaixo_media != null) {
+                            Collections.sort(lista_produtos_abaixo_media, new Comparator<ProdutoAbaixoMedia>() {
+                                @Override
+                                public int compare(ProdutoAbaixoMedia o1, ProdutoAbaixoMedia o2) {
+                                    Float val1 = o1.getValor_medio() - o1.getValor();
+                                    Float val2 = o2.getValor_medio() - o2.getValor();
+                                    return val2.compareTo(val1);
+                                }
+                            });
+                            renderizaProdutosComDesconto();
+                        }
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_porcentagem_desconto).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mostrando_pesquisados && lista_produtos_pesquisados != null) {
+                            Toast.makeText(Descontos.this, "Indisponível Para Produtos Pesquisados", Toast.LENGTH_LONG).show();
+                        }
+                        if (!mostrando_pesquisados && lista_produtos_abaixo_media != null) {
+                            Collections.sort(lista_produtos_abaixo_media, new Comparator<ProdutoAbaixoMedia>() {
+                                @Override
+                                public int compare(ProdutoAbaixoMedia o1, ProdutoAbaixoMedia o2) {
+                                    Float val1 = ((o1.getValor_medio() - o1.getValor()) * 100) / o1.getValor_medio();
+                                    Float val2 = ((o2.getValor_medio() - o2.getValor()) * 100) / o2.getValor_medio();
+                                    return val2.compareTo(val1);
+                                }
+                            });
+                            renderizaProdutosComDesconto();
+                        }
+                        popup.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(requestCode == 2) {
-            if (result != null) {
-                if (result.getContents() != null) {
-                    Toast.makeText(Descontos.this, result.getContents(), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(Descontos.this, "Cancelado", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                super.onActivityResult(requestCode, resultCode, data);
-            }
-        }
-
-    }
-    */
-
-
+    Pega as Listas de compras do usuário logado
+     */
     @SuppressLint("StaticFieldLeak")
-    private void pegaListas() {
+    private void pegaListasDeCompras() {
         if (usuario == null) {
             usuario = Utils.loadFromSharedPreferences(this);
         }
@@ -248,6 +349,10 @@ public class Descontos extends Nav {
         }
     }
 
+    /*
+    Configura a procura no edittext de procura de produtos
+     */
+    @SuppressLint("StaticFieldLeak")
     private void setEditTextProcuraProdutos() {
         TextWatcher tw = new TextWatcher() {
             @SuppressLint("StaticFieldLeak")
@@ -285,7 +390,18 @@ public class Descontos extends Nav {
 
                         @Override
                         protected void onPostExecute(ArrayList<Item_NFe> list) {
-                            renderizaProdutosDaPesquisa(list);
+                            lista_produtos_pesquisados = list;
+                            if (lista_produtos_pesquisados != null) {
+                                try {
+                                    for (Item_NFe produto : lista_produtos_pesquisados) {
+                                        Date date = sdf_bd.parse(produto.getData());
+                                        produto.setData(sdf_exibicao.format(date));
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println(" >>> Erro: " + e.getMessage());
+                                }
+                            }
+                            renderizaProdutosDaPesquisa();
                         }
                     }.execute();
                 }
@@ -301,6 +417,7 @@ public class Descontos extends Nav {
         };
         txt_pesquisa_produtos.addTextChangedListener(tw);
     }
+
 
     @SuppressLint("StaticFieldLeak")
     public void rvListStart() {
@@ -342,23 +459,35 @@ public class Descontos extends Nav {
 
             @Override
             protected void onPostExecute(ArrayList<ProdutoAbaixoMedia> list) {
-                renderizaProdutosComDesconto(list);
+                lista_produtos_abaixo_media = list;
+                if (lista_produtos_abaixo_media != null) {
+                    try {
+                        for (ProdutoAbaixoMedia produto : lista_produtos_abaixo_media) {
+                            Date date = sdf_bd.parse(produto.getData());
+                            produto.setData(sdf_exibicao.format(date));
+                        }
+                    } catch (Exception e) {
+                        System.out.println(" >>> Erro: " + e.getMessage());
+                    }
+                }
+                renderizaProdutosComDesconto();
             }
         }.execute();
     }
 
-    private void renderizaProdutosComDesconto(ArrayList<ProdutoAbaixoMedia> list) {
-        if (list != null) {
+
+    private void renderizaProdutosComDesconto() {
+        if (lista_produtos_abaixo_media != null) {
+            mostrando_pesquisados = false;
             try {
-                tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio (" + list.size() + "):");
+                tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio (" + lista_produtos_abaixo_media.size() + "):");
                 layout_produtos_desconto.removeAllViews();
                 DecimalFormat df = new DecimalFormat("0.00");
-                for (final ProdutoAbaixoMedia produto : list) {
+                for (final ProdutoAbaixoMedia produto : lista_produtos_abaixo_media) {
                     if (produto.getDescricao_produto2() != null && !produto.getDescricao_produto2().equalsIgnoreCase("") && !produto.getDescricao_produto2().equalsIgnoreCase("NULL")) {
                         produto.setDescricao_produto(produto.getDescricao_produto2());
                     }
-                    Date date = sdf_bd.parse(produto.getData());
-                    produto.setData(sdf_exibicao.format(date));
+
                     View item; // Creating an instance for View Object
                     LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     item = inflater.inflate(R.layout.layout_products, null);
@@ -366,8 +495,9 @@ public class Descontos extends Nav {
                     ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(produto.getNome_mercado());
                     ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
                     ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$ " + produto.getValor_medio());
-                    ((TextView) item.findViewById(R.id.txtOff)).setText("R$ " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", "."));
-                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + df.format(produto.getValor()).replace(",", ".")  + " " + produto.getUnidade_comercial());
+                    float porcentagem_desconto = ((produto.getValor_medio() - produto.getValor()) * 100) / produto.getValor_medio();
+                    ((TextView) item.findViewById(R.id.txtOff)).setText("R$ " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", ".") + " (" + df.format(porcentagem_desconto).replace(",", ".") + "%)");
+                    ((TextView) item.findViewById(R.id.txtPrice)).setText("R$ " + df.format(produto.getValor()).replace(",", ".") + " " + produto.getUnidade_comercial());
                     item.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -377,7 +507,7 @@ public class Descontos extends Nav {
 
                             //change alpha intensity
                             WindowManager.LayoutParams lp = dialog_opcoes_produto.getWindow().getAttributes();
-                            lp.dimAmount=0.8f;
+                            lp.dimAmount = 0.8f;
                             dialog_opcoes_produto.getWindow().setAttributes(lp);
                             dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
@@ -476,18 +606,18 @@ public class Descontos extends Nav {
         }
     }
 
-    private void renderizaProdutosDaPesquisa(ArrayList<Item_NFe> list) {
-        if (list != null) {
+
+    private void renderizaProdutosDaPesquisa() {
+        if (lista_produtos_pesquisados != null) {
+            mostrando_pesquisados = true;
             try {
-                tv_quant_prods_desconto.setText("Produtos Encontrados (" + list.size() + "):");
+                tv_quant_prods_desconto.setText("Produtos Encontrados (" + lista_produtos_pesquisados.size() + "):");
                 layout_produtos_desconto.removeAllViews();
                 DecimalFormat df = new DecimalFormat("0.00");
-                for (final Item_NFe item : list) {
+                for (final Item_NFe item : lista_produtos_pesquisados) {
                     if (item.getProduto().getDescricao2() != null && !item.getProduto().getDescricao2().equalsIgnoreCase("") && !item.getProduto().getDescricao2().equalsIgnoreCase("NULL")) {
                         item.getProduto().setDescricao(item.getProduto().getDescricao2());
                     }
-                    Date date = sdf_bd.parse(item.getData());
-                    item.setData(sdf_exibicao.format(date));
                     item.setValor(item.getValor() / item.getQuantidade());
                     View view; // Creating an instance for View Object
                     LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -508,7 +638,7 @@ public class Descontos extends Nav {
 
                             //change alpha intensity
                             WindowManager.LayoutParams lp = dialog_opcoes_produto.getWindow().getAttributes();
-                            lp.dimAmount=0.8f;
+                            lp.dimAmount = 0.8f;
                             dialog_opcoes_produto.getWindow().setAttributes(lp);
                             dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
@@ -603,6 +733,7 @@ public class Descontos extends Nav {
         }
     }
 
+
     @SuppressLint("StaticFieldLeak")
     private void adicionarProdutoListas(final ArrayList<Long> ids_listas, final Long id_produto) {
         new AsyncTask<String, Void, Long>() {
@@ -650,6 +781,7 @@ public class Descontos extends Nav {
         }.execute();
     }
 
+
     //menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -657,18 +789,19 @@ public class Descontos extends Nav {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
 
     //on back
     @Override
     public void onBackPressed() {
         if (permiteVoltar) {
             super.onBackPressed();
-        }
-        else {
+        } else {
             if (usuario.getId_usuario() != 0) {
 
                 //snack
@@ -682,7 +815,9 @@ public class Descontos extends Nav {
                 Snackbar snackbar = Snackbar.make(coordinatorLayout, "Pressione novamente para SAIR.", Snackbar.LENGTH_LONG);
                 new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void run() { backAlreadyPressed = false; }
+                    public void run() {
+                        backAlreadyPressed = false;
+                    }
                 }, 3000);
                 TextView txtSnackBar = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)

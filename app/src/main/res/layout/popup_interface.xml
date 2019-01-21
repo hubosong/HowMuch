@@ -11,6 +11,16 @@
         android:background="@color/hint_nav_login">
 
         <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ordenar Lista"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/pop_menorPreco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,6 +57,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Por Mercado"
+            android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+            android:drawableLeft="@drawable/ic_swap_vert_black_24dp"
+            android:drawableTint="@color/toolbar_status"
+            android:drawablePadding="10dp"
+            android:padding="11dp"/>
+
+        <TextView
+            android:id="@+id/pop_valor_desconto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor do Desconto"
+            android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+            android:drawableLeft="@drawable/ic_swap_vert_black_24dp"
+            android:drawableTint="@color/toolbar_status"
+            android:drawablePadding="10dp"
+            android:padding="11dp"/>
+
+        <TextView
+            android:id="@+id/pop_porcentagem_desconto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Porcentagem do Desconto"
             android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
             android:drawableLeft="@drawable/ic_swap_vert_black_24dp"
             android:drawableTint="@color/toolbar_status"
