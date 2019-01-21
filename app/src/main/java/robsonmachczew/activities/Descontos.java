@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
@@ -31,9 +33,14 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -107,7 +114,64 @@ public class Descontos extends Nav {
         } else {
             rvListStart();
         }
+
+
+        //ordenar lista
+        findViewById(R.id.btn_ordenar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PopupWindow popup = new PopupWindow(Descontos.this);
+                View layout = getLayoutInflater().inflate(R.layout.popup_interface, null);
+                popup.setContentView(layout);
+                popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+                popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+                popup.setOutsideTouchable(true);
+                popup.setFocusable(true);
+                popup.showAsDropDown(v);
+
+                popup.getContentView().findViewById(R.id.pop_menorPreco).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(Descontos.this, "Menor preco", Toast.LENGTH_SHORT).show();
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_maiorPreco).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(Descontos.this, "Maior preco", Toast.LENGTH_SHORT).show();
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_data).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(Descontos.this, "Data", Toast.LENGTH_SHORT).show();
+                        popup.dismiss();
+                    }
+                });
+                popup.getContentView().findViewById(R.id.pop_mercado).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(Descontos.this, "Mercado", Toast.LENGTH_SHORT).show();
+                        popup.dismiss();
+                    }
+                });
+            }
+        });
+
+        //barcode search
+        findViewById(R.id.btn_barcode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Descontos.this, "barcode", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
     }
+
 
     @SuppressLint("StaticFieldLeak")
     private void pegaListas() {

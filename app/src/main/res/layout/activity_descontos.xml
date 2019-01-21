@@ -18,23 +18,50 @@
         android:layout_marginTop="20dp"
         android:gravity="center">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:background="@drawable/button_edttext"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="10dp"
-            android:ems="10"
-            android:hint="Pesquisar Produto"
-            android:textColorHint="@color/nav_color"
-            android:inputType="textPersonName"
-            android:textSize="16sp"
-            android:textColor="#000"
-            android:focusable="true"
-            android:focusableInTouchMode="true"/>
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:background="@drawable/button_edttext"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Pesquisar Produto"
+                android:textColorHint="@color/nav_color"
+                android:inputType="textPersonName"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
+            <ImageButton
+                android:id="@+id/btn_barcode"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/buttonshape_small_right"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_barcode"
+                android:tint="#fff"/>
+
+            <ImageButton
+                android:id="@+id/btn_ordenar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/buttonshape_small_right"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_swap_vert_black_24dp"
+                android:tint="#fff"/>
+
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_quant_prods_abaixo_media"

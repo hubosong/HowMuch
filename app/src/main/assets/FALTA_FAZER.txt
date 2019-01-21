@@ -5,9 +5,11 @@ Falta fazer:
     - Definir nome e domínio do app
 	- Fluxo inserção de produto:
 		- SE não tiver EAN, precisa verificar se a descrição
-    - Icones de launcher
+    - Icones de launcher OK
+
     - Em "Descontos", ao lado do Edittext de pesquisar, criar um botão para ordenar a lista. Quando clica no botão abre um dialog perguntando o critério (menor/maior preço, data, mercado etc..)
         - Também achar um lugar para o botão de ordenar no "Criar Lista", "Minhas NFes" e "Minhas Listas"
+
     - Ver o layout da activity de descrição/histórico de um produto (caminho: Descontos->clicar em um produto->ver detalhes/histórico de preços)
     - Na activity "Descontos", colocar um botão que pesquisa um produto pelo código de barra usando a camera.
     - Em "Criar Lista", colocar um campo de quantidade do produto selecionado

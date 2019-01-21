@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- adapter -->
     <item
         android:id="@+id/option1"
-        android:title="Detalhes" />
+        android:title="Detalhes"/>
     <item
         android:id="@+id/option2"
-        android:title="Adicionar à Nova Lista" />
+        android:title="Adicionar à Nova Lista"/>
     <item
         android:id="@+id/option3"
-        android:title="Adicionar à Lista Existente" />
+        android:title="Adicionar à Lista Existente"/>
+
+
+    <!-- ordenar
+    <item
+        android:id="@+id/menorPreco"
+        android:title="Menor Preço"/>
+    <item
+        android:id="@+id/maiorPreco"
+        android:title="Maior Preço"/>
+    <item
+        android:id="@+id/data"
+        android:title="Data"/>
+    <item
+        android:id="@+id/mercado"
+        android:title="Mercado"/>
+        -->
+
 </menu>

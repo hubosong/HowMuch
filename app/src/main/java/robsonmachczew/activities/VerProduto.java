@@ -18,6 +18,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import entidade.Item_NFe;
+import entidade.Mercado;
+import entidade.NFe;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Produto_Detalhado;
 import entidade.Usuario;
