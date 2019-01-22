@@ -8,7 +8,7 @@ Falta fazer:
     - Icones de launcher OK
 
     ++ Em "Descontos", ao lado do Edittext de pesquisar, criar um botão para ordenar a lista. Quando clica no botão abre um dialog perguntando o critério (menor/maior preço, data, mercado etc..)
-        - Também achar um lugar para o botão de ordenar no "Criar Lista", "Minhas NFes" e "Minhas Listas"
+        - Também achar um lugar para o botão de ordenar no "Criar Lista" (pra ordenar os itens da lista), "Minhas NFes" (pra ordenars as nfes) e "Minhas Listas" (pra ordenar as listas)
 
     - Ver o layout da activity de descrição/histórico de um produto (caminho: Descontos->clicar em um produto->ver detalhes/histórico de preços)
     ++ Na activity "Descontos", colocar um botão que pesquisa um produto pelo código de barra usando a camera.
