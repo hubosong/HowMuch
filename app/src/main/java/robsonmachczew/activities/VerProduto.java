@@ -70,7 +70,13 @@ public class VerProduto extends Nav {
         txt_codigo = findViewById(R.id.txt_codigo);
 
         usuario = Utils.loadFromSharedPreferences(this);
-        getDetalhesProduto(getIntent().getLongExtra("ID_PRODUTO", 0));
+
+        produto = (Produto_Detalhado) getIntent().getSerializableExtra("PRODUTO_DETALHADO");
+        if(produto == null) {
+            getDetalhesProduto(getIntent().getLongExtra("ID_PRODUTO", 0));
+        }else{
+            renderizaProduto_Detalhado();
+        }
     }
 
     @SuppressLint("SetTextI18n")

@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -54,6 +55,7 @@ import entidade.Item_NFe;
 import entidade.Lista;
 import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
+import entidade.Produto_Detalhado;
 import entidade.Usuario;
 import entidade.Utils;
 
@@ -121,22 +123,20 @@ public class Descontos extends Nav {
             @Override
             public void onClick(View v) {
                 IntentIntegrator integrator = new IntentIntegrator(Descontos.this);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.EAN_8, IntentIntegrator.EAN_13);
                 integrator.setPrompt("");
                 integrator.setCameraId(0);
-                //integrator.initiateScan();
-                integrator.setBarcodeImageEnabled(false);
+                integrator.initiateScan();
+                integrator.setBarcodeImageEnabled(true);
                 integrator.setOrientationLocked(true);
                 integrator.setBeepEnabled(true);
-
-                Toast.makeText(Descontos.this, "barcode", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    /*
-    Atribui as ordenações das listas de produtos abaixo da média e pesquisados
+    /**
+     * Atribui as ordenações das listas de produtos abaixo da média e pesquisados
      */
     private void setaOrdenacoesListas() {
         findViewById(R.id.btn_ordenar).setOnClickListener(new View.OnClickListener() {
@@ -299,8 +299,8 @@ public class Descontos extends Nav {
         });
     }
 
-    /*
-    Pega as Listas de compras do usuário logado
+    /**
+     * Pega as Listas de compras do usuário logado
      */
     @SuppressLint("StaticFieldLeak")
     private void pegaListasDeCompras() {
@@ -349,8 +349,8 @@ public class Descontos extends Nav {
         }
     }
 
-    /*
-    Configura a procura no edittext de procura de produtos
+    /**
+     * Configura a procura no edittext de procura de produtos
      */
     @SuppressLint("StaticFieldLeak")
     private void setEditTextProcuraProdutos() {
@@ -823,5 +823,63 @@ public class Descontos extends Nav {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() != null) {
+                String codigo_de_barras = result.getContents();
+                pegaProdutoPorCodigoDeBarras(codigo_de_barras);
+            } else {
+                Toast.makeText(this, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Erro ao ler código de barras do Produto", Toast.LENGTH_LONG).show();
+        }
+    }
 
+    @SuppressLint("StaticFieldLeak")
+    private void pegaProdutoPorCodigoDeBarras(final String ean) {
+        new AsyncTask<String, Void, Produto_Detalhado>() {
+
+            @Override
+            protected Produto_Detalhado doInBackground(String... params) {
+                Produto_Detalhado produto_detalhado = null;
+                try {
+                    String urlParameters = "funcao=GET_PRODUTO_DETALHADO_BY_EAN&ean=" + ean;
+                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                    URL url = new URL(Utils.URL + "produto");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true);
+                    urlCon.setDoInput(true);
+
+                    DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                    wr.write(postData);
+                    wr.close();
+                    wr.flush();
+
+                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                    produto_detalhado = (Produto_Detalhado) ois.readObject();
+                    ois.close();
+
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
+                return produto_detalhado;
+            }
+
+            @Override
+            protected void onPostExecute(Produto_Detalhado produto_detalhado) {
+                if(produto_detalhado != null) {
+                    Intent intent = new Intent(Descontos.this, VerProduto.class);
+                    intent.putExtra("PRODUTO_DETALHADO", produto_detalhado);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(Descontos.this, "Produto não Encontrado", Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
+    }
 }
