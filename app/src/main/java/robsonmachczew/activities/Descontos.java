@@ -391,16 +391,6 @@ public class Descontos extends Nav {
                         @Override
                         protected void onPostExecute(ArrayList<Item_NFe> list) {
                             lista_produtos_pesquisados = list;
-                            if (lista_produtos_pesquisados != null) {
-                                try {
-                                    for (Item_NFe produto : lista_produtos_pesquisados) {
-                                        Date date = sdf_bd.parse(produto.getData());
-                                        produto.setData(sdf_exibicao.format(date));
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println(" >>> Erro: " + e.getMessage());
-                                }
-                            }
                             renderizaProdutosDaPesquisa();
                         }
                     }.execute();
@@ -460,16 +450,6 @@ public class Descontos extends Nav {
             @Override
             protected void onPostExecute(ArrayList<ProdutoAbaixoMedia> list) {
                 lista_produtos_abaixo_media = list;
-                if (lista_produtos_abaixo_media != null) {
-                    try {
-                        for (ProdutoAbaixoMedia produto : lista_produtos_abaixo_media) {
-                            Date date = sdf_bd.parse(produto.getData());
-                            produto.setData(sdf_exibicao.format(date));
-                        }
-                    } catch (Exception e) {
-                        System.out.println(" >>> Erro: " + e.getMessage());
-                    }
-                }
                 renderizaProdutosComDesconto();
             }
         }.execute();
@@ -487,13 +467,14 @@ public class Descontos extends Nav {
                     if (produto.getDescricao_produto2() != null && !produto.getDescricao_produto2().equalsIgnoreCase("") && !produto.getDescricao_produto2().equalsIgnoreCase("NULL")) {
                         produto.setDescricao_produto(produto.getDescricao_produto2());
                     }
-
+                    Date date = sdf_bd.parse(produto.getData());
+                    String data_exibicao = sdf_exibicao.format(date);
                     View item; // Creating an instance for View Object
                     LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     item = inflater.inflate(R.layout.layout_products, null);
                     ((TextView) item.findViewById(R.id.txtNomeProduto)).setText(produto.getDescricao_produto());
                     ((TextView) item.findViewById(R.id.txtNomeMercado)).setText(produto.getNome_mercado());
-                    ((TextView) item.findViewById(R.id.txtDataNFe)).setText(produto.getData());
+                    ((TextView) item.findViewById(R.id.txtDataNFe)).setText(data_exibicao);
                     ((TextView) item.findViewById(R.id.txtMediumPrice)).setText("R$ " + produto.getValor_medio());
                     float porcentagem_desconto = ((produto.getValor_medio() - produto.getValor()) * 100) / produto.getValor_medio();
                     ((TextView) item.findViewById(R.id.txtOff)).setText("R$ " + df.format(produto.getValor_medio() - produto.getValor()).replace(",", ".") + " (" + df.format(porcentagem_desconto).replace(",", ".") + "%)");
@@ -619,12 +600,14 @@ public class Descontos extends Nav {
                         item.getProduto().setDescricao(item.getProduto().getDescricao2());
                     }
                     item.setValor(item.getValor() / item.getQuantidade());
+                    Date date = sdf_bd.parse(item.getData());
+                    String data_exibicao = sdf_exibicao.format(date);
                     View view; // Creating an instance for View Object
                     LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     view = inflater.inflate(R.layout.layout_products, null);
                     ((TextView) view.findViewById(R.id.txtNomeProduto)).setText(item.getProduto().getDescricao());
                     ((TextView) view.findViewById(R.id.txtNomeMercado)).setText(item.getTransient_mercado().getNome());
-                    ((TextView) view.findViewById(R.id.txtDataNFe)).setText(item.getData());
+                    ((TextView) view.findViewById(R.id.txtDataNFe)).setText(data_exibicao);
                     ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$ -");
                     ((TextView) view.findViewById(R.id.txtOff)).setText("R$ -");
                     ((TextView) view.findViewById(R.id.txtPrice)).setText("R$ " + df.format(item.getValor()).replace(",", ".") + " " + item.getProduto().getUnidade_comercial());
