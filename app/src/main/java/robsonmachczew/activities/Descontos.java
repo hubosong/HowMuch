@@ -126,10 +126,13 @@ public class Descontos extends Nav {
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.EAN_8, IntentIntegrator.EAN_13);
                 integrator.setPrompt("");
                 integrator.setCameraId(0);
-                integrator.initiateScan();
+                //integrator.initiateScan();
                 integrator.setBarcodeImageEnabled(true);
                 integrator.setOrientationLocked(true);
                 integrator.setBeepEnabled(true);
+                Intent intent = integrator.createScanIntent();
+                integrator.setRequestCode(1);
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -765,6 +768,52 @@ public class Descontos extends Nav {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
+    void pegaProdutoPorCodigoDeBarras(final String ean) {
+        new AsyncTask<String, Void, Produto_Detalhado>() {
+
+            @Override
+            protected Produto_Detalhado doInBackground(String... params) {
+                Produto_Detalhado produto_detalhado = null;
+                try {
+                    String urlParameters = "funcao=GET_PRODUTO_DETALHADO_BY_EAN&ean=" + ean;
+                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                    URL url = new URL(Utils.URL + "produto");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true);
+                    urlCon.setDoInput(true);
+
+                    DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                    wr.write(postData);
+                    wr.close();
+                    wr.flush();
+
+                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                    produto_detalhado = (Produto_Detalhado) ois.readObject();
+                    ois.close();
+
+                } catch (ClassNotFoundException | IOException e) {
+                    e.printStackTrace();
+                }
+                return produto_detalhado;
+            }
+
+            @Override
+            protected void onPostExecute(Produto_Detalhado produto_detalhado) {
+                if(produto_detalhado != null) {
+                    Intent intent = new Intent(Descontos.this, VerProduto.class);
+                    intent.putExtra("PRODUTO_DETALHADO", produto_detalhado);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(Descontos.this, "Produto não Encontrado", Toast.LENGTH_LONG).show();
+                }
+            }
+        }.execute();
+    }
+
+
     //menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -823,63 +872,4 @@ public class Descontos extends Nav {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                String codigo_de_barras = result.getContents();
-                pegaProdutoPorCodigoDeBarras(codigo_de_barras);
-            } else {
-                Toast.makeText(this, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "Erro ao ler código de barras do Produto", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void pegaProdutoPorCodigoDeBarras(final String ean) {
-        new AsyncTask<String, Void, Produto_Detalhado>() {
-
-            @Override
-            protected Produto_Detalhado doInBackground(String... params) {
-                Produto_Detalhado produto_detalhado = null;
-                try {
-                    String urlParameters = "funcao=GET_PRODUTO_DETALHADO_BY_EAN&ean=" + ean;
-                    byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-
-                    URL url = new URL(Utils.URL + "produto");
-                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                    urlCon.setRequestMethod("POST");
-                    urlCon.setDoOutput(true);
-                    urlCon.setDoInput(true);
-
-                    DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                    wr.write(postData);
-                    wr.close();
-                    wr.flush();
-
-                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                    produto_detalhado = (Produto_Detalhado) ois.readObject();
-                    ois.close();
-
-                } catch (ClassNotFoundException | IOException e) {
-                    e.printStackTrace();
-                }
-                return produto_detalhado;
-            }
-
-            @Override
-            protected void onPostExecute(Produto_Detalhado produto_detalhado) {
-                if(produto_detalhado != null) {
-                    Intent intent = new Intent(Descontos.this, VerProduto.class);
-                    intent.putExtra("PRODUTO_DETALHADO", produto_detalhado);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(Descontos.this, "Produto não Encontrado", Toast.LENGTH_LONG).show();
-                }
-            }
-        }.execute();
-    }
 }

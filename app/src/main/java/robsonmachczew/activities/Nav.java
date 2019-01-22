@@ -155,6 +155,9 @@ public class Nav extends AppCompatActivity {
                     integrator.setBarcodeImageEnabled(false);
                     integrator.setOrientationLocked(false);
                     integrator.setBeepEnabled(true);
+                    //Intent intent = integrator.createScanIntent();
+                    //integrator.setRequestCode(0);
+                    //startActivityForResult(intent, 0);
                     drawerLayout.closeDrawers();
                     break;
 
@@ -192,25 +195,42 @@ public class Nav extends AppCompatActivity {
         }
     }
 
-    //qrcode reader
+    //qrcode and barcode reader
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                String cut = result.getContents();
-                int corte = cut.indexOf("=") + 1;
-                final String code = cut.substring(corte, corte + 44);
-                Intent readQRcode = new Intent(activity, VerNFe.class);
-                readQRcode.putExtra("code", code);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                startActivity(readQRcode);
+        //if barcode reader
+        if (requestCode == 1) {
+            if (result != null) {
+                if (result.getContents() != null) {
+                    String codigo_de_barras = result.getContents();
+                    Descontos d = new Descontos();
+                    d.pegaProdutoPorCodigoDeBarras(codigo_de_barras);
+                } else {
+                    Toast.makeText(this, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(activity, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Erro ao ler código de barras do Produto", Toast.LENGTH_LONG).show();
             }
-            drawerLayout.closeDrawers();
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+        }
+        //if qrcode reader
+        else {
+            if (result != null) {
+                if (result.getContents() != null) {
+                    String cut = result.getContents();
+                    int corte = cut.indexOf("=") + 1;
+                    final String code = cut.substring(corte, corte + 44);
+                    Intent readQRcode = new Intent(activity, VerNFe.class);
+                    readQRcode.putExtra("code", code);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    startActivity(readQRcode);
+                } else {
+                    Toast.makeText(activity, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
+                }
+                drawerLayout.closeDrawers();
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 
