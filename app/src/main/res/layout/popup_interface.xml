@@ -16,9 +16,10 @@
             android:layout_height="wrap_content"
             android:text="Ordenar Lista"
             android:textAlignment="center"
-            android:textColor="@android:color/black"
+            android:textColor="@color/toolbar_status"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:padding="10dp"/>
 
         <TextView
             android:id="@+id/pop_menorPreco"

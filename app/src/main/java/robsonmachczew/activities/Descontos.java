@@ -130,6 +130,7 @@ public class Descontos extends Nav {
                 integrator.setBarcodeImageEnabled(true);
                 integrator.setOrientationLocked(true);
                 integrator.setBeepEnabled(true);
+                //used for multiples scans, calling onActivityResult in nav.class
                 Intent intent = integrator.createScanIntent();
                 integrator.setRequestCode(1);
                 startActivityForResult(intent, 1);
