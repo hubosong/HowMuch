@@ -305,6 +305,7 @@ public class VerNFe extends Nav {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                /*
                 if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
                     fab.hide();
                     fab.startAnimation(alpha_out);
@@ -312,6 +313,7 @@ public class VerNFe extends Nav {
                     fab.show();
                     fab.startAnimation(alpha_in);
                 }
+                */
             }
         });
     }

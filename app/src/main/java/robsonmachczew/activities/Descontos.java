@@ -80,6 +80,8 @@ public class Descontos extends Nav {
 
     private boolean backAlreadyPressed = false;
 
+    Intent intent;
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -123,19 +125,57 @@ public class Descontos extends Nav {
             @Override
             public void onClick(View v) {
                 IntentIntegrator integrator = new IntentIntegrator(Descontos.this);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.EAN_8, IntentIntegrator.EAN_13);
-                integrator.setPrompt("");
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.EAN_13, IntentIntegrator.EAN_8);
+                integrator.setPrompt("Alinhe o código\n\n\n\n");
                 integrator.setCameraId(0);
-                //integrator.initiateScan();
+                integrator.initiateScan();
                 integrator.setBarcodeImageEnabled(true);
                 integrator.setOrientationLocked(true);
                 integrator.setBeepEnabled(true);
-                //used for multiples scans, calling onActivityResult in nav.class
-                Intent intent = integrator.createScanIntent();
-                integrator.setRequestCode(1);
-                startActivityForResult(intent, 1);
+                code=2;
+
             }
         });
+    }
+
+    //qrcode and barcode reader
+    //copiado do nav para cá, para que nao haja conffito
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if qrcode reader
+        if(code == 1){
+            IntentResult qrcode = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (qrcode != null) {
+                if (qrcode.getContents() != null) {
+                    String cut = qrcode.getContents();
+                    int corte = cut.indexOf("=") + 1;
+                    final String code = cut.substring(corte, corte + 44);
+                    Intent readQRcode = new Intent(Descontos.this, VerNFe.class);
+                    readQRcode.putExtra("code", code);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    startActivity(readQRcode);
+                } else {
+                    Toast.makeText(Descontos.this, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        //if barcode reader
+        else if (code == 2){
+            IntentResult barcode = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (barcode != null) {
+                if (barcode.getContents() != null) {
+                    String codigo_de_barras = barcode.getContents();
+                    pegaProdutoPorCodigoDeBarras(codigo_de_barras);
+                } else {
+                    Toast.makeText(this, "Leitura do código de barras cancelado", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Erro ao ler código de barras do Produto", Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 
 

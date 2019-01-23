@@ -39,6 +39,8 @@ public class Nav extends AppCompatActivity {
 
     private Usuario usuario;
 
+    public int code = 0; //evitar conflitos leitura codigos
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class Nav extends AppCompatActivity {
                 integrator.setBarcodeImageEnabled(false);
                 integrator.setOrientationLocked(false);
                 integrator.setBeepEnabled(true);
+                code = 1;
             }
         });
 
@@ -155,9 +158,7 @@ public class Nav extends AppCompatActivity {
                     integrator.setBarcodeImageEnabled(false);
                     integrator.setOrientationLocked(false);
                     integrator.setBeepEnabled(true);
-                    //Intent intent = integrator.createScanIntent();
-                    //integrator.setRequestCode(0);
-                    //startActivityForResult(intent, 0);
+                    code = 1;
                     drawerLayout.closeDrawers();
                     break;
 
@@ -195,29 +196,16 @@ public class Nav extends AppCompatActivity {
         }
     }
 
+
     //qrcode and barcode reader
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        //if barcode reader
-        if (requestCode == 1) {
-            if (result != null) {
-                if (result.getContents() != null) {
-                    String codigo_de_barras = result.getContents();
-                    Descontos d = new Descontos();
-                    d.pegaProdutoPorCodigoDeBarras(codigo_de_barras);
-                } else {
-                    Toast.makeText(this, R.string.toast_cancel_read_qrcode, Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "Erro ao ler código de barras do Produto", Toast.LENGTH_LONG).show();
-            }
-        }
         //if qrcode reader
-        else {
-            if (result != null) {
-                if (result.getContents() != null) {
-                    String cut = result.getContents();
+        if(code == 1){
+            IntentResult qrcode = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (qrcode != null) {
+                if (qrcode.getContents() != null) {
+                    String cut = qrcode.getContents();
                     int corte = cut.indexOf("=") + 1;
                     final String code = cut.substring(corte, corte + 44);
                     Intent readQRcode = new Intent(activity, VerNFe.class);
@@ -232,6 +220,22 @@ public class Nav extends AppCompatActivity {
                 super.onActivityResult(requestCode, resultCode, data);
             }
         }
+        //if barcode reader
+        else if (code == 2){
+            IntentResult barcode = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (barcode != null) {
+                if (barcode.getContents() != null) {
+                    String codigo_de_barras = barcode.getContents();
+                    Descontos d = new Descontos();
+                    d.pegaProdutoPorCodigoDeBarras(codigo_de_barras);
+                } else {
+                    Toast.makeText(this, "Leitura do código de barras cancelado", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Erro ao ler código de barras do Produto", Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 
 
@@ -248,12 +252,13 @@ public class Nav extends AppCompatActivity {
             case R.id.action_qrcode:
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                integrator.setPrompt("");
+                integrator.setPrompt("Alinhe o Código\n\n\n\n");
                 integrator.setCameraId(0);
                 integrator.initiateScan();
                 integrator.setBarcodeImageEnabled(false);
                 integrator.setOrientationLocked(false);
                 integrator.setBeepEnabled(true);
+                code = 1;
                 return  true;
             default:
                 return super.onOptionsItemSelected(item);
