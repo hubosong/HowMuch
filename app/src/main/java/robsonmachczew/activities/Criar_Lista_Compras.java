@@ -273,6 +273,7 @@ public class Criar_Lista_Compras extends Nav {
                     CheckBox cb = new CheckBox(Criar_Lista_Compras.this);
                     cb.setText(produto.getDescricao());
                     cb.setTextColor(Color.parseColor("#ffffff"));
+
                     layoutProdutos.addView(cb);
                 }
                 btConcluir.setOnClickListener(new View.OnClickListener() {
