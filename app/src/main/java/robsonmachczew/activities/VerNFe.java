@@ -287,7 +287,7 @@ public class VerNFe extends Nav {
         txtMercado.setText(nfe.getMercado().getNome());
         txtData.setText(nfe.getData());
         txtQRCode.setText(nfe.getChave());
-        txtValorNF.setText("Valor Total: " + String.valueOf(decFormat.format(nfe.getValor())));
+        txtValorNF.setText(String.valueOf(decFormat.format(nfe.getValor())));
 
 
         TextView txtMarket = findViewById(R.id.txtDataLista);
