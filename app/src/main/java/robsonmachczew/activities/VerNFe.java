@@ -37,6 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import adapter.ItemNFeAdapter;
@@ -53,12 +54,14 @@ import entidade.Utils;
 public class VerNFe extends Nav {
 
     private ProgressBar progWait;
-    private TextView txtQRCode, txtWait, txtMercado, txtData;
+    private TextView txtQRCode, txtWait, txtMercado, txtData, txtValorNF;
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
     private final Activity activity = this;
     public Animation alpha_in, alpha_out;
     private Usuario usuario;
+
+    private DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +80,12 @@ public class VerNFe extends Nav {
 
         NFe nfe = (NFe) getIntent().getSerializableExtra("NFE");
 
-
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
         txtQRCode = findViewById(R.id.txtQRCode);
         txtMercado = findViewById(R.id.txtDataLista);
         txtData = findViewById(R.id.txtQtdItems);
+        txtValorNF = findViewById(R.id.txtValorNF);
 
         usuario = Utils.loadFromSharedPreferences(this);
 
@@ -284,6 +287,8 @@ public class VerNFe extends Nav {
         txtMercado.setText(nfe.getMercado().getNome());
         txtData.setText(nfe.getData());
         txtQRCode.setText(nfe.getChave());
+        txtValorNF.setText("Valor Total: " + String.valueOf(decFormat.format(nfe.getValor())));
+
 
         TextView txtMarket = findViewById(R.id.txtDataLista);
         TextView txtDate = findViewById(R.id.txtQtdItems);
@@ -305,15 +310,6 @@ public class VerNFe extends Nav {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                /*
-                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                    fab.hide();
-                    fab.startAnimation(alpha_out);
-                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                    fab.show();
-                    fab.startAnimation(alpha_in);
-                }
-                */
             }
         });
     }

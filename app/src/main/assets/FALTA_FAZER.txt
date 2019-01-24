@@ -19,6 +19,10 @@ Falta fazer:
 	++ Na activity que mostra as listas de compras, aparecer a opção de "Comparar em Mercados"
 	++ Criar a activity que vai mostrar o comparativo da lista de compras nos mercados
 
+	-- NFs lidas nao estao apaecendo na lista de nfs
+	-- colocar valor total da nota fiscal no lugar do codigo qr
+	-- nova lista adicionar produto pegar xml o layout
+
 Antes de lançar:
     - Verificar se não tem nada digitado errado
 	- Certificado SSL
