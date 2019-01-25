@@ -301,7 +301,11 @@ public class VerNFe extends Nav {
         txtMarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(VerNFe.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(VerNFe.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
+                Intent market = new Intent(VerNFe.this, VerMercado.class);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(market);
+
             }
         });
 

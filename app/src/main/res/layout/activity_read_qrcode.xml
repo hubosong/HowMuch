@@ -75,19 +75,37 @@
             android:textAlignment="center"
             android:visibility="gone"/>
 
-
-        <TextView
-            android:id="@+id/txtValorNF"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Valor Total da NF"
-            android:textColor="@color/text_color"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            style="@style/Base.TextAppearance.AppCompat.Small"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Valor Total: "
+                android:textColor="@color/text_color"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                style="@style/Base.TextAppearance.AppCompat.Small"/>
+
+            <TextView
+                android:id="@+id/txtValorNF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/icons_btns"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                style="@style/Base.TextAppearance.AppCompat.Small"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
