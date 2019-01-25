@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="550dp">
+    android:layout_height="?android:attr/listPreferredItemHeight">
 
     <!-- ?android:attr/listPreferredItemHeight -->
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginEnd="3dp"
         android:layout_marginStart="3dp"
         android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:elevation="7dp">
 
         <RelativeLayout
@@ -39,7 +39,7 @@
                 android:layout_below="@id/txtNomeLista"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="Quantidad de Itens: "
+                android:text="Quantidade:"
                 android:textColor="@color/hint_nav_login"
                 android:textSize="12sp" />
 
@@ -56,25 +56,14 @@
                 android:textColor="@color/hint_nav_login" />
 
             <TextView
-                android:id="@+id/txtUnitPriceDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtHowManyDesc"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:text="Data da Nota:"
-                android:textColor="@color/hint_nav_login"
-                android:textSize="12sp" />
-
-            <TextView
                 android:id="@+id/txtUnitPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtHowManyDesc"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="3dp"
-                android:layout_toEndOf="@id/txtUnitPriceDesc"
-                android:text="@string/txt_off_price"
+                android:layout_marginBottom="10dp"
+                android:text="Data"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/hint_nav_login" />
 
@@ -82,8 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/txtHowManyDesc"
-                android:background="@color/toolbar_status"
+                android:layout_alignParentBottom="true"
                 android:gravity="right|bottom"
                 android:orientation="vertical"
                 android:paddingBottom="7dp"

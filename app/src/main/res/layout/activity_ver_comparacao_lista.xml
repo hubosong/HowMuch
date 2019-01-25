@@ -31,10 +31,14 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/txt_mercados_simulados"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="8dp">
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="5dp"
+        android:scrollbars="vertical"
+        android:scrollbarSize="2sp"
+        android:scrollbarThumbVertical="@drawable/gradient_list">
 
         <LinearLayout
             android:id="@+id/layout_listas_comparadas"

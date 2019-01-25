@@ -277,7 +277,7 @@ public class VerNFe extends Nav {
         }
     }
 
-    public void preencherViewsProdutosNFe(NFe nfe) {
+    public void preencherViewsProdutosNFe(final NFe nfe) {
         progWait.setVisibility(View.GONE);
         txtWait.setVisibility(View.GONE);
         if (nfe == null) {
@@ -301,12 +301,15 @@ public class VerNFe extends Nav {
         txtMarket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(VerNFe.this, R.string.toast_error, Toast.LENGTH_SHORT).show();
                 Intent market = new Intent(VerNFe.this, VerMercado.class);
+
+                Mercado p = new Mercado();
+                p.setId_mercado(nfe.getMercado().getId_mercado());
+                p.setNome_fantasia(nfe.getMercado().getNome_fantasia());
+                market.putExtra("ID_MERCADO", p.getId_mercado());
+
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(market);
-                finish();
-
             }
         });
 

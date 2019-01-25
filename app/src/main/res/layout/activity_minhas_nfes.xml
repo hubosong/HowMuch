@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="20dp"
-        android:text="Minhas Notas Fiscais (0):"
+        android:text="Quantidade de Notas Fiscais (0):"
         android:textColor="@android:color/white"/>
 
     <ScrollView
@@ -25,7 +25,10 @@
         android:layout_below="@+id/tv_minhas_nfes"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginEnd="8dp"
+        android:scrollbars="vertical"
+        android:scrollbarSize="2sp"
+        android:scrollbarThumbVertical="@drawable/gradient_list">
 
         <LinearLayout
             android:id="@+id/layout_lista_de_nfes"

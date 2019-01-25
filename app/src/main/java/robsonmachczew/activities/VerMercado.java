@@ -27,14 +27,6 @@ public class VerMercado extends Nav {
     private Usuario usuario;
     private TextView tv_descricao_local;
 
-    /*
-    private Item_NFe ultimo_preco;
-    private Item_NFe menor_preco_historico;
-    private Item_NFe maior_preco_historico;
-    private Item_NFe menor_preco_atual;
-    private Item_NFe maior_preco_atual;
-    */
-
     private TextView txt_endereco;
     private TextView txt_telefone;
     private TextView txt_cnpj;
@@ -59,85 +51,40 @@ public class VerMercado extends Nav {
         usuario = Utils.loadFromSharedPreferences(this);
 
         mercado = (Mercado) getIntent().getSerializableExtra("MERCADO");
-
-        /*
         if(mercado == null) {
             getDetalhesMercado(getIntent().getLongExtra("ID_MERCADO", 0));
         }else{
             renderizaMercado();
         }
-        */
     }
 
-    /*
+
     @SuppressLint("SetTextI18n")
     private void renderizaMercado() {
-        if (produto != null) {
-            tv_descricao_produto.setText(produto.getDescricao());
-            float media = 0.0f;
-            float quantidade = 0.0f;
-            if (produto.getLista_itens_nfe() != null && produto.getLista_itens_nfe().size() > 0) {
-                ultimo_preco = produto.getLista_itens_nfe().get(0);
-                menor_preco_historico = produto.getLista_itens_nfe().get(0);
-                maior_preco_historico = produto.getLista_itens_nfe().get(0);
-                maior_preco_atual = produto.getLista_itens_nfe().get(0);
-                menor_preco_atual = produto.getLista_itens_nfe().get(0);
-                for (Item_NFe item : produto.getLista_itens_nfe()) {
-                    System.out.println("ITEM: "+(item.getValor() / item.getQuantidade())+" - "+item.getData());
-                    if ((item.getValor() / item.getQuantidade()) < (menor_preco_historico.getValor() / menor_preco_historico.getQuantidade())) {
-                        menor_preco_historico = item;
-                    }
-                    if ((item.getValor() / item.getQuantidade()) > (maior_preco_historico.getValor() / maior_preco_historico.getQuantidade())) {
-                        maior_preco_historico = item;
-                    }
-                    if (((item.getValor() / item.getQuantidade()) < (menor_preco_atual.getValor() / menor_preco_atual.getQuantidade())) && (menor_preco_atual.getData().compareTo(item.getData()) < 0)) {
-                        menor_preco_atual = item;
-                    }
-                    if (((item.getValor() / item.getQuantidade()) > (maior_preco_atual.getValor() / maior_preco_atual.getQuantidade())) && (maior_preco_atual.getData().compareTo(item.getData()) < 0)) {
-                        maior_preco_atual = item;
-                    }
-                    if (ultimo_preco.getData().compareTo(menor_preco_historico.getData()) < 0) {
-                        ultimo_preco = item;
-                    }
-                    if (item.getTransient_mercado().getNome_fantasia() == null || item.getTransient_mercado().getNome_fantasia().trim().equalsIgnoreCase("")) {
-                        item.getTransient_mercado().setNome_fantasia(item.getTransient_mercado().getNome());
-                    }
-                    media += item.getValor();
-                    quantidade += item.getQuantidade();
-                }
-            }
-            txt_menor_valor_historico.setText(String.valueOf(decFormat.format(menor_preco_historico.getValor() / menor_preco_historico.getQuantidade()))
-                    + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
-            txt_menor_valor_atual.setText(String.valueOf(decFormat.format(menor_preco_atual.getValor() / menor_preco_atual.getQuantidade()))
-                    + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_valor_medio.setText(String.valueOf(decFormat.format(media/quantidade)));
-            txt_maior_valor_atual.setText(String.valueOf(decFormat.format(maior_preco_atual.getValor() / maior_preco_atual.getQuantidade()))
-                    + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_maior_valor_historico.setText(String.valueOf(decFormat.format(maior_preco_historico.getValor() / maior_preco_historico.getQuantidade()))
-                    + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
-
-            txt_unidade.setText(produto.getUnidade_comercial());
-            txt_codigo.setText(String.valueOf(produto.getCodigo_ncm()));
+        if (mercado != null) {
+            tv_descricao_local.setText(mercado.getNome_fantasia());
+            txt_endereco.setText(mercado.getEndereco());
+            txt_telefone.setText(mercado.getTelefone());
+            txt_cnpj.setText(mercado.getCnpj());
         }
     }
 
     @SuppressLint("StaticFieldLeak")
     private void getDetalhesMercado(final long id_mercado) {
-        new AsyncTask<String, Void, Produto_Detalhado>() {
+        new AsyncTask<String, Void, Mercado>() {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
             }
 
             @Override
-            protected Produto_Detalhado doInBackground(String... params) {
-                Produto_Detalhado prod = null;
-                //if(Utils.servidorDePe()) {
+            protected Mercado doInBackground(String... params) {
+                //mercado mercado = null;
                 try {
-                    String urlParameters = "funcao=GET_PRODUTO_DETALHADO&id_produto="+id_produto;
+                    String urlParameters = "funcao=GET_MERCADO&id_mercado="+id_mercado;
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                    URL url = new URL(Utils.URL + "produto");
+                    URL url = new URL(Utils.URL + "mercado");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("POST");
                     urlCon.setDoOutput(true);
@@ -149,27 +96,26 @@ public class VerMercado extends Nav {
                     wr.flush();
 
                     ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                    produto = (Produto_Detalhado) ois.readObject();
+                    mercado = (Mercado) ois.readObject();
                     ois.close();
 
                 } catch (ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
-                //}
-                return produto;
+                return mercado;
             }
 
             @Override
-            protected void onPostExecute(Produto_Detalhado prod) {
-                produto = prod;
-                if (produto != null) {
-                    renderizaProduto_Detalhado();
+            protected void onPostExecute(Mercado mercado) {
+                mercado = mercado;
+                if (mercado != null) {
+                    renderizaMercado();
                 }
             }
         }.execute();
 
     }
-    */
+
 
 
     @Override
