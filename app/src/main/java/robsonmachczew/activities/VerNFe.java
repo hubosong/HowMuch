@@ -305,6 +305,7 @@ public class VerNFe extends Nav {
                 Intent market = new Intent(VerNFe.this, VerMercado.class);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(market);
+                finish();
 
             }
         });
