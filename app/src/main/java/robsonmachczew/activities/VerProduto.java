@@ -82,6 +82,7 @@ public class VerProduto extends Nav {
     @SuppressLint("SetTextI18n")
     private void renderizaProduto_Detalhado() {
         if (produto != null) {
+            System.out.println(produto.toString());
             tv_descricao_produto.setText(produto.getDescricao());
             float media = 0.0f;
             float quantidade = 0.0f;
@@ -114,16 +115,22 @@ public class VerProduto extends Nav {
                     media += item.getValor();
                     quantidade += item.getQuantidade();
                 }
+                txt_menor_valor_historico.setText(String.valueOf(decFormat.format(menor_preco_historico.getValor() / menor_preco_historico.getQuantidade()))
+                        + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
+
+                txt_menor_valor_atual.setText(String.valueOf(decFormat.format(menor_preco_atual.getValor() / menor_preco_atual.getQuantidade()))
+                        + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
+
+                txt_valor_medio.setText(String.valueOf(decFormat.format(media/quantidade)));
+
+                txt_maior_valor_atual.setText(String.valueOf(decFormat.format(maior_preco_atual.getValor() / maior_preco_atual.getQuantidade()))
+                        + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
+
+                txt_maior_valor_historico.setText(String.valueOf(decFormat.format(maior_preco_historico.getValor() / maior_preco_historico.getQuantidade()))
+                        + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
             }
-            txt_menor_valor_historico.setText(String.valueOf(decFormat.format(menor_preco_historico.getValor() / menor_preco_historico.getQuantidade()))
-                    + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
-            txt_menor_valor_atual.setText(String.valueOf(decFormat.format(menor_preco_atual.getValor() / menor_preco_atual.getQuantidade()))
-                    + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_valor_medio.setText(String.valueOf(decFormat.format(media/quantidade)));
-            txt_maior_valor_atual.setText(String.valueOf(decFormat.format(maior_preco_atual.getValor() / maior_preco_atual.getQuantidade()))
-                    + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
-            txt_maior_valor_historico.setText(String.valueOf(decFormat.format(maior_preco_historico.getValor() / maior_preco_historico.getQuantidade()))
-                    + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
+
+
 
             txt_unidade.setText(produto.getUnidade_comercial());
             txt_codigo.setText(String.valueOf(produto.getCodigo_ncm()));

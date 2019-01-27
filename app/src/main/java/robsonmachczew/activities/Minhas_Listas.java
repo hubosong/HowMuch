@@ -171,6 +171,7 @@ public class Minhas_Listas extends Nav {
             }catch (Exception e){
                 Toast.makeText(this, "Erro ao Exibir Produtos", Toast.LENGTH_LONG).show();
                 System.out.println(">>> Erro: " + e.getMessage());
+                e.printStackTrace();
             }
         } else {
             Toast.makeText(Minhas_Listas.this, "Nenhuma Lista Encontrada", Toast.LENGTH_LONG).show();
