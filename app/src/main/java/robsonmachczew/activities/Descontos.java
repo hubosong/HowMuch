@@ -36,6 +36,9 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -50,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 import entidade.Item_NFe;
 import entidade.Lista;
@@ -132,10 +137,26 @@ public class Descontos extends Nav {
                 integrator.setBarcodeImageEnabled(true);
                 integrator.setOrientationLocked(true);
                 integrator.setBeepEnabled(true);
-                code=2;
-
+                code = 2;
             }
         });
+
+        tentaEnviarNFesPendentes();
+    }
+
+    private void tentaEnviarNFesPendentes() {
+        Set<String> chaves = Utils.getNotasLocais(this);
+        if (!chaves.isEmpty()) {
+            try {
+                JSONObject json = new JSONObject();
+                for (String chave : chaves) {
+                    json.put("chave", chave);
+                }
+            } catch (Exception e) {
+                System.out.println(">>> Erro tentando enviar nfes não lidas: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     //qrcode and barcode reader
@@ -143,7 +164,8 @@ public class Descontos extends Nav {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //if qrcode reader
-        if(code == 1){
+        if (code == 1) {
+            System.out.println("LEITURA EM DESCONTOS...");
             IntentResult qrcode = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (qrcode != null) {
                 if (qrcode.getContents() != null) {
@@ -162,7 +184,7 @@ public class Descontos extends Nav {
             }
         }
         //if barcode reader
-        else if (code == 2){
+        else if (code == 2) {
             IntentResult barcode = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (barcode != null) {
                 if (barcode.getContents() != null) {
@@ -843,11 +865,11 @@ public class Descontos extends Nav {
 
             @Override
             protected void onPostExecute(Produto_Detalhado produto_detalhado) {
-                if(produto_detalhado != null) {
+                if (produto_detalhado != null) {
                     Intent intent = new Intent(Descontos.this, VerProduto.class);
                     intent.putExtra("PRODUTO_DETALHADO", produto_detalhado);
                     startActivity(intent);
-                }else{
+                } else {
                     Toast.makeText(Descontos.this, "Produto não Encontrado", Toast.LENGTH_LONG).show();
                 }
             }

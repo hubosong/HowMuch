@@ -149,6 +149,11 @@ public class VerNFe extends Nav {
 
                 @Override
                 protected void onPostExecute(NFe nfe) {
+                    if (nfe == null || nfe.getId_nfe() == 0) {
+                        //Se o servidor não conseguiu pegar a nota do site, armazenamos a chave localmente para tentar novamente mais tarde;
+                        System.out.println("Não foi possível pegar a nota a partir do servidor...");
+                        Utils.salvaNotaLocalmente(VerNFe.this, code);
+                    }
                     txtQRCode.setText(code);
                     preencherViewsProdutosNFe(nfe);
                 }
@@ -260,16 +265,16 @@ public class VerNFe extends Nav {
                 @Override
                 protected void onPostExecute(NFe nfe) {
                     txtWait.setText("Carregando..");
-                    final Intent intent = new Intent(activity, VerNFe.class);
                     if (nfe != null && nfe.getLista_items() != null && nfe.getLista_items().size() > 0) {
-                        System.out.println("NFe Recebida do servidor: " + nfe);
-                        if (nfe == null || nfe.getId_nfe() == 0) {
+                        System.out.println("NFe encontrada a partir do app: " + nfe);
+                        preencherViewsProdutosNFe(nfe);
+                        if (nfe.getId_nfe() == 0) {
                             //Se o servidor não conseguiu pegar a nota do site, armazenamos a chave localmente para tentar novamente mais tarde;
                             Utils.salvaNotaLocalmente(VerNFe.this, code);
                         }
-                        preencherViewsProdutosNFe(nfe);
                     } else {
                         //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue-a no site.
+                        System.out.println("Não foi possível pegar a nota a partir do app... enviando para o servidor...");
                         postHttpQRCode(code);
                     }
                 }
