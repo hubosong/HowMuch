@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -145,13 +146,51 @@ public class Descontos extends Nav {
     }
 
     private void tentaEnviarNFesPendentes() {
-        Set<String> chaves = Utils.getNotasLocais(this);
-        if (!chaves.isEmpty()) {
+        Set<String> chavess = Utils.getNotasLocais(this);
+        if (!chavess.isEmpty()) {
             try {
-                JSONObject json = new JSONObject();
-                for (String chave : chaves) {
+                final JSONObject json = new JSONObject();
+                for (String chave : chavess) {
                     json.put("chave", chave);
                 }
+                new AsyncTask<String, Void, ArrayList<String>>() {
+
+                    @Override
+                    protected ArrayList<String> doInBackground(String... params) {
+                        ArrayList<String> list = null;
+                        try {
+                            URL url = new URL(Utils.URL + "nfe");
+                            HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                            urlCon.setRequestMethod("POST");
+                            urlCon.setDoOutput(true);
+                            urlCon.setDoInput(true);
+
+                            ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
+                            wr.writeUTF("GET_BY_ID_USUARIO");
+                            wr.writeLong(usuario.getId_usuario());
+                            wr.writeBytes(json.toString());
+                            wr.flush();
+                            wr.close();
+
+                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                            //Retorna as chaves que conseguiu adicionar no BD do servidor
+                            list = (ArrayList<String>) ois.readObject();
+                            ois.close();
+                        } catch (ClassNotFoundException | IOException e) {
+                            e.printStackTrace();
+                        }
+                        return list;
+                    }
+
+                    @Override
+                    protected void onPostExecute(ArrayList<String> chaves) {
+                        Set<String> ch = new HashSet<String>();
+                        for (String c : chaves) {
+                            ch.add(c);
+                        }
+                        Utils.salvaNotaLocalmente(Descontos.this, ch);
+                    }
+                }.execute();
             } catch (Exception e) {
                 System.out.println(">>> Erro tentando enviar nfes não lidas: " + e.getMessage());
                 e.printStackTrace();

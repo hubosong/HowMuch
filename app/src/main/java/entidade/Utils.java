@@ -74,9 +74,31 @@ public class Utils {
         return false;
     }
 
+    public static boolean deletaNotaLocalmente(Context context, String chave) {
+        Set<String> chaves = getNotasLocais(context);
+        if (!chaves.contains(chave)) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            chaves.remove(chave);
+            editor.putStringSet("CHAVES", chaves);
+            return editor.commit();
+        }
+        return false;
+    }
+
     public static Set<String> getNotasLocais(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
         return sharedPreferences.getStringSet("CHAVES", new HashSet<String>());
+    }
+
+    public static boolean salvaNotaLocalmente(Context context, Set<String> ch) {
+        if (ch != null && !ch.isEmpty()) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putStringSet("CHAVES", ch);
+            return editor.commit();
+        }
+        return false;
     }
 
     public static boolean servidorDePe() {
