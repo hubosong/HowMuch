@@ -39,13 +39,19 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -55,6 +61,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.Set;
 
 import entidade.Item_NFe;
@@ -146,55 +153,75 @@ public class Descontos extends Nav {
     }
 
     private void tentaEnviarNFesPendentes() {
-        Set<String> chavess = Utils.getNotasLocais(this);
+        final Set<String> chavess = Utils.getNotasLocais(this);
         if (!chavess.isEmpty()) {
             try {
-                final JSONObject json = new JSONObject();
-                for (String chave : chavess) {
-                    json.put("chave", chave);
-                }
-                new AsyncTask<String, Void, ArrayList<String>>() {
-
+                new AsyncTask<String, Void, JSONObject>() {
                     @Override
-                    protected ArrayList<String> doInBackground(String... params) {
-                        ArrayList<String> list = null;
+                    protected JSONObject doInBackground(String... params) {
+                        JSONObject response_json = null;
                         try {
-                            URL url = new URL(Utils.URL + "nfe");
+                            JSONObject send_json = new JSONObject();
+                            for (String chave : chavess) {
+                                send_json.put("chave", chave);
+                            }
+
+                            URL url = new URL(Utils.URL + "nfe_json");
                             HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                            urlCon.setRequestProperty("Accept", "application/json");
+                            urlCon.setRequestProperty("Content-type", "application/json");
+                            urlCon.setRequestProperty("Function", "SEND_NOT_SAVED_NFES");
                             urlCon.setRequestMethod("POST");
                             urlCon.setDoOutput(true);
                             urlCon.setDoInput(true);
 
-                            ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
-                            wr.writeUTF("GET_BY_ID_USUARIO");
-                            wr.writeLong(usuario.getId_usuario());
-                            wr.writeBytes(json.toString());
-                            wr.flush();
-                            wr.close();
+                            OutputStream outputStream = urlCon.getOutputStream();
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                            //Retorna as chaves que conseguiu adicionar no BD do servidor
-                            list = (ArrayList<String>) ois.readObject();
-                            ois.close();
-                        } catch (ClassNotFoundException | IOException e) {
+                            writer.write(send_json.toString());
+                            writer.flush();
+                            writer.close();
+
+                            InputStream is = urlCon.getInputStream();
+                            try {
+                                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                                StringBuilder sb = new StringBuilder();
+                                int cp;
+                                while ((cp = rd.read()) != -1) {
+                                    sb.append((char) cp);
+                                }
+                                String s = sb.toString();
+                                response_json = new JSONObject(s);
+                            } finally {
+                                is.close();
+                            }
+                        } catch (Exception e) {
+                            System.out.println(">>> Erro tentando enviar nfes não lidas_1: " + e.getMessage());
                             e.printStackTrace();
                         }
-                        return list;
+                        return response_json;
                     }
 
                     @Override
-                    protected void onPostExecute(ArrayList<String> chaves) {
-                        Set<String> ch = new HashSet<String>();
-                        for (String c : chaves) {
-                            ch.add(c);
+                    protected void onPostExecute(JSONObject response_json) {
+                        Set<String> lista_nfes_nao_salvas = new HashSet<>();
+                        Iterator<String> keys = response_json.keys();
+                        try {
+                            while (keys.hasNext()) {
+                                lista_nfes_nao_salvas.add((String) response_json.get(keys.next()));
+                            }
+                        } catch (Exception e) {
+                            System.out.println(">>> Erro tentando transformar response_json em lista_nfes_nao_salvas...");
                         }
-                        Utils.salvaNotaLocalmente(Descontos.this, ch);
+                        Utils.salvaNotaLocalmente(Descontos.this, lista_nfes_nao_salvas);
                     }
                 }.execute();
             } catch (Exception e) {
-                System.out.println(">>> Erro tentando enviar nfes não lidas: " + e.getMessage());
+                System.out.println(">>> Erro tentando enviar nfes não lidas_2: " + e.getMessage());
                 e.printStackTrace();
             }
+        } else {
+            System.out.println(">>> SEM NOTAS NÃO LIDAS PARA ENVIAR...");
         }
     }
 
