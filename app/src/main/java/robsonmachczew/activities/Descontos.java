@@ -155,11 +155,12 @@ public class Descontos extends Nav {
     private void tentaEnviarNFesPendentes() {
         final Set<String> chavess = Utils.getNotasLocais(this);
         if (!chavess.isEmpty()) {
+            System.out.println(">>> ENVIANDO CHAVES NÃO ENVIADAS: " + chavess);
             try {
                 new AsyncTask<String, Void, JSONObject>() {
                     @Override
                     protected JSONObject doInBackground(String... params) {
-                        JSONObject response_json = null;
+                        JSONObject response_json = new JSONObject();
                         try {
                             JSONObject send_json = new JSONObject();
                             for (String chave : chavess) {
@@ -171,6 +172,7 @@ public class Descontos extends Nav {
                             urlCon.setRequestProperty("Accept", "application/json");
                             urlCon.setRequestProperty("Content-type", "application/json");
                             urlCon.setRequestProperty("Function", "SEND_NOT_SAVED_NFES");
+                            urlCon.setRequestProperty("id_usuario", String.valueOf(usuario.getId_usuario()));
                             urlCon.setRequestMethod("POST");
                             urlCon.setDoOutput(true);
                             urlCon.setDoInput(true);
@@ -182,18 +184,20 @@ public class Descontos extends Nav {
                             writer.flush();
                             writer.close();
 
-                            InputStream is = urlCon.getInputStream();
-                            try {
-                                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-                                StringBuilder sb = new StringBuilder();
-                                int cp;
-                                while ((cp = rd.read()) != -1) {
-                                    sb.append((char) cp);
+                            if (urlCon.getResponseCode() != 204) { //204 = No Content. Ou seja, se não tem conteúdo, é porque conseguiu gravar tudo. Senão, alguma chave não gravou...
+                                InputStream is = urlCon.getInputStream();
+                                try {
+                                    BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                                    StringBuilder sb = new StringBuilder();
+                                    int cp;
+                                    while ((cp = rd.read()) != -1) {
+                                        sb.append((char) cp);
+                                    }
+                                    String s = sb.toString();
+                                    response_json = new JSONObject(s);
+                                } finally {
+                                    is.close();
                                 }
-                                String s = sb.toString();
-                                response_json = new JSONObject(s);
-                            } finally {
-                                is.close();
                             }
                         } catch (Exception e) {
                             System.out.println(">>> Erro tentando enviar nfes não lidas_1: " + e.getMessage());
@@ -213,7 +217,8 @@ public class Descontos extends Nav {
                         } catch (Exception e) {
                             System.out.println(">>> Erro tentando transformar response_json em lista_nfes_nao_salvas...");
                         }
-                        Utils.salvaNotaLocalmente(Descontos.this, lista_nfes_nao_salvas);
+                        System.out.println(">>> KASDJKASJD:> " + lista_nfes_nao_salvas.toString());
+                        //Utils.salvaNotaLocalmente(Descontos.this, lista_nfes_nao_salvas);
                     }
                 }.execute();
             } catch (Exception e) {
