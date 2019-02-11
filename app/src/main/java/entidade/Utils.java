@@ -19,8 +19,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
 
+
     public static final String IP_SERVIDOR = "177.143.221.144";
-    public static final String URL = "http://" + IP_SERVIDOR + ":8080/Mercado/";
+    public static final String URL = "http://" + IP_SERVIDOR + ":8085/Mercado/";
     public static final String URL2 = "http://192.168.0.99/mercado/";
 
     public static Usuario loadFromSharedPreferences(Context context) {
