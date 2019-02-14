@@ -46,7 +46,7 @@ public class Criar_Lista_Compras extends Nav {
     private Usuario usuario;
     private Lista lista_compras;
     private Dialog dialog_pesquisa;
-    private LinearLayout layout_produtos_lista;
+    //private LinearLayout layout_produtos_lista;
     private TextView tvQuantProdutosLista;
     private EditText editTextNomeLista;
 
@@ -65,7 +65,7 @@ public class Criar_Lista_Compras extends Nav {
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         usuario = Utils.loadFromSharedPreferences(this);
-        layout_produtos_lista = findViewById(R.id.layout_produtos_da_lista);
+        //layout_produtos_lista = findViewById(R.id.layout_produtos_da_lista);
         tvQuantProdutosLista = findViewById(R.id.textView2);
         editTextNomeLista = findViewById(R.id.editText2);
 
@@ -301,7 +301,7 @@ public class Criar_Lista_Compras extends Nav {
             tvQuantProdutosLista.setText("Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
         }
 
-        layout_produtos_lista.removeAllViews();
+        //layout_produtos_lista.removeAllViews();
         if (lista_compras.getNome() != null && !lista_compras.getNome().trim().equalsIgnoreCase("")) {
             editTextNomeLista.setText(lista_compras.getNome());
         }
@@ -310,10 +310,17 @@ public class Criar_Lista_Compras extends Nav {
             if (prod.getDescricao2() != null && !prod.getDescricao2().trim().equalsIgnoreCase("") && !prod.getDescricao2().trim().equalsIgnoreCase("NULL")) {
                 prod.setDescricao(prod.getDescricao2());
             }
+            /*
             TextView tv = new TextView(this);
             tv.setText(prod.getDescricao());
             tv.setTextColor(Color.WHITE);
             layout_produtos_lista.addView(tv);
+            */
+
+            LinearLayout layoutProducts = findViewById(R.id.layoutProducts);
+            layoutProducts.setVisibility(View.VISIBLE);
+            TextView tv = findViewById(R.id.txtProduct);
+            tv.setText(prod.getDescricao());
         }
     }
 

@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
-    //searchview
+    //searchview -- did not use
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
     //recyclerview

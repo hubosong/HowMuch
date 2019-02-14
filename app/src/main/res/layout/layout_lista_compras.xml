@@ -30,12 +30,16 @@
                 android:orientation="horizontal"
                 android:gravity="start">
 
+                <!--
                 <CheckBox
+                    android:id="@+id/chkProduct"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:checked="false"
                     android:background="@drawable/buttonshape_small_left"
                     android:layout_marginEnd="10dp"/>
+
+                    -->
 
 
                 <!--
@@ -76,9 +80,9 @@
                 -->
 
                 <EditText
-                    android:id="@+id/btn_barcode"
+                    android:id="@+id/edtProduct"
                     android:layout_width="70dp"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/button_edttext"
                     android:ems="10"
                     android:hint="0.0"
@@ -93,17 +97,28 @@
 
 
                 <TextView
-                    android:id="@+id/editText"
+                    android:id="@+id/txtProduct"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="Produto"
                     android:inputType="textPersonName"
-                    android:textSize="16sp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:textColor="#fff"/>
 
+
+                <ImageButton
+                    android:id="@+id/btnProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_remove_circle_outline_black_24dp"/>
+
             </LinearLayout>
+
 
         </LinearLayout>
 
