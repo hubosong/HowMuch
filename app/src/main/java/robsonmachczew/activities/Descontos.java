@@ -167,6 +167,7 @@ public class Descontos extends Nav {
                                 send_json.put("chave", chave);
                             }
 
+                            System.out.println(">>> Preparando conexão para enviar chaves...");
                             URL url = new URL(Utils.URL + "nfe_json");
                             HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                             urlCon.setRequestProperty("Accept", "application/json");
@@ -205,11 +206,13 @@ public class Descontos extends Nav {
                             System.out.println(">>> Erro tentando enviar nfes não lidas_1: " + e.getMessage());
                             e.printStackTrace();
                         }
+                        System.out.println(">>>> RESPONSE_JSON: "+response_json);
                         return response_json;
                     }
 
                     @Override
                     protected void onPostExecute(JSONObject response_json) {
+                        System.out.println(">>>> RESPONSE_JSON2: "+response_json);
                         if (response_json != null) {
                             Set<String> lista_nfes_nao_salvas = new HashSet<>();
                             Iterator<String> keys = response_json.keys();
