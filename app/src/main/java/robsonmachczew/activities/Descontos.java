@@ -160,7 +160,7 @@ public class Descontos extends Nav {
                 new AsyncTask<String, Void, JSONObject>() {
                     @Override
                     protected JSONObject doInBackground(String... params) {
-                        JSONObject response_json = new JSONObject();
+                        JSONObject response_json = null;
                         try {
                             JSONObject send_json = new JSONObject();
                             for (String chave : chavess) {
@@ -184,7 +184,7 @@ public class Descontos extends Nav {
                             writer.flush();
                             writer.close();
 
-                            if (urlCon.getResponseCode() != 204) { //204 = No Content. Ou seja, se não tem conteúdo, é porque conseguiu gravar tudo. Senão, alguma chave não gravou...
+                            if (urlCon.getResponseCode() == 201) { //201 = Created. Gravou algumas NFes e outras não. Precisamos pegar as que não gravou para mandar de novo mais tarde...
                                 InputStream is = urlCon.getInputStream();
                                 try {
                                     BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
@@ -198,6 +198,8 @@ public class Descontos extends Nav {
                                 } finally {
                                     is.close();
                                 }
+                            } else if (urlCon.getResponseCode() == 204) { //204 = No Content. Ou seja, se não tem conteúdo, é porque conseguiu gravar tudo. Senão, alguma chave não gravou...
+                                response_json = new JSONObject();
                             }
                         } catch (Exception e) {
                             System.out.println(">>> Erro tentando enviar nfes não lidas_1: " + e.getMessage());
@@ -208,17 +210,21 @@ public class Descontos extends Nav {
 
                     @Override
                     protected void onPostExecute(JSONObject response_json) {
-                        Set<String> lista_nfes_nao_salvas = new HashSet<>();
-                        Iterator<String> keys = response_json.keys();
-                        try {
-                            while (keys.hasNext()) {
-                                lista_nfes_nao_salvas.add((String) response_json.get(keys.next()));
+                        if (response_json != null) {
+                            Set<String> lista_nfes_nao_salvas = new HashSet<>();
+                            Iterator<String> keys = response_json.keys();
+                            try {
+                                while (keys.hasNext()) {
+                                    lista_nfes_nao_salvas.add((String) response_json.get(keys.next()));
+                                }
+                            } catch (Exception e) {
+                                System.out.println(">>> Erro tentando transformar response_json em lista_nfes_nao_salvas...");
                             }
-                        } catch (Exception e) {
-                            System.out.println(">>> Erro tentando transformar response_json em lista_nfes_nao_salvas...");
+                            System.out.println(">>> KASDJKASJD:> " + lista_nfes_nao_salvas.toString());
+                            Utils.salvaNotaLocalmente(Descontos.this, lista_nfes_nao_salvas);
+                        } else {
+                            System.out.println(">>> Erro enviando notas não salvas para o servidor (response json == null).");
                         }
-                        System.out.println(">>> KASDJKASJD:> " + lista_nfes_nao_salvas.toString());
-                        //Utils.salvaNotaLocalmente(Descontos.this, lista_nfes_nao_salvas);
                     }
                 }.execute();
             } catch (Exception e) {
