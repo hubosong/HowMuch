@@ -113,9 +113,7 @@
         android:layout_above="@id/botoes_comando"
         android:layout_below="@+id/layout_top"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="8dp"
         android:scrollbarSize="2sp"
         android:scrollbarThumbVertical="@drawable/gradient_list"
         android:scrollbars="vertical">
@@ -124,10 +122,8 @@
             android:id="@+id/layoutProducts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible" />
