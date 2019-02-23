@@ -19,9 +19,8 @@ Falta fazer:
     ++ Em "Criar Lista", colocar um campo de quantidade do produto selecionado
     ++ Em "Criar Lista", colocar botões com lixeira, para retirar os produtos da lista;
     ++ Implementar a exclusão de Listas
-    -- Implementar a exclusão de NFes
+    ++ Implementar a exclusão de NFes
     -- Tela para atualizar dados de cadastro de usuário
-    -- Adicionar filtros nas pesquisas sql para retornar apenas resultados da cidade do usuário
     ++ Mecanismo que, ao ocorrer falha no envio de uma nota (por qualquer motivo) guarde a chave da nota e tente enviar mais tarde.
     - Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
     ++ Se possível, colocar uma informação durante a leitura do QRcorde e do código de barras dos produtos (talvez uma barra com "Ler QRCode de Nota Fiscal" ou algo assim)
@@ -34,7 +33,6 @@ Falta fazer:
 	++ Possibilitar dar nome para a lista de compras;
 	++ Na activity que mostra as listas de compras, aparecer a opção de "Comparar em Mercados"
 	++ Criar a activity que vai mostrar o comparativo da lista de compras nos mercados
-
 	++ NFs lidas nao estao aparecendo na lista de nfs (Acredito que esteja consertado. Havia um problema no servidor durante o cadastro de algumas notas. Tente cadastrá-las novamente).
 	-- colocar valor total da nota fiscal no lugar do codigo qr
 	-- nova lista adicionar produto pegar xml o layout
@@ -64,6 +62,7 @@ Ideias para Versão 1.0:
 	- Rever Cadastro de Usuário
 
 Versão 2.0:
+    - Adicionar filtros nas pesquisas sql para retornar apenas resultados da cidade do usuário
     - A cada X notas cadastradas terá direito a Y alertas de produtos.
     - Servidor em PHP
     - JSON ao invés de tipos próprios do JAVA

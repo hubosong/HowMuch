@@ -139,7 +139,7 @@ public class Minhas_NFes extends Nav {
 
                             //change alpha intensity
                             WindowManager.LayoutParams lp = dialog_opcoes_nfe.getWindow().getAttributes();
-                            lp.dimAmount=0.8f;
+                            lp.dimAmount = 0.8f;
                             dialog_opcoes_nfe.getWindow().setAttributes(lp);
                             dialog_opcoes_nfe.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
@@ -163,6 +163,51 @@ public class Minhas_NFes extends Nav {
                                     dialog_opcoes_nfe.cancel();
                                 }
                             });
+                            ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_excluir_nfe)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new AsyncTask<String, Void, Boolean>() {
+
+                                        @Override
+                                        protected Boolean doInBackground(String... params) {
+                                            System.out.println(">>> Excluindo nota: " + nfe.getId_nfe());
+                                            try {
+                                                String urlParameters = "funcao=EXCLUIR_NFE&id_usuario=" + usuario.getId_usuario() + "&id_nfe=" + nfe.getId_nfe();
+                                                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+                                                URL url = new URL(Utils.URL + "nfe");
+                                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                                                urlCon.setRequestMethod("POST");
+                                                urlCon.setDoOutput(true);
+                                                urlCon.setDoInput(true);
+
+                                                DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                                                wr.write(postData);
+                                                wr.close();
+                                                wr.flush();
+
+                                                if (urlCon.getResponseCode() == 204) {
+                                                    System.out.println(">>> NOTA " + nfe.getId_nfe() + " excluida...");
+                                                    return true;
+                                                }
+
+                                            } catch (Exception e) {
+                                                System.out.println(">>> Erro tentando excluir nota: " + e.getMessage());
+                                                e.printStackTrace();
+                                            }
+                                            return false;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Boolean sucesso) {
+                                            if (sucesso) {
+                                                carregaMinhasNFes();
+                                            }
+                                        }
+                                    }.execute();
+                                    dialog_opcoes_nfe.cancel();
+                                }
+                            });
                         }
                     });
                     layout_lista_de_nfes.addView(item);
@@ -181,8 +226,7 @@ public class Minhas_NFes extends Nav {
     public void onBackPressed() {
         if (permiteVoltar) {
             super.onBackPressed();
-        }
-        else {
+        } else {
             if (usuario.getId_usuario() != 0) {
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
