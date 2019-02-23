@@ -17,18 +17,14 @@
             android:id="@+id/layout_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="start">
+                android:gravity="start"
+                android:orientation="horizontal">
 
                 <!--
                 <CheckBox
@@ -100,22 +96,23 @@
                     android:id="@+id/txtProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="textPersonName"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="Produto"
-                    android:inputType="textPersonName"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="#fff"/>
+                    android:textColor="#fff" />
 
 
                 <ImageButton
                     android:id="@+id/btnProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/ic_remove_circle_outline_black_24dp"/>
+                    android:src="@drawable/ic_trash" />
 
             </LinearLayout>
 
