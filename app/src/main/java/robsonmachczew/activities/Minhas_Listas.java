@@ -163,6 +163,49 @@ public class Minhas_Listas extends Nav {
                                     dialog_opcoes_lista.cancel();
                                 }
                             });
+                            ((Button) dialog_opcoes_lista.findViewById(R.id.bt_excluir_lista)).setOnClickListener(new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View view) {
+                                    new AsyncTask<String, Void, Boolean>() {
+
+                                        @Override
+                                        protected Boolean doInBackground(String... params) {
+                                            try {
+                                                URL url = new URL(Utils.URL + "lista");
+                                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                                                urlCon.setRequestMethod("POST");
+                                                urlCon.setDoOutput(true);
+                                                urlCon.setDoInput(true);
+
+                                                ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
+                                                wr.writeUTF("APAGAR_LISTA");
+                                                wr.writeLong(usuario.getId_usuario());
+                                                wr.writeLong(lista.getId_lista());
+                                                wr.close();
+                                                wr.flush();
+
+                                                if(urlCon.getResponseCode() == 204){
+                                                    return true;
+                                                }
+
+                                            } catch (Exception e) {
+                                                System.out.println(">>> Erro tentando excluir nota: "+e.getMessage());
+                                                e.printStackTrace();
+                                            }
+                                            return false;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Boolean sucesso) {
+                                            if(sucesso){
+                                                pegaListaDeCompras();
+                                            }
+                                        }
+                                    }.execute();
+                                    dialog_opcoes_lista.cancel();
+                                }
+                            });
                             dialog_opcoes_lista.show();
                         }
                     });

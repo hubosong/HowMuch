@@ -16,15 +16,15 @@ Falta fazer:
     -- O app deve perguntar para sair ao clicar voltar ("Pressione novamente para sair") quando estiver em uma das telas do menu (Descontos, Criar Lista, Minhas Listas, Minhas NFes...).
         ++ Nas demais telas (Ver Mercado, Ver Produto, Comparar Lista...) o botão voltar deve voltar para a tela anterior.
         -- Com o menu aberto, o botão de voltar deve fechar o menu.
-    -- Em "Criar Lista", colocar um campo de quantidade do produto selecionado
-    -- Em "Criar Lista", colocar botões com lixeira, para retirar os produtos da lista;
-    -- Implementar a exclusão de Listas
+    ++ Em "Criar Lista", colocar um campo de quantidade do produto selecionado
+    ++ Em "Criar Lista", colocar botões com lixeira, para retirar os produtos da lista;
+    ++ Implementar a exclusão de Listas
     -- Implementar a exclusão de NFes
     -- Tela para atualizar dados de cadastro de usuário
     -- Adicionar filtros nas pesquisas sql para retornar apenas resultados da cidade do usuário
-    - Mecanismo que, ao ocorrer falha no envio de uma nota (por qualquer motivo) guarde a chave da nota e tente enviar mais tarde.
+    ++ Mecanismo que, ao ocorrer falha no envio de uma nota (por qualquer motivo) guarde a chave da nota e tente enviar mais tarde.
     - Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
-    - Se possível, colocar uma informação durante a leitura do QRcorde e do código de barras dos produtos (talvez uma barra com "Ler QRCode de Nota Fiscal" ou algo assim)
+    ++ Se possível, colocar uma informação durante a leitura do QRcorde e do código de barras dos produtos (talvez uma barra com "Ler QRCode de Nota Fiscal" ou algo assim)
     ++ Criar aplicação para "igualar" o id_produto de produtos entre mercados. (Foi feito no servidor, arquivo: telas.ProdutosDuplicados.java)
     ++ Fluxo inserção de produto no servidor:
         ++ SE não tiver EAN, precisa verificar se a descrição
