@@ -80,20 +80,20 @@
                 -->
 
                 <EditText
-                    android:id="@+id/edtProduct"
+                    android:id="@+id/editQuantidade"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:background="@drawable/button_edttext"
                     android:ems="10"
-                    android:hint="0.0"
-                    android:textColorHint="@color/nav_color"
-                    android:inputType="number"
-                    android:textSize="16sp"
-                    android:textColor="#000"
                     android:focusable="true"
-                    android:textAlignment="center"
                     android:focusableInTouchMode="true"
-                    android:layout_marginEnd="10dp"/>
+                    android:hint="0.0"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textColorHint="@color/nav_color"
+                    android:textSize="16sp" />
 
 
                 <TextView

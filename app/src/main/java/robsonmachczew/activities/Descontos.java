@@ -163,8 +163,10 @@ public class Descontos extends Nav {
                         JSONObject response_json = null;
                         try {
                             JSONObject send_json = new JSONObject();
+                            int n =0;
                             for (String chave : chavess) {
-                                send_json.put("chave", chave);
+                                send_json.put("chave"+n, chave);
+                                n++;
                             }
 
                             System.out.println(">>> Preparando conexão para enviar chaves...");

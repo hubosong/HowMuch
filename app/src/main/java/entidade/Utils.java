@@ -94,7 +94,7 @@ public class Utils {
 
     public static boolean salvaNotaLocalmente(Context context, Set<String> ch) {
         System.out.println(">>> Salvando chaves localmente... " + ch.toString());
-        if (ch != null && !ch.isEmpty()) {
+        if (ch != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putStringSet("CHAVES", ch);

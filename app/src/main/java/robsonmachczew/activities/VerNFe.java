@@ -100,6 +100,7 @@ public class VerNFe extends Nav {
             preencherViewsProdutosNFe(nfe);
         } else {
             String code = getIntent().getStringExtra("code");
+            Utils.salvaNotaLocalmente(VerNFe.this, code);
             //getNFeFromPHP(code);
             pegaNotaDoSite(code);
         }
@@ -232,6 +233,7 @@ public class VerNFe extends Nav {
                             Element divProd = doc.getElementById("Prod");
                             ArrayList<Item_NFe> lista_itens = getItemsNFe(divProd);
                             nfe.setLista_items(lista_itens);
+                            preencherViewsProdutosNFe(nfe);
 
 
                             //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
@@ -268,10 +270,6 @@ public class VerNFe extends Nav {
                     if (nfe != null && nfe.getLista_items() != null && nfe.getLista_items().size() > 0) {
                         System.out.println("NFe encontrada a partir do app: " + nfe);
                         preencherViewsProdutosNFe(nfe);
-                        if (nfe.getId_nfe() == 0) {
-                            //Se o servidor não conseguiu pegar a nota do site, armazenamos a chave localmente para tentar novamente mais tarde;
-                            Utils.salvaNotaLocalmente(VerNFe.this, code);
-                        }
                     } else {
                         //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue-a no site.
                         System.out.println("Não foi possível pegar a nota a partir do app... enviando para o servidor...");

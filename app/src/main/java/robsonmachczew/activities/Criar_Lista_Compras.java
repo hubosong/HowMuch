@@ -2,6 +2,7 @@ package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -11,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -46,7 +48,7 @@ public class Criar_Lista_Compras extends Nav {
     private Usuario usuario;
     private Lista lista_compras;
     private Dialog dialog_pesquisa;
-    //private LinearLayout layout_produtos_lista;
+    private LinearLayout layout_produtos_lista;
     private TextView tvQuantProdutosLista;
     private EditText editTextNomeLista;
 
@@ -65,7 +67,7 @@ public class Criar_Lista_Compras extends Nav {
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         usuario = Utils.loadFromSharedPreferences(this);
-        //layout_produtos_lista = findViewById(R.id.layout_produtos_da_lista);
+        layout_produtos_lista = findViewById(R.id.layoutProducts);
         tvQuantProdutosLista = findViewById(R.id.textView2);
         editTextNomeLista = findViewById(R.id.editText2);
 
@@ -133,6 +135,8 @@ public class Criar_Lista_Compras extends Nav {
                 dialog_pesquisa.cancel();
             }
         });
+
+
         text.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -301,26 +305,35 @@ public class Criar_Lista_Compras extends Nav {
             tvQuantProdutosLista.setText("Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
         }
 
-        //layout_produtos_lista.removeAllViews();
+
         if (lista_compras.getNome() != null && !lista_compras.getNome().trim().equalsIgnoreCase("")) {
             editTextNomeLista.setText(lista_compras.getNome());
         }
-        for (Produto prod : lista_compras.getListaProdutos()) {
-            System.out.println("PROD: " + prod);
-            if (prod.getDescricao2() != null && !prod.getDescricao2().trim().equalsIgnoreCase("") && !prod.getDescricao2().trim().equalsIgnoreCase("NULL")) {
-                prod.setDescricao(prod.getDescricao2());
-            }
-            /*
-            TextView tv = new TextView(this);
-            tv.setText(prod.getDescricao());
-            tv.setTextColor(Color.WHITE);
-            layout_produtos_lista.addView(tv);
-            */
 
-            LinearLayout layoutProducts = findViewById(R.id.layoutProducts);
-            layoutProducts.setVisibility(View.VISIBLE);
-            TextView tv = findViewById(R.id.txtProduct);
-            tv.setText(prod.getDescricao());
+        layout_produtos_lista.removeAllViews();
+        for (final Produto prod : lista_compras.getListaProdutos()) {
+            LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.layout_lista_compras, null);
+            EditText editTextQtd = view.findViewById(R.id.editQuantidade);
+            editTextQtd.setText(""+prod.getTransient_quantidade());
+            editTextQtd.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    try{
+                        prod.setTransient_quantidade(Float.valueOf(s.toString()));
+                    }catch (Exception e){}
+                }
+            });
+            ((TextView) view.findViewById(R.id.txtProduct)).setText(prod.getDescricao());
+            layout_produtos_lista.addView(view);
         }
     }
 
