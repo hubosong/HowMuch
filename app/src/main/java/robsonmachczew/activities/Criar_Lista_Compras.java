@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -333,6 +334,14 @@ public class Criar_Lista_Compras extends Nav {
                 }
             });
             ((TextView) view.findViewById(R.id.txtProduct)).setText(prod.getDescricao());
+            ImageButton excluir = view.findViewById(R.id.btnProduct);
+            excluir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    lista_compras.getListaProdutos().remove(prod);
+                    renderizaListaDeProdutos();
+                }
+            });
             layout_produtos_lista.addView(view);
         }
     }
