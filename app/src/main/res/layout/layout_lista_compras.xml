@@ -22,8 +22,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="start"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal|center_vertical"
                 android:orientation="horizontal">
 
                 <!--
@@ -79,11 +80,11 @@
                     android:id="@+id/editQuantidade"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:background="@drawable/button_edttext"
                     android:ems="10"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:gravity="center_horizontal|center_vertical"
                     android:hint="0.0"
                     android:inputType="numberDecimal"
                     android:textAlignment="center"
@@ -96,10 +97,12 @@
                     android:id="@+id/txtProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:layout_weight="1"
-                    android:inputType="textPersonName"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
+                    android:fitsSystemWindows="true"
+                    android:gravity="center_vertical"
+                    android:inputType="textMultiLine"
+                    android:singleLine="false"
                     android:text="Produto"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:textColor="#fff" />
@@ -108,9 +111,8 @@
                 <ImageButton
                     android:id="@+id/btnProduct"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_trash" />
 
