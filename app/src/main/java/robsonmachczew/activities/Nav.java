@@ -125,12 +125,12 @@ public class Nav extends AppCompatActivity {
                     break;
 
                 case R.id.nav_new_list:
-                    Intent buyList = new Intent(activity, Criar_Lista_Compras.class);
+                    //Intent buyList = new Intent(activity, Criar_Lista_Compras.class);
+                    Intent buyList = new Intent(activity, BuyList.class);
                     buyList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(buyList);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     drawerLayout.closeDrawers();
-                    System.out.println("erro4");
                     break;
 
                 case R.id.nav_my_buy:

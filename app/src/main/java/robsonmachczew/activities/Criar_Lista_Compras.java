@@ -5,14 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -60,7 +58,7 @@ public class Criar_Lista_Compras extends Nav {
 
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_lista__compras, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_criar_lista_compras, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(1).setChecked(true);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
