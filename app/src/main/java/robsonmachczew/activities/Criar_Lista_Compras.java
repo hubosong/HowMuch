@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,21 +111,21 @@ public class Criar_Lista_Compras extends Nav {
 
 
     public void adicionarProduto(View v) {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-
         dialog_pesquisa = new Dialog(this);
         dialog_pesquisa.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
         dialog_pesquisa.setContentView(R.layout.dialog_pesquisa_produtos_lista);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = (int) (displayMetrics.heightPixels * 0.8);
+        int width = (int) (displayMetrics.widthPixels * 0.9);
 
         //change alpha intensity
         WindowManager.LayoutParams lp = dialog_pesquisa.getWindow().getAttributes();
         lp.dimAmount=0.8f;
         dialog_pesquisa.getWindow().setAttributes(lp);
         dialog_pesquisa.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        dialog_pesquisa.getWindow().setLayout(width, height);
 
 
         EditText text = dialog_pesquisa.findViewById(R.id.editText_Procura_Prod_Lista);
