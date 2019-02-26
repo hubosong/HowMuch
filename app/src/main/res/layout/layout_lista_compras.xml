@@ -27,61 +27,12 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:orientation="horizontal">
 
-                <!--
-                <CheckBox
-                    android:id="@+id/chkProduct"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:checked="false"
-                    android:background="@drawable/buttonshape_small_left"
-                    android:layout_marginEnd="10dp"/>
-
-                    -->
-
-
-                <!--
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <Button
-                        android:id="@+id/btn_minus"
-                        android:layout_width="70dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/buttonshape_small_right"
-                        android:textColor="@color/text_color"
-                        android:text="-" />
-
-                    <EditText
-                        android:id="@+id/edit_text"
-                        android:layout_width="70dp"
-                        android:layout_height="35dp"
-                        android:inputType="number"
-                        android:gravity="center"
-                        android:focusable="false"
-                        android:text="0"
-                        android:background="@drawable/button_edttext"/>
-
-                    <Button
-                        android:id="@+id/btn_plus"
-                        android:layout_width="70dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/buttonshape_small_right"
-                        android:textColor="@color/text_color"
-                        android:text="+" />
-
-                </LinearLayout>
-
-                -->
-
                 <EditText
                     android:id="@+id/editQuantidade"
-                    android:layout_width="70dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_edttext"
-                    android:ems="10"
+                    android:ems="5"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:gravity="center_horizontal|center_vertical"
@@ -90,21 +41,21 @@
                     android:textAlignment="center"
                     android:textColor="#000"
                     android:textColorHint="@color/nav_color"
-                    android:textSize="16sp" />
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
 
                 <TextView
                     android:id="@+id/txtProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:layout_weight="1"
                     android:fitsSystemWindows="true"
                     android:gravity="center_vertical"
                     android:inputType="textMultiLine"
                     android:singleLine="false"
                     android:text="Produto"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:textColor="#fff" />
 
 
@@ -114,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|center_horizontal|center_vertical"
                     android:background="@android:color/transparent"
+                    android:layout_marginStart="4dp"
                     android:src="@drawable/ic_trash" />
 
             </LinearLayout>

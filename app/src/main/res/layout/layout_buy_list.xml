@@ -11,7 +11,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#242a31">
 
         <LinearLayout
             android:id="@+id/layout_top"
@@ -46,7 +47,7 @@
                     android:inputType="textMultiLine"
                     android:singleLine="false"
                     android:text="Produto"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:textColor="#fff" />
 
 

@@ -6,12 +6,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -23,6 +30,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +64,10 @@ public class BuyList extends Nav {
     private TextView txtManyProducts;
     private Button btnFinalizarLista;
     public Animation alpha_in, alpha_out;
+    private RelativeLayout layout_principal;
+
+    private boolean backAlreadyPressed = false;
+    private boolean permiteVoltar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,21 +85,24 @@ public class BuyList extends Nav {
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
+
         usuario = Utils.loadFromSharedPreferences(this);
         layout_produtos_lista = findViewById(R.id.llProducts);
         txtManyProducts = findViewById(R.id.txtManyProducts);
         btnFinalizarLista = findViewById(R.id.btnFinalizarList);
         final LinearLayout layoutPesq = findViewById(R.id.llProducts);
+        layout_principal = findViewById(R.id.layout_principal);
 
         edtSearchProducts = findViewById(R.id.edtSearchProducts);
         edtSearchProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout_produtos_lista.removeAllViews();
+                layout_principal.setBackgroundColor(Color.parseColor("#242a31"));
+                layout_principal.setAnimation(alpha_in);
 
-                txtManyProducts.setVisibility(View.GONE);
                 btnFinalizarLista.setVisibility(View.GONE);
-                txtManyProducts.setAnimation(alpha_out);
                 btnFinalizarLista.setAnimation(alpha_out);
             }
         });
@@ -213,15 +229,16 @@ public class BuyList extends Nav {
                             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(edtSearchProducts.getWindowToken(), 0);
 
-                            txtManyProducts.setVisibility(View.VISIBLE);
                             btnFinalizarLista.setVisibility(View.VISIBLE);
                             btnFinalizarLista.setAnimation(alpha_in);
+                            layout_principal.setBackgroundColor(Color.parseColor("#2d353c"));
+                            layout_principal.setAnimation(alpha_out);
                         }
                     });
 
 
-                    ImageButton excluir = view.findViewById(R.id.btnAdd);
-                    excluir.setOnClickListener(new View.OnClickListener() {
+                    ImageButton add = view.findViewById(R.id.btnAdd);
+                    add.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             lista_compras.getListaProdutos().add(produto);
@@ -230,9 +247,10 @@ public class BuyList extends Nav {
                             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(edtSearchProducts.getWindowToken(), 0);
 
-                            txtManyProducts.setVisibility(View.VISIBLE);
                             btnFinalizarLista.setVisibility(View.VISIBLE);
                             btnFinalizarLista.setAnimation(alpha_in);
+                            layout_principal.setBackgroundColor(Color.parseColor("#2d353c"));
+                            layout_principal.setAnimation(alpha_out);
                         }
                     });
 
@@ -243,9 +261,9 @@ public class BuyList extends Nav {
 
     private void renderizaListaDeProdutos() {
         if (lista_compras.getData() != null && !lista_compras.getData().trim().equalsIgnoreCase("")) {
-            txtManyProducts.setText(lista_compras.getData().substring(0, 19) + " - Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
+            txtManyProducts.setText(lista_compras.getData().substring(0, 19) + " " + lista_compras.getListaProdutos().size() + "");
         } else {
-            txtManyProducts.setText("Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
+            txtManyProducts.setText(" " + lista_compras.getListaProdutos().size() + " ");
         }
 
         if (lista_compras.getNome() != null && !lista_compras.getNome().trim().equalsIgnoreCase("")) {
@@ -299,7 +317,7 @@ public class BuyList extends Nav {
 
     @SuppressLint("StaticFieldLeak")
     private void finalizarLista() {
-        SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         Date data = new Date();
         String dataFormatada = formataData.format(data);
 
@@ -349,6 +367,58 @@ public class BuyList extends Nav {
         }.execute();
         Button btFinalizar = findViewById(R.id.btnFinalizarList);
         btFinalizar.setText("SALVAR");
+    }
+
+
+    //on back
+    @Override
+    public void onBackPressed() {
+        renderizaListaDeProdutos();
+
+        if (permiteVoltar) {
+            super.onBackPressed();
+        } else {
+            if (usuario.getId_usuario() != 0) {
+
+                btnFinalizarLista.setVisibility(View.GONE);
+                btnFinalizarLista.setAnimation(alpha_out);
+
+                //snack
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_layout);
+                if (backAlreadyPressed) {
+                    finish();
+                    System.exit(0);
+                    return;
+                }
+                backAlreadyPressed = true;
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Pressione novamente para SAIR.", Snackbar.LENGTH_LONG);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        backAlreadyPressed = false;
+                        btnFinalizarLista.setVisibility(View.VISIBLE);
+                        btnFinalizarLista.setAnimation(alpha_in);
+                    }
+                }, 3000);
+                TextView txtSnackBar = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    txtSnackBar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                else
+                    txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setTextColor(Color.parseColor("#ffffff"));
+                //snackbar.getView().setBackgroundColor(Color.parseColor("#242a31"));
+                snackbar.getView().setBackgroundResource(R.drawable.gradient_list);
+                snackbar.show();
+
+
+            } else {
+                Intent main = new Intent(BuyList.this, Main.class);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(main);
+                finish();
+            }
+        }
     }
 
 }
