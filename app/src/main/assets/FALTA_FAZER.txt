@@ -15,7 +15,7 @@ Falta fazer:
         - Em "Propriedades do produto", colocar o restante das informações do produto.
     -- O app deve perguntar para sair ao clicar voltar ("Pressione novamente para sair") quando estiver em uma das telas do menu (Descontos, Criar Lista, Minhas Listas, Minhas NFes...).
         ++ Nas demais telas (Ver Mercado, Ver Produto, Comparar Lista...) o botão voltar deve voltar para a tela anterior.
-        -- Com o menu aberto, o botão de voltar deve fechar o menu.
+        -- Com o menu principal aberto, o botão de voltar deve fechar o menu.
     ++ Em "Criar Lista", colocar um campo de quantidade do produto selecionado
     ++ Em "Criar Lista", colocar botões com lixeira, para retirar os produtos da lista;
     ++ Implementar a exclusão de Listas
@@ -36,6 +36,7 @@ Falta fazer:
 	++ NFs lidas nao estao aparecendo na lista de nfs (Acredito que esteja consertado. Havia um problema no servidor durante o cadastro de algumas notas. Tente cadastrá-las novamente).
 	-- colocar valor total da nota fiscal no lugar do codigo qr
 	-- nova lista adicionar produto pegar xml o layout
+	-- colocar de volta a animação de espera quando realiza uma asynctask
 
 Antes de lançar:
     - Verificar se não tem nada digitado errado

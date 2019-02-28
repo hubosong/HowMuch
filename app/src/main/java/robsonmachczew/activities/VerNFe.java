@@ -233,7 +233,7 @@ public class VerNFe extends Nav {
                             Element divProd = doc.getElementById("Prod");
                             ArrayList<Item_NFe> lista_itens = getItemsNFe(divProd);
                             nfe.setLista_items(lista_itens);
-                            preencherViewsProdutosNFe(nfe);
+                            //preencherViewsProdutosNFe(nfe);
 
 
                             //Se o app conseguiu pegar a nota no site, vamos envia-la para o servidor.
