@@ -56,15 +56,6 @@
             <Button
                 android:background="@drawable/buttonshape"
                 android:textColor="@android:color/white"
-                android:layout_marginBottom="6dp"
-                android:id="@+id/br_compartilhar_lista"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Compartilhar Lista" />
-
-            <Button
-                android:background="@drawable/buttonshape"
-                android:textColor="@android:color/white"
                 android:id="@+id/bt_excluir_lista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

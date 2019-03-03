@@ -58,7 +58,7 @@ public class VerNFe extends Nav {
     private MaterialSearchView searchView;
     private RecyclerView recyclerView;
     private final Activity activity = this;
-    public Animation alpha_in, alpha_out;
+    private Animation alpha_in, alpha_out;
     private Usuario usuario;
 
     private DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
@@ -74,6 +74,7 @@ public class VerNFe extends Nav {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle(R.string.bar_qrcode);
 
+        //alpha efects
         alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
         alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
 
@@ -305,12 +306,7 @@ public class VerNFe extends Nav {
             @Override
             public void onClick(View v) {
                 Intent market = new Intent(VerNFe.this, VerMercado.class);
-
-                Mercado p = new Mercado();
-                p.setId_mercado(nfe.getMercado().getId_mercado());
-                p.setNome_fantasia(nfe.getMercado().getNome_fantasia());
-                market.putExtra("ID_MERCADO", p.getId_mercado());
-
+                market.putExtra("MERCADO", nfe.getMercado());
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(market);
             }

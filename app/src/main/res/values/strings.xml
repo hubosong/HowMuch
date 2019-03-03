@@ -34,7 +34,7 @@
     <string name="nav_my_buy">Minhas Listas de Compras</string>
     <string name="nav_my_nfe">Minhas Notas Fiscais</string>
     <string name="nav_send_nfe">Enviar Nota (QRCode)</string>
-    <string name="nav_logout">Sair</string>
+    <string name="nav_logout">Logout</string>
     <!-- nav (header) -->
     <string name="nav_header_desc">Navigation header</string>
     <string name="nav_header_title">Hu Bo Song</string>
@@ -82,6 +82,7 @@
     <!-- global -->
     <string name="txt_progress">Carregando..</string>
     <string name="toast_error">Ops! Contate o Desenvolvedor do APP.</string>
+    <string name="snackbar">Pressione novamente para SAIR.</string>
 
 
 </resources>

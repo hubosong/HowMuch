@@ -1,12 +1,19 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -33,10 +40,11 @@ import entidade.Utils;
 
 public class Minhas_NFes extends Nav {
 
-    private boolean permiteVoltar;
     private Usuario usuario;
     private LinearLayout layout_lista_de_nfes;
     private TextView tv_quant_nfes;
+    private boolean backAlreadyPressed = false;
+    private boolean permiteVoltar = false;
 
     private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
@@ -118,7 +126,7 @@ public class Minhas_NFes extends Nav {
         if (list != null) {
             try {
                 layout_lista_de_nfes.removeAllViews();
-                tv_quant_nfes.setText("Minhas Notas Fiscais (" + list.size() + "):");
+                tv_quant_nfes.setText("" + list.size() + "");
                 for (final NFe nfe : list) {
                     Date date = sdf_bd.parse(nfe.getData());
                     nfe.setData(sdf_exibicao.format(date));
@@ -156,7 +164,7 @@ public class Minhas_NFes extends Nav {
                             ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_transformar_em_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(Minhas_NFes.this, Criar_Lista_Compras.class);
+                                    Intent intent = new Intent(Minhas_NFes.this, Criar_lista_Compras.class);
                                     intent.putExtra("PERMITE_VOLTAR", true);
                                     intent.putExtra("NFE", nfe);
                                     startActivity(intent);
@@ -164,48 +172,62 @@ public class Minhas_NFes extends Nav {
                                 }
                             });
                             ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_excluir_nfe)).setOnClickListener(new View.OnClickListener() {
+                                @SuppressLint("StaticFieldLeak")
                                 @Override
                                 public void onClick(View view) {
-                                    new AsyncTask<String, Void, Boolean>() {
+                                    new AlertDialog.Builder(Minhas_NFes.this)
+                                            .setMessage("Deseja realmente excluir esta\nNOTA FISCAL?")
+                                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which){
+                                                    new AsyncTask<String, Void, Boolean>() {
+                                                        @Override
+                                                        protected Boolean doInBackground(String... params) {
+                                                            System.out.println(">>> Excluindo nota: " + nfe.getId_nfe());
+                                                            try {
+                                                                String urlParameters = "funcao=EXCLUIR_NFE&id_usuario=" + usuario.getId_usuario() + "&id_nfe=" + nfe.getId_nfe();
+                                                                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
-                                        @Override
-                                        protected Boolean doInBackground(String... params) {
-                                            System.out.println(">>> Excluindo nota: " + nfe.getId_nfe());
-                                            try {
-                                                String urlParameters = "funcao=EXCLUIR_NFE&id_usuario=" + usuario.getId_usuario() + "&id_nfe=" + nfe.getId_nfe();
-                                                byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+                                                                URL url = new URL(Utils.URL + "nfe");
+                                                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                                                                urlCon.setRequestMethod("POST");
+                                                                urlCon.setDoOutput(true);
+                                                                urlCon.setDoInput(true);
 
-                                                URL url = new URL(Utils.URL + "nfe");
-                                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                                                urlCon.setRequestMethod("POST");
-                                                urlCon.setDoOutput(true);
-                                                urlCon.setDoInput(true);
+                                                                DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
+                                                                wr.write(postData);
+                                                                wr.close();
+                                                                wr.flush();
 
-                                                DataOutputStream wr = new DataOutputStream(urlCon.getOutputStream());
-                                                wr.write(postData);
-                                                wr.close();
-                                                wr.flush();
+                                                                if (urlCon.getResponseCode() == 204) {
+                                                                    System.out.println(">>> NOTA " + nfe.getId_nfe() + " excluida...");
+                                                                    return true;
+                                                                }
 
-                                                if (urlCon.getResponseCode() == 204) {
-                                                    System.out.println(">>> NOTA " + nfe.getId_nfe() + " excluida...");
-                                                    return true;
+                                                            } catch (Exception e) {
+                                                                System.out.println(">>> Erro tentando excluir nota: " + e.getMessage());
+                                                                e.printStackTrace();
+                                                            }
+                                                            return false;
+                                                        }
+
+                                                        @Override
+                                                        protected void onPostExecute(Boolean sucesso) {
+                                                            if (sucesso) {
+                                                                carregaMinhasNFes();
+                                                            }
+                                                        }
+                                                    }.execute();
+                                                    Toast.makeText(Minhas_NFes.this, "Nota Fiscal Excluída!", Toast.LENGTH_SHORT).show();
+                                                    dialog.cancel();
+                                                    dialog_opcoes_nfe.cancel();
                                                 }
+                                            })
+                                            .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which){
+                                                    dialog.cancel();
+                                                }
+                                            }).show();
 
-                                            } catch (Exception e) {
-                                                System.out.println(">>> Erro tentando excluir nota: " + e.getMessage());
-                                                e.printStackTrace();
-                                            }
-                                            return false;
-                                        }
-
-                                        @Override
-                                        protected void onPostExecute(Boolean sucesso) {
-                                            if (sucesso) {
-                                                carregaMinhasNFes();
-                                            }
-                                        }
-                                    }.execute();
-                                    dialog_opcoes_nfe.cancel();
                                 }
                             });
                         }
@@ -221,20 +243,30 @@ public class Minhas_NFes extends Nav {
         }
     }
 
+
     //on back
     @Override
     public void onBackPressed() {
         if (permiteVoltar) {
             super.onBackPressed();
-        } else {
+        }
+        else {
             if (usuario.getId_usuario() != 0) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-                System.exit(0);
-
+                //snackbar
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_layout);
+                if (backAlreadyPressed) { finish(); System.exit(0); return; }
+                backAlreadyPressed = true;
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.snackbar, Snackbar.LENGTH_LONG);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() { backAlreadyPressed = false; }
+                }, 3000);
+                TextView txtSnackBar = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+                txtSnackBar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setTextColor(Color.parseColor("#ffffff"));
+                snackbar.getView().setBackgroundResource(R.drawable.gradient_list);
+                snackbar.show();
             } else {
                 Intent main = new Intent(Minhas_NFes.this, Main.class);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -242,5 +274,7 @@ public class Minhas_NFes extends Nav {
                 finish();
             }
         }
+
     }
+
 }

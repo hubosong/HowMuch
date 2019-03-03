@@ -4,90 +4,109 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/nav_color"
-    android:orientation="vertical"
     tools:context="robsonmachczew.activities.VerSimulacaoListaEmMercado">
 
-    <LinearLayout
-        android:id="@+id/sadfxzcv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView_titulo_da_lista"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            tools:text="Nome da Lista" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txt_Mercado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
             android:text="Nome do Mercado"
-            android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
 
             <TextView
-                android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="Valor Total Previsto:  "
-                android:textColor="@android:color/white" />
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text="Valor Total Previsto: "
+                android:textColor="@color/hint_nav_login" />
 
             <TextView
                 android:id="@+id/tv_preco_lista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="TextView"
-                android:textColor="@color/icons_btns"
-                android:textSize="18sp"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text="0"
                 android:textStyle="bold"
-                tools:text="-" />
+                android:textColor="@color/icons_btns"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_quant_itens"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            tools:text="Itens Simulados (0):" />
-
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/sadfxzcv">
 
         <LinearLayout
-            android:id="@+id/layout_itens"
+            android:id="@+id/llQtds"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text="Itens Simulados ("
+                android:textColor="@color/hint_nav_login" />
+
+            <TextView
+                android:id="@+id/tv_quant_itens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text="0"
+                android:textColor="@color/text_color" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text=")"
+                android:textColor="@color/hint_nav_login" />
+
+        </LinearLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/llQtds"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:scrollbars="vertical"
+            android:scrollbarSize="2sp"
+            android:scrollbarThumbVertical="@drawable/gradient_list">
+
+            <LinearLayout
+                android:id="@+id/layout_itens"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+    </LinearLayout>
 
 </RelativeLayout>

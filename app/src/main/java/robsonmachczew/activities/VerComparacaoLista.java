@@ -51,7 +51,7 @@ public class VerComparacaoLista extends Nav {
         getLayoutInflater().inflate(R.layout.activity_ver_comparacao_lista, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Simular Lista em Mercados");
+        getSupportActionBar().setTitle("Comparativo");
 
         lista = (Lista) getIntent().getSerializableExtra("LISTA");
         layout_listas_comparadas = findViewById(R.id.layout_listas_comparadas);
@@ -126,7 +126,7 @@ public class VerComparacaoLista extends Nav {
     private void renderizaComparacao(ArrayList<Lista> list) {
         if (list != null) {
             layout_listas_comparadas.removeAllViews();
-            txt_mercados_simulados.setText("Mercados Simulados (" + list.size() + "):");
+            txt_mercados_simulados.setText("" + list.size() + "");
             txt_nome_da_lista_de_compras.setText(lista.getNome());
             Collections.sort(list, new Comparator<Lista>() {
                 @Override

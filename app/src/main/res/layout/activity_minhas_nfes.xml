@@ -1,39 +1,73 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_principal"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/nav_color"
-    android:orientation="vertical"
     tools:context=".Minhas_NFes">
 
-
-    <TextView
-        android:id="@+id/tv_minhas_nfes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="20dp"
-        android:text="Quantidade de Notas Fiscais (0):"
-        android:textColor="@android:color/white"/>
-
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/layout_principal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tv_minhas_nfes"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:scrollbars="vertical"
-        android:scrollbarSize="2sp"
-        android:scrollbarThumbVertical="@drawable/gradient_list">
+        android:orientation="vertical">
+
 
         <LinearLayout
-            android:id="@+id/layout_lista_de_nfes"
+            android:id="@+id/llQtds"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
-</RelativeLayout>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text="Quantidade de Notas Fiscais ("
+                android:textColor="@color/hint_nav_login" />
+
+            <TextView
+                android:id="@+id/tv_minhas_nfes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text="0"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:text=")"
+                android:textColor="@color/hint_nav_login" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/llQtds"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:scrollbars="vertical"
+            android:scrollbarSize="2sp"
+            android:scrollbarThumbVertical="@drawable/gradient_list">
+
+            <LinearLayout
+                android:id="@+id/layout_lista_de_nfes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

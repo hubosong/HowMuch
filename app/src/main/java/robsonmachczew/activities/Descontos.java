@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,8 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -36,7 +33,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -61,7 +57,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Scanner;
 import java.util.Set;
 
 import entidade.Item_NFe;
@@ -74,26 +69,21 @@ import entidade.Utils;
 
 public class Descontos extends Nav {
 
-    boolean mostrando_pesquisados = false;
-
-    private boolean permiteVoltar = false;
     private LinearLayout layout_produtos_desconto;
     private TextView tv_quant_prods_desconto;
     private EditText txt_pesquisa_produtos;
     private ArrayList<Lista> lista_de_listas;
     private ArrayList<ProdutoAbaixoMedia> lista_produtos_abaixo_media;
     private ArrayList<Item_NFe> lista_produtos_pesquisados;
+    private ScrollView layout_top;
     private Usuario usuario;
+
+    boolean mostrando_pesquisados = false;
+    private boolean backAlreadyPressed = false;
+    private boolean permiteVoltar = false;
 
     private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-
-    public Animation alpha_in, alpha_out;
-    private ScrollView layout_top;
-
-    private boolean backAlreadyPressed = false;
-
-    Intent intent;
 
 
     @SuppressLint("WrongViewCast")
@@ -109,15 +99,9 @@ public class Descontos extends Nav {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Descontos");
 
-        //alpha effects
-        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
-        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
-
+        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         pegaListasDeCompras();
-
-
-        permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
         layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
         tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
@@ -152,6 +136,7 @@ public class Descontos extends Nav {
         tentaEnviarNFesPendentes();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void tentaEnviarNFesPendentes() {
         final Set<String> chavess = Utils.getNotasLocais(this);
         if (!chavess.isEmpty()) {
@@ -608,7 +593,7 @@ public class Descontos extends Nav {
         if (lista_produtos_abaixo_media != null) {
             mostrando_pesquisados = false;
             try {
-                tv_quant_prods_desconto.setText("Produtos Abaixo do Valor Médio (" + lista_produtos_abaixo_media.size() + "):");
+                tv_quant_prods_desconto.setText("" + lista_produtos_abaixo_media.size() + "");
                 layout_produtos_desconto.removeAllViews();
                 DecimalFormat df = new DecimalFormat("0.00");
                 for (final ProdutoAbaixoMedia produto : lista_produtos_abaixo_media) {
@@ -644,9 +629,9 @@ public class Descontos extends Nav {
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
+                                    Intent intent = new Intent(Descontos.this, Criar_lista_Compras.class);
                                     intent.putExtra("PERMITE_VOLTAR", true);
-                                    Produto p = new Produto();
+                                        Produto p = new Produto();
                                     p.setId_produto(produto.getId_produto());
                                     p.setDescricao(produto.getDescricao_produto());
                                     p.setDescricao2(produto.getDescricao_produto2());
@@ -660,16 +645,25 @@ public class Descontos extends Nav {
                                 public void onClick(View view) {
                                     if (lista_de_listas != null) {
                                         final Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
+                                        dialog_adicionar_produto_lista.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                                         dialog_adicionar_produto_lista.setContentView(R.layout.dialog_pesquisa_lista_de_listas_add_produto);
+                                        //change alpha intensity
+                                        WindowManager.LayoutParams lp = dialog_adicionar_produto_lista .getWindow().getAttributes();
+                                        lp.dimAmount = 0.8f;
+                                        dialog_adicionar_produto_lista .getWindow().setAttributes(lp);
+                                        dialog_adicionar_produto_lista .getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
                                         ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog)).setText("Adicionar \"" + produto.getDescricao_produto() + "\" à Lista:");
                                         final LinearLayout layout_lista_de_listas = dialog_adicionar_produto_lista.findViewById(R.id.layout_lista_de_listas);
                                         layout_lista_de_listas.removeAllViews();
+
                                         for (Lista lista : lista_de_listas) {
                                             CheckBox cb = new CheckBox(dialog_adicionar_produto_lista.getContext());
                                             cb.setText(lista.getNome() + " " + lista.getData());
                                             cb.setTextColor(Color.WHITE);
                                             layout_lista_de_listas.addView(cb);
                                         }
+
                                         ((Button) dialog_adicionar_produto_lista.findViewById(R.id.bt_AdicionarProdutoLista)).setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
@@ -777,7 +771,7 @@ public class Descontos extends Nav {
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(Descontos.this, Criar_Lista_Compras.class);
+                                    Intent intent = new Intent(Descontos.this, Criar_lista_Compras.class);
                                     intent.putExtra("PERMITE_VOLTAR", true);
                                     intent.putExtra("PRODUTO", item.getProduto());
                                     startActivity(intent);
@@ -978,35 +972,28 @@ public class Descontos extends Nav {
     public void onBackPressed() {
         if (permiteVoltar) {
             super.onBackPressed();
-        } else {
+        }
+        else {
             if (usuario.getId_usuario() != 0) {
-
                 //snack
-                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.layout_principal);
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_layout);
                 if (backAlreadyPressed) {
                     finish();
                     System.exit(0);
                     return;
                 }
                 backAlreadyPressed = true;
-                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Pressione novamente para SAIR.", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.snackbar, Snackbar.LENGTH_LONG);
                 new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void run() {
-                        backAlreadyPressed = false;
-                    }
+                    public void run() { backAlreadyPressed = false; }
                 }, 3000);
                 TextView txtSnackBar = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    txtSnackBar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                else
-                    txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
                 txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 txtSnackBar.setTextColor(Color.parseColor("#ffffff"));
-                //snackbar.getView().setBackgroundColor(Color.parseColor("#242a31"));
                 snackbar.getView().setBackgroundResource(R.drawable.gradient_list);
                 snackbar.show();
-
 
             } else {
                 Intent main = new Intent(Descontos.this, Main.class);
@@ -1015,6 +1002,8 @@ public class Descontos extends Nav {
                 finish();
             }
         }
+
+
     }
 
 }

@@ -42,11 +42,11 @@ public class VerSimulacaoListaEmMercado extends Nav {
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
         getLayoutInflater().inflate(R.layout.activity_ver_simulacao_lista_em_mercado, contentFrameLayout);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Simulação de Lista em Mercado");
+        getSupportActionBar().setTitle("Detalhes");
 
         lista = (Lista) getIntent().getSerializableExtra("LISTA");
         layout_itens = findViewById(R.id.layout_itens);
-        textView_titulo_da_lista = findViewById(R.id.textView_titulo_da_lista);
+        //textView_titulo_da_lista = findViewById(R.id.textView_titulo_da_lista);
         tv_preco_lista = findViewById(R.id.tv_preco_lista);
         tv_quant_itens = findViewById(R.id.tv_quant_itens);
         txt_Mercado = findViewById(R.id.txt_Mercado);
@@ -58,19 +58,19 @@ public class VerSimulacaoListaEmMercado extends Nav {
         if (lista != null) {
             try {
                 layout_itens.removeAllViews();
-                textView_titulo_da_lista.setText(lista.getNome());
+                //textView_titulo_da_lista.setText(lista.getNome());
                 DecimalFormat df = new DecimalFormat("0.00");
-                tv_preco_lista.setText("R$ " + df.format(lista.getValor_total()).replace(",", "."));
-                tv_quant_itens.setText("Itens Simulados (" + lista.getListaProdutos().size() + "):");
+                tv_preco_lista.setText("" + df.format(lista.getValor_total()).replace(",", "."));
+                tv_quant_itens.setText("" + lista.getListaProdutos().size() + "");
                 txt_Mercado.setText(lista.getMercado().getNome());
                 for (final Produto item : lista.getListaProdutos()) {
                     View view; // Creating an instance for View Object
                     LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     view = inflater.inflate(R.layout.layout_produtos_simulacao_mercado, null);
                     ((TextView) view.findViewById(R.id.txtNomeProduto)).setText(item.getDescricao());
-                    ((TextView) view.findViewById(R.id.txtDataNFe)).setText("Data da Compra: "+item.getTransient_data());
-                    ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("R$: -");
-                    ((TextView) view.findViewById(R.id.txtOff)).setText("R$: -");
+                    ((TextView) view.findViewById(R.id.txtDataNFe)).setText("Data da Compra: "+ item.getTransient_data().substring(0, 10));
+                    ((TextView) view.findViewById(R.id.txtMediumPrice)).setText("");
+                    ((TextView) view.findViewById(R.id.txtOff)).setText("");
                     ((TextView) view.findViewById(R.id.txtPrice)).setText("R$: " + df.format(item.getTransient_valor()).replace(",", ".") + " " + item.getUnidade_comercial());
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -111,9 +111,14 @@ public class VerSimulacaoListaEmMercado extends Nav {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intent = new Intent(VerSimulacaoListaEmMercado.this, VerProduto.class);
-                                    intent.putExtra("PRODUTO", item);
+                                    Produto p = new Produto();
+                                    p.setId_produto(item.getId_produto());
+                                    p.setDescricao(item.getDescricao());
+                                    p.setUnidade_comercial(item.getUnidade_comercial());
+                                    intent.putExtra("ID_PRODUTO", p.getId_produto());
                                     startActivity(intent);
                                     dialog_opcoes_produto.cancel();
+
                                 }
                             });
                             dialog_opcoes_produto.show();

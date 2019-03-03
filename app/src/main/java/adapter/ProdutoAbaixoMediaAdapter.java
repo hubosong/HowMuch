@@ -1,5 +1,6 @@
 package adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,7 +33,7 @@ import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
-import robsonmachczew.activities.Criar_Lista_Compras;
+import robsonmachczew.activities.Criar_lista_Compras;
 import robsonmachczew.activities.R;
 
 public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaixoMediaAdapter.ProductViewHolder> {
@@ -120,6 +121,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                 PopupMenu popupMenu = new PopupMenu(mCtx, holder.txtOption);
                 popupMenu.inflate(R.menu.navlist_produto);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @SuppressLint("StaticFieldLeak")
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
@@ -140,7 +142,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                         Produto p = prodBelowAverage.converterEmProduto();
                                         p.setTransient_quantidade(Float.valueOf(editText.getText().toString()));
                                         lista.getListaProdutos().add(p);
-                                        Intent intent = new Intent(mCtx, Criar_Lista_Compras.class);
+                                        Intent intent = new Intent(mCtx, Criar_lista_Compras.class);
                                         intent.putExtra("LISTA", lista);
                                         mCtx.startActivity(intent);
                                     }
@@ -218,7 +220,7 @@ public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaix
                                                                     Produto p = prodBelowAverage.converterEmProduto();
                                                                     p.setTransient_quantidade(Float.valueOf(editText.getText().toString()));
                                                                     lista.getListaProdutos().add(p);
-                                                                    Intent intent = new Intent(mCtx, Criar_Lista_Compras.class);
+                                                                    Intent intent = new Intent(mCtx, Criar_lista_Compras.class);
                                                                     intent.putExtra("LISTA", lista);
                                                                     mCtx.startActivity(intent);
                                                                 }

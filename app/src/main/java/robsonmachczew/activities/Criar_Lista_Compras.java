@@ -1,26 +1,29 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +35,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import entidade.Lista;
 import entidade.NFe;
@@ -42,15 +47,18 @@ import entidade.Produto;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class Criar_Lista_Compras extends Nav {
+public class Criar_lista_Compras extends Nav {
 
-    private boolean permiteVoltar;
     private Usuario usuario;
-    private Lista lista_compras;
-    private Dialog dialog_pesquisa;
+    private EditText edtSearchProducts;
     private LinearLayout layout_produtos_lista;
-    private TextView tvQuantProdutosLista;
-    private EditText editTextNomeLista;
+    private Lista lista_compras;
+    private TextView txtManyProducts;
+    private Button btnFinalizarLista;
+    private Animation alpha_in, alpha_out;
+    private RelativeLayout layout_principal;
+    private boolean backAlreadyPressed = false;
+    private boolean permiteVoltar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +74,48 @@ public class Criar_Lista_Compras extends Nav {
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
+        //alpha effects
+        alpha_in = AnimationUtils.loadAnimation(this, R.anim.alpha_in);
+        alpha_out = AnimationUtils.loadAnimation(this, R.anim.alpha_out);
+
         usuario = Utils.loadFromSharedPreferences(this);
-        layout_produtos_lista = findViewById(R.id.layoutProducts);
-        tvQuantProdutosLista = findViewById(R.id.textView2);
-        editTextNomeLista = findViewById(R.id.editText2);
+        layout_produtos_lista = findViewById(R.id.llProducts);
+        txtManyProducts = findViewById(R.id.txtManyProducts);
+        btnFinalizarLista = findViewById(R.id.btnFinalizarList);
+        final LinearLayout layoutPesq = findViewById(R.id.llProducts);
+        layout_principal = findViewById(R.id.layout_principal);
+
+        edtSearchProducts = findViewById(R.id.edtSearchProducts);
+        edtSearchProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout_produtos_lista.removeAllViews();
+                layout_principal.setBackgroundColor(Color.parseColor("#242a31"));
+                layout_principal.setAnimation(alpha_in);
+
+                btnFinalizarLista.setVisibility(View.GONE);
+                btnFinalizarLista.setAnimation(alpha_out);
+            }
+        });
+        edtSearchProducts.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 2) {
+                    realizaPesquisaProdutos(s.toString(), layoutPesq);
+                }
+            }
+        });
+
 
         if (!Utils.estaConectado(this)) {
             Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
@@ -99,137 +145,21 @@ public class Criar_Lista_Compras extends Nav {
             if (lista_compras == null) {
                 lista_compras = new Lista();
             } else {
-                Button btFinalizar = findViewById(R.id.button3);
+                Button btFinalizar = findViewById(R.id.btnFinalizarList);
                 btFinalizar.setText("SALVAR");
                 getSupportActionBar().setTitle("Editar Lista de Compras");
             }
         }
-        renderizaListaDeProdutos();
+
+        renderizaListaDeProdutos(); //usado para chamar a lista quando criada nova pela classe descontos
     }
 
-
-    public void adicionarProduto(View v) {
-        dialog_pesquisa = new Dialog(this);
-        dialog_pesquisa.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
-        dialog_pesquisa.setContentView(R.layout.dialog_pesquisa_produtos_lista);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = (int) (displayMetrics.heightPixels * 0.8);
-        int width = (int) (displayMetrics.widthPixels * 0.9);
-
-        //change alpha intensity
-        WindowManager.LayoutParams lp = dialog_pesquisa.getWindow().getAttributes();
-        lp.dimAmount=0.8f;
-        dialog_pesquisa.getWindow().setAttributes(lp);
-        dialog_pesquisa.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        dialog_pesquisa.getWindow().setLayout(width, height);
-
-
-        EditText text = dialog_pesquisa.findViewById(R.id.editText_Procura_Prod_Lista);
-        final LinearLayout layoutPesq = dialog_pesquisa.findViewById(R.id.layout_produtos_pesquisados);
-        final Button btConcluir = dialog_pesquisa.findViewById(R.id.btConcluirPesq);
-        ((Button) dialog_pesquisa.findViewById(R.id.button2)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog_pesquisa.cancel();
-            }
-        });
-
-
-        text.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 2) {
-                    realizaPesquisaProdutos(s.toString(), layoutPesq, btConcluir);
-                }
-            }
-        });
-        dialog_pesquisa.show();
-    }
-
-    public void preFinalizarLista(View v) {
-        if (lista_compras.getListaProdutos().size() == 0) {
-            Toast.makeText(this, "Lista sem Itens", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (editTextNomeLista.getText().toString().trim().equalsIgnoreCase("") && lista_compras.getId_lista() == 0) {
-            Toast.makeText(this, "Lista sem Nome", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            finalizarLista();
-        }
-    }
 
     @SuppressLint("StaticFieldLeak")
-    private void finalizarLista() {
-        lista_compras.setNome(editTextNomeLista.getText().toString());
-        new AsyncTask<String, Void, Long>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected Long doInBackground(String... params) {
-                try {
-                    URL url = new URL(Utils.URL + "lista");
-                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                    urlCon.setRequestMethod("POST");
-                    urlCon.setDoOutput(true);
-                    urlCon.setDoInput(true);
-
-                    OutputStream os = urlCon.getOutputStream();
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
-                    objectOutputStream.writeUTF("SALVAR_LISTA");
-                    objectOutputStream.writeLong(usuario.getId_usuario());
-                    objectOutputStream.writeObject(lista_compras);
-
-                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                    long id_lista = (long) ois.readLong();
-                    ois.close();
-                    objectOutputStream.close();
-                    objectOutputStream.flush();
-                    return id_lista;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return new Long(0);
-            }
-
-            @Override
-            protected void onPostExecute(Long id_lista) {
-                if (id_lista > 0) {
-                    Toast.makeText(Criar_Lista_Compras.this, "Lista Salva!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(Criar_Lista_Compras.this, Minhas_Listas.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        }.execute();
-        Button btFinalizar = findViewById(R.id.button3);
-        btFinalizar.setText("SALVAR");
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void realizaPesquisaProdutos(final String pesquisa, final LinearLayout layoutProdutos, final Button btConcluir) {
+    private void realizaPesquisaProdutos(final String pesquisa, final LinearLayout layoutProdutos) {
         new AsyncTask<String, Void, ArrayList<Produto>>() {
             @Override
             protected void onPreExecute() {
-                layoutProdutos.removeAllViews();
-                TextView txtCarregando = new TextView(Criar_Lista_Compras.this);
-                txtCarregando.setText(R.string.txt_progress);
-                txtCarregando.setTextSize(16);
-                txtCarregando.setTextColor(Color.parseColor("#ffffff"));
-                layoutProdutos.addView(txtCarregando);
                 super.onPreExecute();
             }
 
@@ -274,40 +204,62 @@ public class Criar_Lista_Compras extends Nav {
                     if (produto.getDescricao2() != null && !produto.getDescricao2().trim().equalsIgnoreCase("") && !produto.getDescricao2().trim().equalsIgnoreCase("NULL")) {
                         produto.setDescricao(produto.getDescricao2());
                     }
-                    CheckBox cb = new CheckBox(Criar_Lista_Compras.this);
-                    cb.setText(produto.getDescricao());
-                    cb.setTextColor(Color.parseColor("#ffffff"));
 
-                    layoutProdutos.addView(cb);
-                }
-                btConcluir.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        for (int i = 0; i < layoutProdutos.getChildCount(); i++) {
-                            if (((CheckBox) layoutProdutos.getChildAt(i)).isChecked()) {
-                                lista_compras.getListaProdutos().add(list.get(i));
-                            }
+                    LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater.inflate(R.layout.layout_buy_list, null);
+
+                    TextView txtProducts = view.findViewById(R.id.txtBuyProduct);
+                    txtProducts.setText(produto.getDescricao());
+                    layoutProdutos.addView(view);
+
+                    txtProducts.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            lista_compras.getListaProdutos().add(produto);
+                            renderizaListaDeProdutos();
+
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(edtSearchProducts.getWindowToken(), 0);
+
+                            btnFinalizarLista.setVisibility(View.VISIBLE);
+                            btnFinalizarLista.setAnimation(alpha_in);
+                            layout_principal.setBackgroundColor(Color.parseColor("#2d353c"));
+                            layout_principal.setAnimation(alpha_out);
                         }
-                        renderizaListaDeProdutos();
-                    }
-                });
+                    });
+
+
+                    ImageButton add = view.findViewById(R.id.btnAdd);
+                    add.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            lista_compras.getListaProdutos().add(produto);
+                            renderizaListaDeProdutos();
+
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(edtSearchProducts.getWindowToken(), 0);
+
+                            btnFinalizarLista.setVisibility(View.VISIBLE);
+                            btnFinalizarLista.setAnimation(alpha_in);
+                            layout_principal.setBackgroundColor(Color.parseColor("#2d353c"));
+                            layout_principal.setAnimation(alpha_out);
+                        }
+                    });
+
+                }
             }
         }.execute();
     }
 
     private void renderizaListaDeProdutos() {
-        if (dialog_pesquisa != null && dialog_pesquisa.isShowing()) {
-            dialog_pesquisa.dismiss();
-        }
         if (lista_compras.getData() != null && !lista_compras.getData().trim().equalsIgnoreCase("")) {
-            tvQuantProdutosLista.setText(lista_compras.getData().substring(0, 19) + " - Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
+            txtManyProducts.setText(lista_compras.getData().substring(0, 19) + " " + lista_compras.getListaProdutos().size() + "");
         } else {
-            tvQuantProdutosLista.setText("Produtos da Lista (" + lista_compras.getListaProdutos().size() + "):");
+            txtManyProducts.setText(" " + lista_compras.getListaProdutos().size() + " ");
         }
-
 
         if (lista_compras.getNome() != null && !lista_compras.getNome().trim().equalsIgnoreCase("")) {
-            editTextNomeLista.setText(lista_compras.getNome());
+            txtManyProducts.setText(lista_compras.getNome());
         }
 
         layout_produtos_lista.removeAllViews();
@@ -345,27 +297,107 @@ public class Criar_Lista_Compras extends Nav {
         }
     }
 
+
+    public void preFinalizarLista(View v) {
+        if (lista_compras.getListaProdutos().size() == 0) {
+            Toast.makeText(this, "Lista sem Itens", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            finalizarLista();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void finalizarLista() {
+        SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        Date data = new Date();
+        String dataFormatada = formataData.format(data);
+
+        lista_compras.setNome(dataFormatada);
+        new AsyncTask<String, Void, Long>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Long doInBackground(String... params) {
+                try {
+                    URL url = new URL(Utils.URL + "lista");
+                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                    urlCon.setRequestMethod("POST");
+                    urlCon.setDoOutput(true);
+                    urlCon.setDoInput(true);
+
+                    OutputStream os = urlCon.getOutputStream();
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                    objectOutputStream.writeUTF("SALVAR_LISTA");
+                    objectOutputStream.writeLong(usuario.getId_usuario());
+                    objectOutputStream.writeObject(lista_compras);
+
+                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                    long id_lista = (long) ois.readLong();
+                    ois.close();
+                    objectOutputStream.close();
+                    objectOutputStream.flush();
+                    return id_lista;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return new Long(0);
+            }
+
+            @Override
+            protected void onPostExecute(Long id_lista) {
+                if (id_lista > 0) {
+                    Toast.makeText(Criar_lista_Compras.this, "Lista Salva!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(Criar_lista_Compras.this, Minhas_Listas.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }.execute();
+    }
+
+
     //on back
     @Override
     public void onBackPressed() {
+        renderizaListaDeProdutos();
         if (permiteVoltar) {
             super.onBackPressed();
         }
         else {
             if (usuario.getId_usuario() != 0) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-                System.exit(0);
 
+                btnFinalizarLista.setVisibility(View.GONE);
+                btnFinalizarLista.setAnimation(alpha_out);
+
+                //snackbar
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_layout);
+                if (backAlreadyPressed) { finish(); System.exit(0); return; }
+                backAlreadyPressed = true;
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.snackbar, Snackbar.LENGTH_LONG);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        backAlreadyPressed = false;
+                        btnFinalizarLista.setVisibility(View.VISIBLE);
+                        btnFinalizarLista.setAnimation(alpha_in); }
+                }, 3000);
+                TextView txtSnackBar = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+                txtSnackBar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setTextColor(Color.parseColor("#ffffff"));
+                snackbar.getView().setBackgroundResource(R.drawable.gradient_list);
+                snackbar.show();
             } else {
-                Intent main = new Intent(Criar_Lista_Compras.this, Main.class);
+                Intent main = new Intent(Criar_lista_Compras.this, Main.class);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(main);
                 finish();
             }
         }
     }
+
 }

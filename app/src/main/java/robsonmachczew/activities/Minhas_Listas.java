@@ -1,12 +1,19 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -32,12 +39,13 @@ import entidade.Utils;
 
 public class Minhas_Listas extends Nav {
 
-    private boolean permiteVoltar;
     private Usuario usuario;
     private LinearLayout layout_listas_de_listas;
     private TextView tv_quant_listas;
     private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+    private boolean backAlreadyPressed = false;
+    private boolean permiteVoltar = false;
 
 
     @Override
@@ -51,7 +59,6 @@ public class Minhas_Listas extends Nav {
         navigationView.getMenu().getItem(2).setChecked(true);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Minhas Listas");
-
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
@@ -119,7 +126,7 @@ public class Minhas_Listas extends Nav {
             try {
                 final Context ctx = this;
                 layout_listas_de_listas.removeAllViews();
-                tv_quant_listas.setText("Listas Encontradas (" + list.size() + "):");
+                tv_quant_listas.setText("" + list.size() + "");
                 for (final Lista lista : list) {
                     Date date = sdf_bd.parse(lista.getData());
                     lista.setData(sdf_exibicao.format(date));
@@ -146,7 +153,7 @@ public class Minhas_Listas extends Nav {
                             ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(ctx, Criar_Lista_Compras.class);
+                                    Intent intent = new Intent(ctx, Criar_lista_Compras.class);
                                     intent.putExtra("PERMITE_VOLTAR", true);
                                     intent.putExtra("LISTA", lista);
                                     startActivity(intent);
@@ -164,46 +171,59 @@ public class Minhas_Listas extends Nav {
                                 }
                             });
                             ((Button) dialog_opcoes_lista.findViewById(R.id.bt_excluir_lista)).setOnClickListener(new View.OnClickListener() {
-
+                                @SuppressLint("StaticFieldLeak")
                                 @Override
                                 public void onClick(View view) {
-                                    new AsyncTask<String, Void, Boolean>() {
+                                    new AlertDialog.Builder(Minhas_Listas.this)
+                                            .setMessage("Deseja realmente excluir esta\nLISTA DE COMPRAS?")
+                                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which){
+                                                    new AsyncTask<String, Void, Boolean>() {
+                                                        @Override
+                                                        protected Boolean doInBackground(String... params) {
+                                                            try {
+                                                                URL url = new URL(Utils.URL + "lista");
+                                                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                                                                urlCon.setRequestMethod("POST");
+                                                                urlCon.setDoOutput(true);
+                                                                urlCon.setDoInput(true);
 
-                                        @Override
-                                        protected Boolean doInBackground(String... params) {
-                                            try {
-                                                URL url = new URL(Utils.URL + "lista");
-                                                HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                                                urlCon.setRequestMethod("POST");
-                                                urlCon.setDoOutput(true);
-                                                urlCon.setDoInput(true);
+                                                                ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
+                                                                wr.writeUTF("APAGAR_LISTA");
+                                                                wr.writeLong(usuario.getId_usuario());
+                                                                wr.writeLong(lista.getId_lista());
+                                                                wr.close();
+                                                                wr.flush();
 
-                                                ObjectOutputStream wr = new ObjectOutputStream(urlCon.getOutputStream());
-                                                wr.writeUTF("APAGAR_LISTA");
-                                                wr.writeLong(usuario.getId_usuario());
-                                                wr.writeLong(lista.getId_lista());
-                                                wr.close();
-                                                wr.flush();
+                                                                if(urlCon.getResponseCode() == 204){
+                                                                    return true;
+                                                                }
 
-                                                if(urlCon.getResponseCode() == 204){
-                                                    return true;
+                                                            } catch (Exception e) {
+                                                                System.out.println(">>> Erro tentando excluir nota: "+e.getMessage());
+                                                                e.printStackTrace();
+                                                            }
+                                                            return false;
+                                                        }
+
+                                                        @Override
+                                                        protected void onPostExecute(Boolean sucesso) {
+                                                            if(sucesso){
+                                                                pegaListaDeCompras();
+                                                            }
+                                                        }
+                                                    }.execute();
+                                                    Toast.makeText(Minhas_Listas.this, "Lista de Compras Excluída!", Toast.LENGTH_SHORT).show();
+                                                    dialog.cancel();
+                                                    dialog_opcoes_lista.cancel();
                                                 }
+                                            })
+                                            .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which){
+                                                    dialog.cancel();
+                                                }
+                                            }).show();
 
-                                            } catch (Exception e) {
-                                                System.out.println(">>> Erro tentando excluir nota: "+e.getMessage());
-                                                e.printStackTrace();
-                                            }
-                                            return false;
-                                        }
-
-                                        @Override
-                                        protected void onPostExecute(Boolean sucesso) {
-                                            if(sucesso){
-                                                pegaListaDeCompras();
-                                            }
-                                        }
-                                    }.execute();
-                                    dialog_opcoes_lista.cancel();
                                 }
                             });
                             dialog_opcoes_lista.show();
@@ -229,12 +249,25 @@ public class Minhas_Listas extends Nav {
         }
         else {
             if (usuario.getId_usuario() != 0) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-                System.exit(0);
+                //snack
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_layout);
+                if (backAlreadyPressed) {
+                    finish();
+                    System.exit(0);
+                    return;
+                }
+                backAlreadyPressed = true;
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, R.string.snackbar, Snackbar.LENGTH_LONG);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() { backAlreadyPressed = false; }
+                }, 3000);
+                TextView txtSnackBar = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+                txtSnackBar.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtSnackBar.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                txtSnackBar.setTextColor(Color.parseColor("#ffffff"));
+                snackbar.getView().setBackgroundResource(R.drawable.gradient_list);
+                snackbar.show();
 
             } else {
                 Intent main = new Intent(Minhas_Listas.this, Main.class);
@@ -243,5 +276,6 @@ public class Minhas_Listas extends Nav {
                 finish();
             }
         }
+
     }
 }
