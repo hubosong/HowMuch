@@ -1,7 +1,10 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -134,7 +137,7 @@ public class Criar_lista_Compras extends Nav {
             if (getIntent().getSerializableExtra("LISTA") != null) {
                 //ADICIONAR À UMA LISTA EXISTENTE
                 lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
-                getSupportActionBar().setTitle("Editar Lista de Compras");
+                getSupportActionBar().setTitle("Editar Lista");
             } else {
                 //ADICIONAR À UMA NOVA LISTA
                 lista_compras = new Lista();
@@ -147,7 +150,7 @@ public class Criar_lista_Compras extends Nav {
             } else {
                 Button btFinalizar = findViewById(R.id.btnFinalizarList);
                 btFinalizar.setText("SALVAR");
-                getSupportActionBar().setTitle("Editar Lista de Compras");
+                getSupportActionBar().setTitle("Editar Lista");
             }
         }
 
@@ -313,50 +316,74 @@ public class Criar_lista_Compras extends Nav {
         Date data = new Date();
         String dataFormatada = formataData.format(data);
 
-        lista_compras.setNome(dataFormatada);
-        new AsyncTask<String, Void, Long>() {
+        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View mView = inflater.inflate(R.layout.layout_finalizar_lista, null);
+        final AlertDialog dialogAlert = new AlertDialog.Builder(Criar_lista_Compras.this).create();
+        final EditText edtNomeLista = mView.findViewById(R.id.userInputDialog);
+        final Button btnCancelar = mView.findViewById(R.id.btnCancelar);
+        final Button btnSalvar = mView.findViewById(R.id.btnSalvar);
+
+        edtNomeLista.setText("lista " + dataFormatada);
+        btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
+            public void onClick(View v) {
+                lista_compras.setNome(edtNomeLista.getText().toString());
+                new AsyncTask<String, Void, Long>() {
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                    }
 
+                    @Override
+                    protected Long doInBackground(String... params) {
+                        try {
+                            URL url = new URL(Utils.URL + "lista");
+                            HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+                            urlCon.setRequestMethod("POST");
+                            urlCon.setDoOutput(true);
+                            urlCon.setDoInput(true);
+
+                            OutputStream os = urlCon.getOutputStream();
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                            objectOutputStream.writeUTF("SALVAR_LISTA");
+                            objectOutputStream.writeLong(usuario.getId_usuario());
+                            objectOutputStream.writeObject(lista_compras);
+
+                            ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
+                            long id_lista = (long) ois.readLong();
+                            ois.close();
+                            objectOutputStream.close();
+                            objectOutputStream.flush();
+                            return id_lista;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return new Long(0);
+                    }
+
+                    @Override
+                    protected void onPostExecute(Long id_lista) {
+                        if (id_lista > 0) {
+                            Toast.makeText(Criar_lista_Compras.this, "Lista Salva!", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(Criar_lista_Compras.this, Minhas_Listas.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }.execute();
+                dialogAlert.dismiss();
+            }
+        });
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected Long doInBackground(String... params) {
-                try {
-                    URL url = new URL(Utils.URL + "lista");
-                    HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
-                    urlCon.setRequestMethod("POST");
-                    urlCon.setDoOutput(true);
-                    urlCon.setDoInput(true);
-
-                    OutputStream os = urlCon.getOutputStream();
-                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
-                    objectOutputStream.writeUTF("SALVAR_LISTA");
-                    objectOutputStream.writeLong(usuario.getId_usuario());
-                    objectOutputStream.writeObject(lista_compras);
-
-                    ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream());
-                    long id_lista = (long) ois.readLong();
-                    ois.close();
-                    objectOutputStream.close();
-                    objectOutputStream.flush();
-                    return id_lista;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return new Long(0);
+            public void onClick(View v) {
+                dialogAlert.dismiss();
             }
+        });
 
-            @Override
-            protected void onPostExecute(Long id_lista) {
-                if (id_lista > 0) {
-                    Toast.makeText(Criar_lista_Compras.this, "Lista Salva!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(Criar_lista_Compras.this, Minhas_Listas.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        }.execute();
+        dialogAlert.setView(mView);
+        dialogAlert.show();
+
     }
 
 

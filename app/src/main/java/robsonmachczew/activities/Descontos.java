@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -624,6 +625,7 @@ public class Descontos extends Nav {
                             lp.dimAmount = 0.8f;
                             dialog_opcoes_produto.getWindow().setAttributes(lp);
                             dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                            dialog_opcoes_produto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
@@ -650,10 +652,12 @@ public class Descontos extends Nav {
                                         //change alpha intensity
                                         WindowManager.LayoutParams lp = dialog_adicionar_produto_lista .getWindow().getAttributes();
                                         lp.dimAmount = 0.8f;
-                                        dialog_adicionar_produto_lista .getWindow().setAttributes(lp);
-                                        dialog_adicionar_produto_lista .getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                                        dialog_adicionar_produto_lista.getWindow().setAttributes(lp);
+                                        dialog_adicionar_produto_lista.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                                        dialog_adicionar_produto_lista.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                                        ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog)).setText("Adicionar \"" + produto.getDescricao_produto() + "\" à Lista:");
+                                        ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog))
+                                                .setText("\"" + produto.getDescricao_produto() + "\"");
                                         final LinearLayout layout_lista_de_listas = dialog_adicionar_produto_lista.findViewById(R.id.layout_lista_de_listas);
                                         layout_lista_de_listas.removeAllViews();
 
@@ -766,6 +770,7 @@ public class Descontos extends Nav {
                             lp.dimAmount = 0.8f;
                             dialog_opcoes_produto.getWindow().setAttributes(lp);
                             dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                            dialog_opcoes_produto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {

@@ -103,6 +103,11 @@ public class Nav extends AppCompatActivity {
             Menu nav_menu = navigationView.getMenu();
             nav_menu.findItem(R.id.nav_my_buy).setVisible(false);
             nav_menu.findItem(R.id.nav_my_nfe).setVisible(false);
+            nav_menu.findItem(R.id.nav_alertas).setVisible(false);
+            nav_menu.findItem(R.id.nav_financas).setVisible(false);
+            nav_menu.findItem(R.id.nav_logout).setTitle("Realizar LOGIN");
+            nav_menu.findItem(R.id.nav_logout).setIcon(R.drawable.ic_access);
+
         }
 
     }
@@ -121,7 +126,6 @@ public class Nav extends AppCompatActivity {
                     break;
 
                 case R.id.nav_new_list:
-                    //Intent buyList = new Intent(activity, Criar_Lista_Compras.class);
                     Intent buyList = new Intent(activity, Criar_lista_Compras.class);
                     buyList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(buyList);
@@ -176,15 +180,23 @@ public class Nav extends AppCompatActivity {
                     break;
 
                 case R.id.nav_logout:
-                    if (Utils.logout(activity)) {
-                        Intent main = new Intent(Nav.this, Main.class);
-                        main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(main);
+                    if(item.getTitle() == "Realizar LOGIN"){
+                        Intent login = new Intent(Nav.this, Login.class);
+                        startActivity(login);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         drawerLayout.closeDrawers();
                     } else {
-                        Toast.makeText(Nav.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
+                        if (Utils.logout(activity)) {
+                            Intent main = new Intent(Nav.this, Main.class);
+                            main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(main);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            drawerLayout.closeDrawers();
+                        } else {
+                            Toast.makeText(Nav.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
+                        }
                     }
+
                     break;
 
             }

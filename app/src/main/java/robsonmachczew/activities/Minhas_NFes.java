@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -150,6 +151,7 @@ public class Minhas_NFes extends Nav {
                             lp.dimAmount = 0.8f;
                             dialog_opcoes_nfe.getWindow().setAttributes(lp);
                             dialog_opcoes_nfe.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                            dialog_opcoes_nfe.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                             dialog_opcoes_nfe.show();
                             ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes)).setOnClickListener(new View.OnClickListener() {

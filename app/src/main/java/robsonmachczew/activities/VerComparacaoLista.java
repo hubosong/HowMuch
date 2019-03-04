@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -163,6 +165,7 @@ public class VerComparacaoLista extends Nav {
                         lp.dimAmount=0.8f;
                         dialog_opcoes_lista.getWindow().setAttributes(lp);
                         dialog_opcoes_lista.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+                        dialog_opcoes_lista.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_precos_detalhados)).setOnClickListener(new View.OnClickListener() {
                             @Override

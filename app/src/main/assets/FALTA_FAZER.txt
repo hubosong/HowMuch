@@ -7,38 +7,39 @@ Falta fazer:
         M1 vende apenas a cerveja, e no cupom a cadastra como "CER BOA" e M2 vende apenas o cereal também como "CER BOA". Como distinguir entre estes produtos na hora de comparar os preços nos mercados?
 
     - Definir nome e domínio do app
-	- Icones de launcher OK
+	-- Tela para atualizar dados de cadastro de usuário
+        - Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
+    	-- colocar valor total da nota fiscal no lugar do codigo qr
+    	-- colocar de volta a animação de espera quando realiza uma asynctask
+
+    ++ nova lista adicionar produto pegar xml o layout
+    ++ Icones de launcher OK
     ++ Em "Descontos", ao lado do Edittext de pesquisar, criar um botão para ordenar a lista. Quando clica no botão abre um dialog perguntando o critério (menor/maior preço, data, mercado etc..)
         - Também achar um lugar para o botão de ordenar no "Criar Lista" (pra ordenar os itens da lista), "Minhas NFes" (pra ordenars as nfes) e "Minhas Listas" (pra ordenar as listas)
     ++ Ver o layout da activity de descrição/histórico de um produto (caminho: Descontos->clicar em um produto->ver detalhes/histórico de preços)
         - Em cada item colocar também a data. Por exemplo, "Menor valor Registrado, Preço X, Mercado Y, Data Z".
         - Em "Propriedades do produto", colocar o restante das informações do produto.
-
-    -- O app deve perguntar para sair ao clicar voltar ("Pressione novamente para sair") quando estiver em uma das telas do menu (Descontos, Criar Lista, Minhas Listas, Minhas NFes...).
+    ++ O app deve perguntar para sair ao clicar voltar ("Pressione novamente para sair") quando estiver em uma das telas do menu (Descontos, Criar Lista, Minhas Listas, Minhas NFes...).
         ++ Nas demais telas (Ver Mercado, Ver Produto, Comparar Lista...) o botão voltar deve voltar para a tela anterior.
         -- Com o menu principal aberto, o botão de voltar deve fechar o menu.
-
     ++ Em "Criar Lista", colocar um campo de quantidade do produto selecionado
     ++ Em "Criar Lista", colocar botões com lixeira, para retirar os produtos da lista;
     ++ Implementar a exclusão de Listas
     ++ Implementar a exclusão de NFes
-    -- Tela para atualizar dados de cadastro de usuário
     ++ Mecanismo que, ao ocorrer falha no envio de uma nota (por qualquer motivo) guarde a chave da nota e tente enviar mais tarde.
-    - Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
     ++ Se possível, colocar uma informação durante a leitura do QRcorde e do código de barras dos produtos (talvez uma barra com "Ler QRCode de Nota Fiscal" ou algo assim)
-    ++ Criar aplicação para "igualar" o id_produto de produtos entre mercados. (Foi feito no servidor, arquivo: telas.ProdutosDuplicados.java)
-    ++ Fluxo inserção de produto no servidor:
-        ++ SE não tiver EAN, precisa verificar se a descrição
-    ++ Na activity "Descontos", colocar um botão que pesquisa um produto pelo código de barra usando a camera.
-	++ Criar um adapter para mostrar os itens de uma NFe na activity "VerNFe"
-	++ Arrumar os adapters que mostram os objetos nas activities "Minhas NFes" e "Minhas Listas"
-	++ Possibilitar dar nome para a lista de compras;
-	++ Na activity que mostra as listas de compras, aparecer a opção de "Comparar em Mercados"
-	++ Criar a activity que vai mostrar o comparativo da lista de compras nos mercados
-	++ NFs lidas nao estao aparecendo na lista de nfs (Acredito que esteja consertado. Havia um problema no servidor durante o cadastro de algumas notas. Tente cadastrá-las novamente).
-	-- colocar valor total da nota fiscal no lugar do codigo qr
-	-- nova lista adicionar produto pegar xml o layout
-	-- colocar de volta a animação de espera quando realiza uma asynctask
+        ++ Criar aplicação para "igualar" o id_produto de produtos entre mercados. (Foi feito no servidor, arquivo: telas.ProdutosDuplicados.java)
+        ++ Fluxo inserção de produto no servidor:
+            ++ SE não tiver EAN, precisa verificar se a descrição
+        ++ Na activity "Descontos", colocar um botão que pesquisa um produto pelo código de barra usando a camera.
+    	++ Criar um adapter para mostrar os itens de uma NFe na activity "VerNFe"
+    	++ Arrumar os adapters que mostram os objetos nas activities "Minhas NFes" e "Minhas Listas"
+    	++ Possibilitar dar nome para a lista de compras;
+    	++ Na activity que mostra as listas de compras, aparecer a opção de "Comparar em Mercados"
+    	++ Criar a activity que vai mostrar o comparativo da lista de compras nos mercados
+    	++ NFs lidas nao estao aparecendo na lista de nfs (Acredito que esteja consertado. Havia um problema no servidor durante o cadastro de algumas notas. Tente cadastrá-las novamente).
+
+
 
 Antes de lançar:
     - Verificar se não tem nada digitado errado

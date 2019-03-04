@@ -5,7 +5,7 @@
     android:id="@+id/layout_principal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/nav_color"
+    android:background="@drawable/dialog_shape"
     android:orientation="vertical">
 
     <TextView
