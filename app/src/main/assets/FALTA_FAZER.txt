@@ -9,9 +9,9 @@ Falta fazer:
     - Definir nome e domínio do app
 	-- Tela para atualizar dados de cadastro de usuário
         - Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
-    	-- colocar valor total da nota fiscal no lugar do codigo qr
     	-- colocar de volta a animação de espera quando realiza uma asynctask
 
+    ++ colocar valor total da nota fiscal no lugar do codigo qr
     ++ nova lista adicionar produto pegar xml o layout
     ++ Icones de launcher OK
     ++ Em "Descontos", ao lado do Edittext de pesquisar, criar um botão para ordenar a lista. Quando clica no botão abre um dialog perguntando o critério (menor/maior preço, data, mercado etc..)
