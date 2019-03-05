@@ -2,28 +2,14 @@ package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
-import com.google.android.gms.maps.StreetViewPanoramaOptions;
-import com.google.android.gms.maps.StreetViewPanoramaView;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.StreetViewPanoramaCamera;
 import com.google.android.gms.maps.model.StreetViewPanoramaOrientation;
 
@@ -33,12 +19,11 @@ import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import entidade.Mercado;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback /*OnMapReadyCallback*/ {
+public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback {
 
     private Mercado mercado;
 
@@ -47,7 +32,6 @@ public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback
     private TextView txt_endereco;
     private TextView txt_telefone;
     private TextView txt_cnpj;
-    private DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +43,6 @@ public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         getSupportActionBar().setTitle("Detalhes Do Mercado");
 
-        /*
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        */
         StreetViewPanoramaFragment streetViewPanoramaFragment = (StreetViewPanoramaFragment) getFragmentManager().findFragmentById(R.id.map);
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
 
@@ -80,6 +59,8 @@ public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback
         }else{
             renderizaMercado();
         }
+
+
     }
 
 
@@ -90,7 +71,7 @@ public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback
             txt_endereco.setText(mercado.getEndereco());
             txt_telefone.setText(mercado.getTelefone());
             txt_cnpj.setText(mercado.getCnpj());
-            System.out.println(mercado.getCnpj());
+
         }
     }
 
@@ -141,55 +122,19 @@ public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback
 
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
 
 
-    /*
-    @Override
-    public void onMapReady(GoogleMap mMap) {
-        //customizar style do maps
-        try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
-            boolean success = googleMap.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(
-                            this, R.raw.mapsstyle));
-
-            if (!success) {
-                Log.e("MapaActivity", "Style parsing failed.");
-            }
-        } catch (Resources.NotFoundException e) {
-            Log.e("MapaActivity", "Can't find style. Error: ", e);
-        }
-
-        // Add a marker in Sydney and move the camera
-        // achar lat lon --> http://www.mapcoordinates.net/pt
-        LatLng santaMaria = new LatLng(-29.6813285, -53.8134987);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(santaMaria));
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(santaMaria));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo( 15.5f ) );
-        mMap.addMarker(new MarkerOptions()
-                .position(santaMaria)
-                .title("Marcado em Santa Maria")
-                .snippet("texto teste")
-                .alpha(0.7f)
-                .flat(true) //girar marcador junto a tela
-                .position(santaMaria)
-                //.rotation(90)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        // Changing marker icon
-        //marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker_icon)));
-
-
-    }
-    */
-
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        streetViewPanorama.setPosition(new LatLng(-29.68493155793035, -53.79259005591795));
+        Double latitude = -29.68493155793035;
+        Double longitude = -53.79259005591795;
+
+        streetViewPanorama.setPosition(new LatLng(latitude, longitude));
         streetViewPanorama.animateTo(new StreetViewPanoramaCamera.Builder().
                 orientation( new StreetViewPanoramaOrientation(0, -90))
                 .zoom(streetViewPanorama.getPanoramaCamera().zoom)

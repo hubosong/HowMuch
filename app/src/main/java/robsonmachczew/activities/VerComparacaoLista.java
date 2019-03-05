@@ -160,12 +160,8 @@ public class VerComparacaoLista extends Nav {
                         dialog_opcoes_lista.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                         dialog_opcoes_lista.setContentView(R.layout.dialog_opcoes_lista_comparada);
 
-                        //change alpha intensity
-                        WindowManager.LayoutParams lp = dialog_opcoes_lista.getWindow().getAttributes();
-                        lp.dimAmount=0.8f;
-                        dialog_opcoes_lista.getWindow().setAttributes(lp);
-                        dialog_opcoes_lista.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
                         dialog_opcoes_lista.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialog_opcoes_lista.getWindow().setDimAmount(0.8f);
 
                         ((Button) dialog_opcoes_lista.findViewById(R.id.bt_precos_detalhados)).setOnClickListener(new View.OnClickListener() {
                             @Override

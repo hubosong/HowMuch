@@ -146,12 +146,8 @@ public class Minhas_NFes extends Nav {
                             dialog_opcoes_nfe.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_nfe.setContentView(R.layout.dialog_opcoes_da_nfe);
 
-                            //change alpha intensity
-                            WindowManager.LayoutParams lp = dialog_opcoes_nfe.getWindow().getAttributes();
-                            lp.dimAmount = 0.8f;
-                            dialog_opcoes_nfe.getWindow().setAttributes(lp);
-                            dialog_opcoes_nfe.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
                             dialog_opcoes_nfe.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            dialog_opcoes_nfe.getWindow().setDimAmount(0.8f);
 
                             dialog_opcoes_nfe.show();
                             ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes)).setOnClickListener(new View.OnClickListener() {

@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,9 @@ import entidade.Utils;
 
 public class Descontos extends Nav {
 
+    private ProgressBar progWait;
+    private TextView txtWait;
+
     private LinearLayout layout_produtos_desconto;
     private TextView tv_quant_prods_desconto;
     private EditText txt_pesquisa_produtos;
@@ -104,6 +108,8 @@ public class Descontos extends Nav {
 
         pegaListasDeCompras();
 
+        progWait = findViewById(R.id.progWait);
+        txtWait = findViewById(R.id.txtWait);
         layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
         tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
         txt_pesquisa_produtos = findViewById(R.id.editText);
@@ -548,6 +554,8 @@ public class Descontos extends Nav {
         new AsyncTask<String, Void, ArrayList<ProdutoAbaixoMedia>>() {
             @Override
             protected void onPreExecute() {
+                progWait.setVisibility(View.VISIBLE);
+                txtWait.setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
 
@@ -583,6 +591,9 @@ public class Descontos extends Nav {
 
             @Override
             protected void onPostExecute(ArrayList<ProdutoAbaixoMedia> list) {
+                progWait.setVisibility(View.GONE);
+                txtWait.setVisibility(View.GONE);
+
                 lista_produtos_abaixo_media = list;
                 renderizaProdutosComDesconto();
             }
@@ -620,13 +631,8 @@ public class Descontos extends Nav {
                             dialog_opcoes_produto.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
 
-                            //change alpha intensity
-                            WindowManager.LayoutParams lp = dialog_opcoes_produto.getWindow().getAttributes();
-                            lp.dimAmount = 0.8f;
-                            dialog_opcoes_produto.getWindow().setAttributes(lp);
-                            dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
                             dialog_opcoes_produto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+                            dialog_opcoes_produto.getWindow().setDimAmount(0.8f);
 
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -649,12 +655,9 @@ public class Descontos extends Nav {
                                         final Dialog dialog_adicionar_produto_lista = new Dialog(Descontos.this);
                                         dialog_adicionar_produto_lista.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                                         dialog_adicionar_produto_lista.setContentView(R.layout.dialog_pesquisa_lista_de_listas_add_produto);
-                                        //change alpha intensity
-                                        WindowManager.LayoutParams lp = dialog_adicionar_produto_lista .getWindow().getAttributes();
-                                        lp.dimAmount = 0.8f;
-                                        dialog_adicionar_produto_lista.getWindow().setAttributes(lp);
-                                        dialog_adicionar_produto_lista.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
                                         dialog_adicionar_produto_lista.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        dialog_adicionar_produto_lista.getWindow().setDimAmount(0.8f);
 
                                         ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog))
                                                 .setText("\"" + produto.getDescricao_produto() + "\"");
@@ -738,7 +741,7 @@ public class Descontos extends Nav {
         if (lista_produtos_pesquisados != null) {
             mostrando_pesquisados = true;
             try {
-                tv_quant_prods_desconto.setText("Produtos Encontrados (" + lista_produtos_pesquisados.size() + "):");
+                tv_quant_prods_desconto.setText("" + lista_produtos_pesquisados.size() + "");
                 layout_produtos_desconto.removeAllViews();
                 DecimalFormat df = new DecimalFormat("0.00");
                 for (final Item_NFe item : lista_produtos_pesquisados) {
@@ -765,12 +768,8 @@ public class Descontos extends Nav {
                             dialog_opcoes_produto.requestWindowFeature(Window.FEATURE_NO_TITLE); //no toolbar
                             dialog_opcoes_produto.setContentView(R.layout.dialog_opcoes_produto_abaixo_media);
 
-                            //change alpha intensity
-                            WindowManager.LayoutParams lp = dialog_opcoes_produto.getWindow().getAttributes();
-                            lp.dimAmount = 0.8f;
-                            dialog_opcoes_produto.getWindow().setAttributes(lp);
-                            dialog_opcoes_produto.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
                             dialog_opcoes_produto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            dialog_opcoes_produto.getWindow().setDimAmount(0.8f);
 
 
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
@@ -869,6 +868,8 @@ public class Descontos extends Nav {
         new AsyncTask<String, Void, Long>() {
             @Override
             protected void onPreExecute() {
+                progWait.setVisibility(View.VISIBLE);
+                txtWait.setVisibility(View.VISIBLE);
                 super.onPreExecute();
             }
 
@@ -902,6 +903,9 @@ public class Descontos extends Nav {
 
             @Override
             protected void onPostExecute(Long id_lista) {
+                progWait.setVisibility(View.GONE);
+                txtWait.setVisibility(View.GONE);
+
                 if (id_lista > 0) {
                     Toast.makeText(Descontos.this, "Produto Adicionado!", Toast.LENGTH_LONG).show();
                 } else {

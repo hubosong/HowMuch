@@ -1,8 +1,12 @@
 package robsonmachczew.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -12,9 +16,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +40,6 @@ public class Nav extends AppCompatActivity {
     private NavigationView navigationView;
     private Toolbar toolbar;
     private final Activity activity = this;
-    public FloatingActionButton fab;
     private TextView navNome, navEmail;
     private Usuario usuario;
     public int code = 0; //evitar conflitos leitura codigos
@@ -51,23 +58,6 @@ public class Nav extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //floating button
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentIntegrator integrator = new IntentIntegrator(activity);
-                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                integrator.setPrompt("");
-                integrator.setCameraId(0);
-                integrator.initiateScan();
-                integrator.setBarcodeImageEnabled(false);
-                integrator.setOrientationLocked(false);
-                integrator.setBeepEnabled(true);
-                code = 1;
-            }
-        });
 
 
         //nav
@@ -150,6 +140,47 @@ public class Nav extends AppCompatActivity {
                     break;
 
                 case R.id.nav_send_nfe:
+                    LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View mView = inflater.inflate(R.layout.layout_enviar_nfe_manualmente, null);
+
+                    final AlertDialog dialogAlert = new AlertDialog.Builder(Nav.this).create();
+                    final EditText edtNomeLista = mView.findViewById(R.id.userInputDialog);
+                    final Button btnCancelar = mView.findViewById(R.id.btnCancelar);
+                    final Button btnSalvar = mView.findViewById(R.id.btnSalvar);
+
+                    dialogAlert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialogAlert.getWindow().setDimAmount(0.8f);
+
+                    btnSalvar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String code = edtNomeLista.getText().toString();
+                            if(code.length() == 44){
+                                Intent verNFe = new Intent(activity, VerNFe.class);
+                                verNFe.putExtra("code", code);
+                                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                startActivity(verNFe);
+                                dialogAlert.dismiss();
+                            } else {
+                                Toast.makeText(activity, "Ops! É necessário 44 números.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+                    btnCancelar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogAlert.dismiss();
+                        }
+                    });
+
+                    dialogAlert.setView(mView);
+                    dialogAlert.show();
+                    drawerLayout.closeDrawers();
+                    break;
+
+                    /*
                     IntentIntegrator integrator = new IntentIntegrator(activity);
                     integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
                     integrator.setPrompt("");
@@ -161,6 +192,7 @@ public class Nav extends AppCompatActivity {
                     code = 1;
                     drawerLayout.closeDrawers();
                     break;
+                    */
 
                 case R.id.nav_alertas:
                     drawerLayout.closeDrawers();
@@ -173,10 +205,15 @@ public class Nav extends AppCompatActivity {
                     break;
 
                 case R.id.nav_sobre:
+                    LayoutInflater inflaterAbout = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View aboutView = inflaterAbout.inflate(R.layout.layout_sobre, null);
+                    final AlertDialog dialogAlertabout = new AlertDialog.Builder(Nav.this).create();
+                    dialogAlertabout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialogAlertabout.getWindow().setDimAmount(0.8f);
+                    dialogAlertabout.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //ANIMATION
+                    dialogAlertabout.setView(aboutView);
+                    dialogAlertabout.show();
                     drawerLayout.closeDrawers();
-                    Toast t = Toast.makeText(Nav.this, "Desenvolvido por\nElton Rasch (埃尔顿) &\nRobson Machczew (胡博嵩)", Toast.LENGTH_LONG);
-                    t.setGravity(Gravity.CENTER, 0, 50);
-                    t.show();
                     break;
 
                 case R.id.nav_logout:

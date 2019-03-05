@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
@@ -18,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -322,6 +324,9 @@ public class Criar_lista_Compras extends Nav {
         final EditText edtNomeLista = mView.findViewById(R.id.userInputDialog);
         final Button btnCancelar = mView.findViewById(R.id.btnCancelar);
         final Button btnSalvar = mView.findViewById(R.id.btnSalvar);
+
+        dialogAlert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogAlert.getWindow().setDimAmount(0.8f);
 
         edtNomeLista.setText("lista " + dataFormatada);
         btnSalvar.setOnClickListener(new View.OnClickListener() {

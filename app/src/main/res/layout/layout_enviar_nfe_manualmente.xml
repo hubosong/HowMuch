@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/custom_dialog_layout_design_user_input"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/dialog_shape"
-    android:padding="16dp">
+    android:padding="8dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/notafiscal"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="20dp"/>
 
     <TextView
         android:id="@+id/dialogTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirme o Nome da Lista:"
+        android:text=" Digite o código:"
         android:textColor="@color/hint_nav_login"
         style="@style/Base.TextAppearance.AppCompat.Small"/>
 
@@ -19,11 +28,11 @@
         android:id="@+id/userInputDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="lista"
-        android:inputType="text"
+        android:hint="0000 0000 0000 0000 .."
         android:textColorHint="@color/hint_nav_login"
         android:textColor="@color/text_color"
-        style="@style/Base.TextAppearance.AppCompat.Medium"/>
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:inputType="number"/>
 
     <LinearLayout
         android:id="@+id/layout_botoes"
@@ -53,7 +62,7 @@
             android:layout_marginBottom="8dp"
             android:layout_weight="3"
             android:background="@drawable/buttonshape_small_right"
-            android:text="SALVAR"
+            android:text="ENVIAR NFE"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

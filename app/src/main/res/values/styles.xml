@@ -32,5 +32,10 @@
         <item name="android:popupBackground">@color/hint_nav_login</item>
     </style>
 
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/bounce</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom_two</item>
+    </style>
+
 
 </resources>

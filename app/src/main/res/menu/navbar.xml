@@ -22,7 +22,7 @@
             android:title="@string/nav_my_nfe" />
         <item
             android:id="@+id/nav_send_nfe"
-            android:icon="@drawable/ic_qr_code"
+            android:icon="@drawable/ic_keyboard_nfe"
             android:title="@string/nav_send_nfe" />
         <item
             android:id="@+id/nav_alertas"

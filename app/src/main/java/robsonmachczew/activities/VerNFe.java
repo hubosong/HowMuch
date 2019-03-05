@@ -12,11 +12,10 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONArray;
 import org.jsoup.Connection;
@@ -55,7 +54,6 @@ public class VerNFe extends Nav {
 
     private ProgressBar progWait;
     private TextView txtQRCode, txtWait, txtMercado, txtData, txtValorNF;
-    private MaterialSearchView searchView;
     private RecyclerView recyclerView;
     private final Activity activity = this;
     private Animation alpha_in, alpha_out;
@@ -151,6 +149,8 @@ public class VerNFe extends Nav {
 
                 @Override
                 protected void onPostExecute(NFe nfe) {
+                    progWait.setVisibility(View.GONE);
+                    txtWait.setVisibility(View.GONE);
                     if (nfe == null || nfe.getId_nfe() == 0) {
                         //Se o servidor não conseguiu pegar a nota do site, armazenamos a chave localmente para tentar novamente mais tarde;
                         System.out.println("Não foi possível pegar a nota a partir do servidor...");
@@ -268,6 +268,8 @@ public class VerNFe extends Nav {
                 @Override
                 protected void onPostExecute(NFe nfe) {
                     txtWait.setText("Carregando..");
+                    progWait.setVisibility(View.GONE);
+                    txtWait.setVisibility(View.GONE);
                     if (nfe != null && nfe.getLista_items() != null && nfe.getLista_items().size() > 0) {
                         System.out.println("NFe encontrada a partir do app: " + nfe);
                         preencherViewsProdutosNFe(nfe);
@@ -293,7 +295,6 @@ public class VerNFe extends Nav {
         txtQRCode.setText(nfe.getChave());
         txtValorNF.setText(String.valueOf(decFormat.format(nfe.getValor())));
 
-
         TextView txtMarket = findViewById(R.id.txtDataLista);
         TextView txtDate = findViewById(R.id.txtQtdItems);
 
@@ -312,13 +313,6 @@ public class VerNFe extends Nav {
             }
         });
 
-        //hide floating button when scroll
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
     }
 
 
@@ -369,7 +363,6 @@ public class VerNFe extends Nav {
             protected void onPostExecute(JSONArray array) {
                 try {
                     NFe nfe = new NFe();
-
                     //System.out.println("NAMES >> " + array.getJSONObject(0).names());
                     //nfe.setId_nfe();
                     ArrayList<NFe> lista = new ArrayList<>();

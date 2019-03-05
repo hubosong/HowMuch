@@ -33,7 +33,7 @@
     <string name="nav_new_list">Criar Lista de Compras</string>
     <string name="nav_my_buy">Minhas Listas de Compras</string>
     <string name="nav_my_nfe">Minhas Notas Fiscais</string>
-    <string name="nav_send_nfe">Enviar Nota (QRCode)</string>
+    <string name="nav_send_nfe">Enviar Nota Fiscal (manual) </string>
     <string name="nav_logout">Logout</string>
     <!-- nav (header) -->
     <string name="nav_header_desc">Navigation header</string>

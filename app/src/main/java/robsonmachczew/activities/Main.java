@@ -1,12 +1,17 @@
 package robsonmachczew.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -85,9 +90,14 @@ public class Main extends AppCompatActivity {
 
 
     public void contact(View view) {
-        Toast t = Toast.makeText(this, "胡 博 嵩 - 1146920702@qq.com", Toast.LENGTH_SHORT);
-        t.setGravity(Gravity.CENTER, 0, 50);
-        t.show();
+        LayoutInflater inflaterAbout = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View aboutView = inflaterAbout.inflate(R.layout.layout_sobre, null);
+        final AlertDialog dialogAlertabout = new AlertDialog.Builder(Main.this).create();
+        dialogAlertabout.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogAlertabout.getWindow().setDimAmount(0.8f);
+        dialogAlertabout.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //ANIMATION
+        dialogAlertabout.setView(aboutView);
+        dialogAlertabout.show();
     }
     public void development(View view) {
         Toast t = Toast.makeText(this, "Desenvolvido por\nElton Rasch (埃尔顿) &\nRobson Machczew (胡博嵩)", Toast.LENGTH_LONG);
