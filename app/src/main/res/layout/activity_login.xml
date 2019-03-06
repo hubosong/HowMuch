@@ -113,15 +113,15 @@
                 <ImageButton
                     android:id="@+id/btnRegister"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="40dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
+                    android:layout_weight="1"
                     android:background="@drawable/buttonshape"
                     android:onClick="btnRegister"
-                    android:src="@drawable/ic_apply"/>
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
+                    android:src="@drawable/ic_apply" />
 
             </LinearLayout>
 

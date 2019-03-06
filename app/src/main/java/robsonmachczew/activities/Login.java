@@ -190,10 +190,21 @@ public class Login extends AppCompatActivity {
 
     public void btnRegister(View view) {
         Intent register = new Intent(Login.this, Cadastrar_Usuario.class);
-        startActivity(register);
+        startActivityForResult(register, 55);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 55 && resultCode == RESULT_OK){
+            String email = data.getStringExtra("EMAIL");
+            String senha = data.getStringExtra("SENHA");
+            edtEmail.setText(email);
+            edtPass.setText(senha);
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     //usado para executar o voltar da action
     @Override

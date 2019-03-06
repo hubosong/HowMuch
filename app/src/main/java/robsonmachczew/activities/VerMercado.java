@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
@@ -125,6 +126,10 @@ public class VerMercado extends Nav implements OnStreetViewPanoramaReadyCallback
 
     @Override
     public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+            return;
+        }
         super.onBackPressed();
     }
 

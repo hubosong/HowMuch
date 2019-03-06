@@ -38,11 +38,15 @@ public class Cadastrar_Usuario extends AppCompatActivity {
     private EditText edtEmail;
     private EditText edtPass;
     private EditText edtCPF;
+    private EditText edtCidade;
+    private EditText edtUF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar);
+
+        setResult(RESULT_CANCELED);
 
         //basic config
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -57,7 +61,6 @@ public class Cadastrar_Usuario extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.gradient_bg));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
 
         imgUpload = findViewById(R.id.imgUpload);
@@ -76,7 +79,8 @@ public class Cadastrar_Usuario extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPass = findViewById(R.id.edtPass);
         edtCPF = findViewById(R.id.edtCPF);
-
+        edtCidade = findViewById(R.id.edtCidade);
+        edtUF = findViewById(R.id.edtUF);
     }
 
     @Override
@@ -98,6 +102,34 @@ public class Cadastrar_Usuario extends AppCompatActivity {
         usuario.setEmail(edtEmail.getText().toString());
         usuario.setSenha(edtPass.getText().toString());
         usuario.setCpf(edtCPF.getText().toString());
+        usuario.setCidade(edtCidade.getText().toString());
+        usuario.setUf(edtUF.toString());
+        if (!usuario.getEmail().contains("@") || !usuario.getEmail().contains(".") || usuario.getEmail().length() < 5) {
+            Toast.makeText(Cadastrar_Usuario.this, "Email inválido", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (usuario.getNome().length() < 2 || usuario.getNome().matches(".*\\d+.*") || !usuario.getNome().contains(" ")) {
+            Toast.makeText(Cadastrar_Usuario.this, "Nome inválido", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (usuario.getSenha().length() < 6) {
+            Toast.makeText(Cadastrar_Usuario.this, "Senha menor que 6 dígitos", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(usuario.getCidade().equalsIgnoreCase("Santa Maria")){
+
+        }
+        if(usuario.getUf().length() != 2){
+            Toast.makeText(Cadastrar_Usuario.this, "UF diferente de 2 dígitos", Toast.LENGTH_LONG).show();
+            return;
+        }
+        usuario.setCpf(usuario.getCpf().replace(".", "").replace("-", "").replace(" ", "").trim());
+        if(!isValidCPF(usuario.getCpf())){
+            Toast.makeText(Cadastrar_Usuario.this, "CPF inválido", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
         new AsyncTask<String, Void, Usuario>() {
 
             @Override
@@ -135,7 +167,14 @@ public class Cadastrar_Usuario extends AppCompatActivity {
             @Override
             protected void onPostExecute(Usuario u) {
                 if (u.getId_usuario() != 0) {
-                    Toast.makeText(Cadastrar_Usuario.this, "REGISTRADO", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Cadastrar_Usuario.this, "Usuário Cadastrado", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("EMAIL", usuario.getEmail());
+                    intent.putExtra("SENHA", usuario.getSenha());
+                    setResult(RESULT_OK, intent);
+                    onBackPressed();
+                } else {
+                    Toast.makeText(Cadastrar_Usuario.this, "Erro ao cadastrar Usuário", Toast.LENGTH_LONG).show();
                 }
             }
         }.execute();
@@ -156,4 +195,23 @@ public class Cadastrar_Usuario extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    private boolean isValidCPF(String cpf) {
+        if ((cpf==null) || (cpf.length()!=11)) return false;
+        final int[] pesoCPF = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
+        Integer digito1 = calcularDigito(cpf.substring(0,9), pesoCPF);
+        Integer digito2 = calcularDigito(cpf.substring(0,9) + digito1, pesoCPF);
+        return cpf.equals(cpf.substring(0,9) + digito1.toString() + digito2.toString());
+    }
+
+    private int calcularDigito(String str, int[] peso) {
+        int soma = 0;
+        for (int indice=str.length()-1, digito; indice >= 0; indice-- ) {
+            digito = Integer.parseInt(str.substring(indice,indice+1));
+            soma += digito*peso[peso.length-str.length()+indice];
+        }
+        soma = 11 - soma % 11;
+        return soma > 9 ? 0 : soma;
+    }
+
 }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +36,7 @@ import entidade.Utils;
 
 public class Nav extends AppCompatActivity {
 
-    private DrawerLayout drawerLayout;
+    public DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -112,7 +113,6 @@ public class Nav extends AppCompatActivity {
                     off.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //Limpar todas as stacks de activities
                     startActivity(off);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    drawerLayout.closeDrawers();
                     break;
 
                 case R.id.nav_new_list:
@@ -120,7 +120,6 @@ public class Nav extends AppCompatActivity {
                     buyList.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(buyList);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    drawerLayout.closeDrawers();
                     break;
 
                 case R.id.nav_my_buy:
@@ -128,7 +127,6 @@ public class Nav extends AppCompatActivity {
                     my_buy.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(my_buy);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    drawerLayout.closeDrawers();
                     break;
 
                 case R.id.nav_my_nfe:
@@ -136,7 +134,6 @@ public class Nav extends AppCompatActivity {
                     my_nfe.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(my_nfe);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    drawerLayout.closeDrawers();
                     break;
 
                 case R.id.nav_send_nfe:
@@ -177,7 +174,6 @@ public class Nav extends AppCompatActivity {
 
                     dialogAlert.setView(mView);
                     dialogAlert.show();
-                    drawerLayout.closeDrawers();
                     break;
 
                     /*
@@ -190,17 +186,14 @@ public class Nav extends AppCompatActivity {
                     integrator.setOrientationLocked(false);
                     integrator.setBeepEnabled(true);
                     code = 1;
-                    drawerLayout.closeDrawers();
                     break;
                     */
 
                 case R.id.nav_alertas:
-                    drawerLayout.closeDrawers();
                     Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
                     break;
 
                 case R.id.nav_financas:
-                    drawerLayout.closeDrawers();
                     Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
                     break;
 
@@ -213,7 +206,7 @@ public class Nav extends AppCompatActivity {
                     dialogAlertabout.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //ANIMATION
                     dialogAlertabout.setView(aboutView);
                     dialogAlertabout.show();
-                    drawerLayout.closeDrawers();
+
                     break;
 
                 case R.id.nav_logout:
@@ -221,14 +214,12 @@ public class Nav extends AppCompatActivity {
                         Intent login = new Intent(Nav.this, Login.class);
                         startActivity(login);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                        drawerLayout.closeDrawers();
                     } else {
                         if (Utils.logout(activity)) {
                             Intent main = new Intent(Nav.this, Main.class);
                             main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(main);
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                            drawerLayout.closeDrawers();
                         } else {
                             Toast.makeText(Nav.this, "Não foi possível deslogar", Toast.LENGTH_LONG).show();
                         }
@@ -237,6 +228,7 @@ public class Nav extends AppCompatActivity {
                     break;
 
             }
+            drawerLayout.closeDrawers();
             return false;
         }
     }
@@ -321,8 +313,11 @@ public class Nav extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        drawerLayout.closeDrawers();
-        super.onBackPressed();
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        }else {
+            super.onBackPressed();
+        }
     }
 
 
