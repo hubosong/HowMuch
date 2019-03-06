@@ -8,16 +8,25 @@
     android:orientation="vertical"
     tools:context=".VerProduto">
 
+    <TextView
+        android:id="@+id/tv_descricao_produto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Produto"
+        android:textAlignment="center"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="@color/text_color"
+        android:textStyle="bold" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/tv_descricao_produto"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="5dp"
-        android:scrollbars="vertical"
         android:scrollbarSize="2sp"
-        android:scrollbarThumbVertical="@drawable/gradient_list">
+        android:scrollbarThumbVertical="@drawable/gradient_list"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,254 +45,119 @@
                 android:textColor="@color/hint_nav_login"/>
                 -->
 
-            <TextView
-                android:id="@+id/tv_descricao_produto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="Produto"
-                android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/text_color"
-                android:textStyle="bold" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/toolbar_status"
                 android:orientation="vertical"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:paddingStart="10dp"
+                android:paddingTop="5dp"
                 android:paddingEnd="10dp"
-                android:background="@color/toolbar_status">
+                android:paddingBottom="5dp">
 
                 <TextView
+                    android:id="@+id/asdfa"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Menor Valor Registrado"
-                    android:textColor="@color/text_color"
+                    android:text="Unicade Comercial:"
                     android:textAlignment="textStart"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txt_menor_registrado"
+                    android:id="@+id/unidade_comercial"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text=" -- "
-                    android:textColor="@color/icons_btns"
                     android:textAlignment="textEnd"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/icons_btns"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/toolbar_status"
                 android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:paddingStart="10dp"
+                android:paddingTop="5dp"
                 android:paddingEnd="10dp"
-                android:background="@color/toolbar_status">
+                android:paddingBottom="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Menor Valor Atual"
-                    android:textColor="@color/text_color"
+                    android:text="Código NCM:"
                     android:textAlignment="textStart"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txt_menor_atual"
+                    android:id="@+id/codigo_ncm"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text=" -- "
-                    android:textColor="@color/icons_btns"
                     android:textAlignment="textEnd"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/icons_btns"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/toolbar_status"
                 android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:paddingStart="10dp"
+                android:paddingTop="5dp"
                 android:paddingEnd="10dp"
-                android:background="@color/toolbar_status">
+                android:paddingBottom="5dp">
 
                 <TextView
+                    android:id="@+id/cod"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Valor Médio"
-                    android:textColor="@color/text_color"
+                    android:text="Código EAN:"
                     android:textAlignment="textStart"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txt_medio"
+                    android:id="@+id/cod_EAN_comercial"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text=" -- "
-                    android:textColor="@color/icons_btns"
                     android:textAlignment="textEnd"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/icons_btns"
+                    android:textStyle="bold" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:background="@color/toolbar_status">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Maior Valor Registrado"
-                    android:textColor="@color/text_color"
-                    android:textAlignment="textStart"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/txt_maior_registrado"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text=" -- "
-                    android:textColor="@color/icons_btns"
-                    android:textAlignment="textEnd"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:background="@color/toolbar_status">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Maior Valor Atual"
-                    android:textColor="@color/text_color"
-                    android:textAlignment="textStart"
-                    android:paddingEnd="5dp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/txt_maior_atual"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text=" -- "
-                    android:textColor="@color/icons_btns"
-                    android:textAlignment="textEnd"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
-                android:text="Propriedades do Produto"
-                android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="@color/hint_nav_login" />
-
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="Últimos Preços Registrados:"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/white" />
 
             <LinearLayout
+                android:id="@+id/layout_precos_mercados"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:background="@color/toolbar_status">
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Unidade Comercial"
-                    android:textColor="@color/text_color"
-                    android:textAlignment="textStart"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/txt_unidade"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text=" -- "
-                    android:textColor="@color/icons_btns"
-                    android:textAlignment="textEnd"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:background="@color/toolbar_status">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Código NCM"
-                    android:textColor="@color/text_color"
-                    android:textAlignment="textStart"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/txt_codigo"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text=" -- "
-                    android:textColor="@color/icons_btns"
-                    android:textAlignment="textEnd"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
 
         </LinearLayout>
 

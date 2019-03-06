@@ -1,10 +1,14 @@
 package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.DataOutputStream;
@@ -15,7 +19,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import entidade.Item_NFe;
 import entidade.Mercado;
@@ -30,24 +36,15 @@ public class VerProduto extends Nav {
     private Produto_Detalhado produto;
     private Usuario usuario;
     private TextView tv_descricao_produto;
+    private TextView tv_unidade_comercial;
+    private TextView tv_codigo_ncm;
+    private TextView tv_codigo_ean;
+    private LinearLayout layout_precos_mercado;
 
-    private Item_NFe ultimo_preco;
-    private Item_NFe menor_preco_historico;
-    private Item_NFe maior_preco_historico;
-    private Item_NFe menor_preco_atual;
-    private Item_NFe maior_preco_atual;
-
-
-    private TextView txt_menor_valor_historico;
-    private TextView txt_menor_valor_atual;
-    private TextView txt_valor_medio;
-    private TextView txt_maior_valor_historico;
-    private TextView txt_maior_valor_atual;
-
-    private TextView txt_unidade;
-    private TextView txt_codigo;
 
     private DecimalFormat decFormat = new DecimalFormat("'R$ ' #,##0.00");
+    private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+    private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +57,17 @@ public class VerProduto extends Nav {
         getSupportActionBar().setTitle("Detalhes do Produto");
 
         tv_descricao_produto = findViewById(R.id.tv_descricao_produto);
-        txt_menor_valor_historico = findViewById(R.id.txt_menor_registrado);
-        txt_menor_valor_atual = findViewById(R.id.txt_menor_atual);
-        txt_valor_medio = findViewById(R.id.txt_medio);
-        txt_maior_valor_historico = findViewById(R.id.txt_maior_registrado);
-        txt_maior_valor_atual = findViewById(R.id.txt_maior_atual);
-
-        txt_unidade = findViewById(R.id.txt_unidade);
-        txt_codigo = findViewById(R.id.txt_codigo);
+        tv_unidade_comercial = findViewById(R.id.unidade_comercial);
+        tv_codigo_ncm = findViewById(R.id.codigo_ncm);
+        tv_codigo_ean = findViewById(R.id.cod_EAN_comercial);
+        layout_precos_mercado = findViewById(R.id.layout_precos_mercados);
 
         usuario = Utils.loadFromSharedPreferences(this);
 
         produto = (Produto_Detalhado) getIntent().getSerializableExtra("PRODUTO_DETALHADO");
-        if(produto == null) {
+        if (produto == null) {
             getDetalhesProduto(getIntent().getLongExtra("ID_PRODUTO", 0));
-        }else{
+        } else {
             renderizaProduto_Detalhado();
         }
     }
@@ -84,56 +77,25 @@ public class VerProduto extends Nav {
         if (produto != null) {
             System.out.println(produto.toString());
             tv_descricao_produto.setText(produto.getDescricao());
-            float media = 0.0f;
-            float quantidade = 0.0f;
-            if (produto.getLista_itens_nfe() != null && produto.getLista_itens_nfe().size() > 0) {
-                ultimo_preco = produto.getLista_itens_nfe().get(0);
-                menor_preco_historico = produto.getLista_itens_nfe().get(0);
-                maior_preco_historico = produto.getLista_itens_nfe().get(0);
-                maior_preco_atual = produto.getLista_itens_nfe().get(0);
-                menor_preco_atual = produto.getLista_itens_nfe().get(0);
+            tv_codigo_ean.setText("" + produto.getCod_EAN_comercial());
+            tv_codigo_ncm.setText("" + produto.getCodigo_ncm());
+            tv_unidade_comercial.setText(produto.getUnidade_comercial());
+            layout_precos_mercado.removeAllViews();
+            try {
                 for (Item_NFe item : produto.getLista_itens_nfe()) {
-                    System.out.println("ITEM: "+(item.getValor() / item.getQuantidade())+" - "+item.getData());
-                    if ((item.getValor() / item.getQuantidade()) < (menor_preco_historico.getValor() / menor_preco_historico.getQuantidade())) {
-                        menor_preco_historico = item;
-                    }
-                    if ((item.getValor() / item.getQuantidade()) > (maior_preco_historico.getValor() / maior_preco_historico.getQuantidade())) {
-                        maior_preco_historico = item;
-                    }
-                    if (((item.getValor() / item.getQuantidade()) < (menor_preco_atual.getValor() / menor_preco_atual.getQuantidade())) && (menor_preco_atual.getData().compareTo(item.getData()) < 0)) {
-                        menor_preco_atual = item;
-                    }
-                    if (((item.getValor() / item.getQuantidade()) > (maior_preco_atual.getValor() / maior_preco_atual.getQuantidade())) && (maior_preco_atual.getData().compareTo(item.getData()) < 0)) {
-                        maior_preco_atual = item;
-                    }
-                    if (ultimo_preco.getData().compareTo(menor_preco_historico.getData()) < 0) {
-                        ultimo_preco = item;
-                    }
-                    if (item.getTransient_mercado().getNome_fantasia() == null || item.getTransient_mercado().getNome_fantasia().trim().equalsIgnoreCase("")) {
-                        item.getTransient_mercado().setNome_fantasia(item.getTransient_mercado().getNome());
-                    }
-                    media += item.getValor();
-                    quantidade += item.getQuantidade();
+                    View view; // Creating an instance for View Object
+                    LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    view = inflater.inflate(R.layout.layout_preco_atual_mercado, null);
+                    ((TextView) view.findViewById(R.id.txt_nome_mercado)).setText(item.getTransient_mercado().getNome());
+                    Date date = sdf_bd.parse(item.getData());
+                    ((TextView) view.findViewById(R.id.txt_data_valor)).setText("Valor em " + sdf_exibicao.format(date));
+                    ((TextView) view.findViewById(R.id.txt_valor)).setText(decFormat.format(item.getValor() / item.getQuantidade()));
+                    layout_precos_mercado.addView(view);
                 }
-                txt_menor_valor_historico.setText(String.valueOf(decFormat.format(menor_preco_historico.getValor() / menor_preco_historico.getQuantidade()))
-                        + " - " + menor_preco_historico.getTransient_mercado().getNome_fantasia());
-
-                txt_menor_valor_atual.setText(String.valueOf(decFormat.format(menor_preco_atual.getValor() / menor_preco_atual.getQuantidade()))
-                        + " - " + menor_preco_atual.getTransient_mercado().getNome_fantasia());
-
-                txt_valor_medio.setText(String.valueOf(decFormat.format(media/quantidade)));
-
-                txt_maior_valor_atual.setText(String.valueOf(decFormat.format(maior_preco_atual.getValor() / maior_preco_atual.getQuantidade()))
-                        + " - " + maior_preco_atual.getTransient_mercado().getNome_fantasia());
-
-                txt_maior_valor_historico.setText(String.valueOf(decFormat.format(maior_preco_historico.getValor() / maior_preco_historico.getQuantidade()))
-                        + " - " + maior_preco_historico.getTransient_mercado().getNome_fantasia());
+            }catch (Exception e){
+                System.out.println(">>> Erro mostrando ultimos preços de produtos em detalhes: "+e.getMessage());
+                e.printStackTrace();
             }
-
-
-
-            txt_unidade.setText(produto.getUnidade_comercial());
-            txt_codigo.setText(String.valueOf(produto.getCodigo_ncm()));
         }
     }
 
@@ -150,7 +112,7 @@ public class VerProduto extends Nav {
                 Produto_Detalhado prod = null;
                 //if(Utils.servidorDePe()) {
                 try {
-                    String urlParameters = "funcao=GET_PRODUTO_DETALHADO&id_produto="+id_produto;
+                    String urlParameters = "funcao=GET_PRODUTO_DETALHADO&id_produto=" + id_produto;
                     byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
                     URL url = new URL(Utils.URL + "produto");
