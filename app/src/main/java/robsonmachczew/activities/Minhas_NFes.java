@@ -149,6 +149,7 @@ public class Minhas_NFes extends Nav {
 
                             dialog_opcoes_nfe.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog_opcoes_nfe.getWindow().setDimAmount(0.8f);
+                            dialog_opcoes_nfe.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
                             dialog_opcoes_nfe.show();
                             ((Button) dialog_opcoes_nfe.findViewById(R.id.bt_ver_detalhes)).setOnClickListener(new View.OnClickListener() {

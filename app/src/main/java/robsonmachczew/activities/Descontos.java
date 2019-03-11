@@ -2,6 +2,7 @@ package robsonmachczew.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -634,6 +635,7 @@ public class Descontos extends Nav {
 
                             dialog_opcoes_produto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog_opcoes_produto.getWindow().setDimAmount(0.8f);
+                            dialog_opcoes_produto.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -659,6 +661,7 @@ public class Descontos extends Nav {
 
                                         dialog_adicionar_produto_lista.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                                         dialog_adicionar_produto_lista.getWindow().setDimAmount(0.8f);
+                                        dialog_adicionar_produto_lista.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
                                         ((TextView) dialog_adicionar_produto_lista.findViewById(R.id.txtTituloDialog))
                                                 .setText("\"" + produto.getDescricao_produto() + "\"");
@@ -771,6 +774,7 @@ public class Descontos extends Nav {
 
                             dialog_opcoes_produto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog_opcoes_produto.getWindow().setDimAmount(0.8f);
+                            dialog_opcoes_produto.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
 
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setOnClickListener(new View.OnClickListener() {

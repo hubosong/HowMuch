@@ -84,6 +84,7 @@ public class VerSimulacaoListaEmMercado extends Nav {
 
                             dialog_opcoes_produto.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog_opcoes_produto.getWindow().setDimAmount(0.8f);
+                            dialog_opcoes_produto.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_nova_lista)).setVisibility(View.GONE);
                             ((Button) dialog_opcoes_produto.findViewById(R.id.bt_adiciona_produto_lista_existente)).setVisibility(View.GONE);

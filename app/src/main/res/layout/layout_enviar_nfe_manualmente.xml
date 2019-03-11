@@ -20,7 +20,7 @@
         android:id="@+id/dialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" Digite o código:"
+        android:text=" Digite o código (sem espaços):"
         android:textColor="@color/hint_nav_login"
         style="@style/Base.TextAppearance.AppCompat.Small"/>
 
@@ -28,7 +28,7 @@
         android:id="@+id/userInputDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="0000 0000 0000 0000 .."
+        android:hint="00000000.."
         android:textColorHint="@color/hint_nav_login"
         android:textColor="@color/text_color"
         style="@style/Base.TextAppearance.AppCompat.Small"

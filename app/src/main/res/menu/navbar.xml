@@ -27,7 +27,7 @@
         <item
             android:id="@+id/nav_alertas"
             android:icon="@drawable/ic_alarm"
-            android:title="Alertas" />
+            android:title="Configurar Alertas" />
         <item
             android:id="@+id/nav_financas"
             android:icon="@drawable/ic_debit_card"

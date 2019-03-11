@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nav_color"
+    tools:context=".Alerta">
+
+    <Button
+        android:id="@+id/btnPush"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="push"/>
+
+
+    <!--
+
+    <RelativeLayout
+        android:id="@+id/layout_principal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edtSearchProducts"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:background="@drawable/button_edttext"
+                android:drawableStart="@drawable/ic_shopping"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Pesquisar Produtos"
+                android:textColorHint="@color/nav_color"
+                android:inputType="textPersonName"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:layout_marginBottom="8dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
+            <LinearLayout
+                android:id="@+id/llQtds"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:text="Produtos da Lista ("
+                    android:textColor="@color/hint_nav_login" />
+
+                <TextView
+                    android:id="@+id/txtManyProducts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:text="0"
+                    android:textColor="@color/text_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:text=")"
+                    android:textColor="@color/hint_nav_login" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/botoes_comando"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnFinalizarList"
+                android:background="@drawable/buttonshape_small_right"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="preFinalizarLista"
+                android:text="Finalizar Lista" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scrollProducts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/botoes_comando"
+            android:layout_below="@+id/llTop"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:scrollbarSize="2sp"
+            android:scrollbarThumbVertical="@drawable/gradient_list"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:id="@+id/llProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible" />
+
+        </ScrollView>
+
+    </RelativeLayout>
+-->
+
+</android.support.design.widget.CoordinatorLayout>

@@ -328,6 +328,7 @@ public class Criar_lista_Compras extends Nav {
 
         dialogAlert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialogAlert.getWindow().setDimAmount(0.8f);
+        dialogAlert.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
         edtNomeLista.setText("lista " + dataFormatada);
         btnSalvar.setOnClickListener(new View.OnClickListener() {

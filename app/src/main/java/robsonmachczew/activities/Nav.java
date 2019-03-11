@@ -147,6 +147,7 @@ public class Nav extends AppCompatActivity {
 
                     dialogAlert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialogAlert.getWindow().setDimAmount(0.8f);
+                    dialogAlert.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
                     btnSalvar.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -190,7 +191,8 @@ public class Nav extends AppCompatActivity {
                     */
 
                 case R.id.nav_alertas:
-                    Toast.makeText(Nav.this, "Não Implementado", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(activity, Alerta.class));
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     break;
 
                 case R.id.nav_financas:

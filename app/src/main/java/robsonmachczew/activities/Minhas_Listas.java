@@ -148,6 +148,7 @@ public class Minhas_Listas extends Nav {
 
                             dialog_opcoes_lista.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog_opcoes_lista.getWindow().setDimAmount(0.8f);
+                            dialog_opcoes_lista.getWindow().getAttributes().windowAnimations = R.style.AllDialogAnimation; //ANIMATION
 
                             ((Button) dialog_opcoes_lista.findViewById(R.id.bt_editar_lista)).setOnClickListener(new View.OnClickListener() {
                                 @Override

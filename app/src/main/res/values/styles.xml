@@ -37,5 +37,10 @@
         <item name="android:windowExitAnimation">@anim/slide_bottom_two</item>
     </style>
 
+    <style name="AllDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+
 
 </resources>
