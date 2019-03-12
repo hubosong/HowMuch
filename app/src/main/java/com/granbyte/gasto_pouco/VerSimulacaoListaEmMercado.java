@@ -1,4 +1,4 @@
-package robsonmachczew.activities;
+package com.granbyte.gasto_pouco;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,21 +10,15 @@ import android.support.v4.view.GravityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
 import entidade.Lista;
-import entidade.Mercado;
 import entidade.Produto;
 
 public class VerSimulacaoListaEmMercado extends Nav {

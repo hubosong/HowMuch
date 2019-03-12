@@ -33,8 +33,8 @@ import entidade.Produto;
 import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
-import robsonmachczew.activities.Criar_lista_Compras;
-import robsonmachczew.activities.R;
+import com.granbyte.gasto_pouco.Criar_lista_Compras;
+import com.granbyte.gasto_pouco.R;
 
 public class ProdutoAbaixoMediaAdapter extends RecyclerView.Adapter<ProdutoAbaixoMediaAdapter.ProductViewHolder> {
 

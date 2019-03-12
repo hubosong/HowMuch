@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="robsonmachczew.activities">
+    package="com.granbyte.gasto_pouco">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -24,7 +24,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name="com.granbyte.gasto_pouco.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -34,60 +34,60 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main"
+            android:name="com.granbyte.gasto_pouco.Main"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Login"
+            android:name="com.granbyte.gasto_pouco.Login"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Cadastrar_Usuario"
+            android:name="com.granbyte.gasto_pouco.Cadastrar_Usuario"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Descontos"
+            android:name="com.granbyte.gasto_pouco.Descontos"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Minhas_Listas"
+            android:name="com.granbyte.gasto_pouco.Minhas_Listas"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Minhas_NFes"
+            android:name="com.granbyte.gasto_pouco.Minhas_NFes"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Editar_Cadastros"
+            android:name="com.granbyte.gasto_pouco.Editar_Cadastros"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".VerNFe"
+            android:name="com.granbyte.gasto_pouco.VerNFe"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".VerComparacaoLista"
+            android:name="com.granbyte.gasto_pouco.VerComparacaoLista"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".VerProduto"
+            android:name="com.granbyte.gasto_pouco.VerProduto"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".VerMercado"
+            android:name="com.granbyte.gasto_pouco.VerMercado"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".VerSimulacaoListaEmMercado"
+            android:name="com.granbyte.gasto_pouco.VerSimulacaoListaEmMercado"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Criar_lista_Compras"
+            android:name="com.granbyte.gasto_pouco.Criar_lista_Compras"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name=".Alerta"
+            android:name="com.granbyte.gasto_pouco.Alerta"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden"/>
 

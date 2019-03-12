@@ -1,8 +1,7 @@
-package robsonmachczew.activities;
+package com.granbyte.gasto_pouco;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -15,19 +14,14 @@ import android.widget.TextView;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import entidade.Item_NFe;
-import entidade.Mercado;
-import entidade.NFe;
-import entidade.ProdutoAbaixoMedia;
 import entidade.Produto_Detalhado;
 import entidade.Usuario;
 import entidade.Utils;

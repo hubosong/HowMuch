@@ -1,8 +1,7 @@
-package robsonmachczew.activities;
+package com.granbyte.gasto_pouco;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;

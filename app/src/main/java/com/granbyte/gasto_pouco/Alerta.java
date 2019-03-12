@@ -1,26 +1,27 @@
-package robsonmachczew.activities;
+package com.granbyte.gasto_pouco;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -36,24 +37,19 @@ import android.widget.Toast;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 import entidade.Lista;
-import entidade.NFe;
 import entidade.Produto;
 import entidade.Usuario;
 import entidade.Utils;
 
-public class Criar_lista_Compras extends Nav {
+public class Alerta extends Nav {
 
     private Usuario usuario;
     private EditText edtSearchProducts;
@@ -66,17 +62,19 @@ public class Criar_lista_Compras extends Nav {
     private boolean backAlreadyPressed = false;
     private boolean permiteVoltar = false;
 
+    private final Activity activity = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //basic config
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_criar_lista_compras, contentFrameLayout);
+        getLayoutInflater().inflate(R.layout.activity_alerta, contentFrameLayout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().getItem(1).setChecked(true);
+        navigationView.getMenu().getItem(5).setChecked(true);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        getSupportActionBar().setTitle("Criar Lista");
+        getSupportActionBar().setTitle("Config. Alertas");
 
         permiteVoltar = getIntent().getBooleanExtra("PERMITE_VOLTAR", false);
 
@@ -128,38 +126,56 @@ public class Criar_lista_Compras extends Nav {
             return;
         }
 
-        if (getIntent().getSerializableExtra("NFE") != null) {
-            //SE É PARA TRANSFORMAR NFe EM LISTA DE COMPRAS
-            lista_compras = new Lista();
-            NFe nfe = (NFe) getIntent().getSerializableExtra("NFE");
-            for (int i = 0; i < nfe.getLista_items().size(); i++) {
-                lista_compras.getListaProdutos().add(nfe.getLista_items().get(i).getProduto());
-            }
-        } else if (getIntent().getSerializableExtra("PRODUTO") != null) {
-            //SE É PARA ADICIONAR UM PRODUTO À UMA LISTA
-            if (getIntent().getSerializableExtra("LISTA") != null) {
-                //ADICIONAR À UMA LISTA EXISTENTE
-                lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
-                getSupportActionBar().setTitle("Editar Lista");
-            } else {
-                //ADICIONAR À UMA NOVA LISTA
-                lista_compras = new Lista();
-            }
-            lista_compras.getListaProdutos().add((Produto) getIntent().getSerializableExtra("PRODUTO"));
-        } else {
-            lista_compras = (Lista) getIntent().getSerializableExtra("LISTA");
-            if (lista_compras == null) {
-                lista_compras = new Lista();
-            } else {
-                Button btFinalizar = findViewById(R.id.btnFinalizarList);
-                btFinalizar.setText("SALVAR");
-                getSupportActionBar().setTitle("Editar Lista");
-            }
+
+        //notification
+        final String notification = "true";
+        Handler handler = new Handler();
+        if (notification == "true"){
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    String title = "PRODUTO HU";
+                    String text = "Mercado HU" + "  >>  " + "0,00";
+                    NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    PendingIntent p = PendingIntent.getActivity(activity, 0, new Intent(activity, Descontos.class), 0);
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
+                    builder.setTicker("hu");
+                    builder.setContentTitle(title);
+                    builder.setContentText(text);
+                    builder.setSmallIcon(R.drawable.filtrapreco_g);
+                    builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.filtrapreco_g));
+                    builder.setContentIntent(p);
+                    builder.setAutoCancel(true);
+                    builder.setDefaults(Notification.DEFAULT_ALL);
+                    builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+                    builder.setStyle(new NotificationCompat.BigTextStyle().bigText(text));
+                    builder.addAction(R.drawable.ic_tag_black_shape, "TAG", p);
+                    nm.notify(0, builder.build());
+
+                    /*
+            RemoteViews remoteCollapsedViews = new RemoteViews(getPackageName(), R.layout.layout_push);
+            RemoteViews remoteExpandedViews = new RemoteViews(getPackageName(), R.layout.layout_push);
+
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            PendingIntent p = PendingIntent.getActivity(activity, 0, new Intent(activity, Descontos.class), 0);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
+            builder.setSmallIcon(R.drawable.filtrapreco_g);
+            builder.setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+            builder.setCustomContentView(remoteCollapsedViews);
+            builder.setCustomBigContentView(remoteExpandedViews);
+            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.filtrapreco_g));
+            builder.setContentIntent(p);
+            builder.setAutoCancel(true);
+            builder.setDefaults(Notification.DEFAULT_ALL);
+            nm.notify(0, builder.build());
+            */
+
+                }
+            }, 5000);
         }
 
-        renderizaListaDeProdutos(); //usado para chamar a lista quando criada nova pela classe descontos
-    }
 
+    }
 
     @SuppressLint("StaticFieldLeak")
     private void realizaPesquisaProdutos(final String pesquisa, final LinearLayout layoutProdutos) {
@@ -303,7 +319,7 @@ public class Criar_lista_Compras extends Nav {
         }
     }
 
-
+    /*
     public void preFinalizarLista(View v) {
         if (lista_compras.getListaProdutos().size() == 0) {
             Toast.makeText(this, "Lista sem Itens", Toast.LENGTH_SHORT).show();
@@ -313,6 +329,7 @@ public class Criar_lista_Compras extends Nav {
         }
     }
 
+
     @SuppressLint("StaticFieldLeak")
     private void finalizarLista() {
         SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
@@ -321,7 +338,7 @@ public class Criar_lista_Compras extends Nav {
 
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View mView = inflater.inflate(R.layout.layout_finalizar_lista, null);
-        final AlertDialog dialogAlert = new AlertDialog.Builder(Criar_lista_Compras.this).create();
+        final AlertDialog dialogAlert = new AlertDialog.Builder(Alerta.this).create();
         final EditText edtNomeLista = mView.findViewById(R.id.userInputDialog);
         final Button btnCancelar = mView.findViewById(R.id.btnCancelar);
         final Button btnSalvar = mView.findViewById(R.id.btnSalvar);
@@ -371,8 +388,8 @@ public class Criar_lista_Compras extends Nav {
                     @Override
                     protected void onPostExecute(Long id_lista) {
                         if (id_lista > 0) {
-                            Toast.makeText(Criar_lista_Compras.this, "Lista Salva!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(Criar_lista_Compras.this, Minhas_Listas.class);
+                            Toast.makeText(activity, "Lista Salva!", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(activity, Minhas_Listas.class);
                             startActivity(intent);
                             finish();
                         }
@@ -392,7 +409,7 @@ public class Criar_lista_Compras extends Nav {
         dialogAlert.show();
 
     }
-
+    */
 
     //on back
     @Override
@@ -430,12 +447,13 @@ public class Criar_lista_Compras extends Nav {
                 snackbar.getView().setBackgroundResource(R.drawable.gradient_list);
                 snackbar.show();
             } else {
-                Intent main = new Intent(Criar_lista_Compras.this, Main.class);
+                Intent main = new Intent(activity, Main.class);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(main);
                 finish();
             }
         }
     }
+
 
 }

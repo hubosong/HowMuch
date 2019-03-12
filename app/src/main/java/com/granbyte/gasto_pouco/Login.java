@@ -1,4 +1,4 @@
-package robsonmachczew.activities;
+package com.granbyte.gasto_pouco;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

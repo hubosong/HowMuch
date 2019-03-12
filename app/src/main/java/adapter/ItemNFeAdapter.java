@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.granbyte.gasto_pouco.R;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
 import entidade.Item_NFe;
-import robsonmachczew.activities.R;
 
 public class ItemNFeAdapter extends RecyclerView.Adapter<ItemNFeAdapter.ProductViewHolder> {
 
