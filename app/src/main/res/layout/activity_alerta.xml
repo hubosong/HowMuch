@@ -7,15 +7,6 @@
     android:background="@color/nav_color"
     tools:context=".Alerta">
 
-    <Button
-        android:id="@+id/btnPush"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="push"/>
-
-
-    <!--
-
     <RelativeLayout
         android:id="@+id/layout_principal"
         android:layout_width="match_parent"
@@ -105,8 +96,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:onClick="preFinalizarLista"
-                android:text="Finalizar Lista" />
+                android:text="Cadastrar Alertas" />
 
         </LinearLayout>
 
@@ -135,6 +125,5 @@
         </ScrollView>
 
     </RelativeLayout>
--->
 
 </android.support.design.widget.CoordinatorLayout>

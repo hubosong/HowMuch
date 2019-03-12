@@ -83,5 +83,6 @@
     <string name="txt_progress">Carregando..</string>
     <string name="toast_error">Ops! Contate o Desenvolvedor do APP.</string>
     <string name="snackbar">Pressione novamente para SAIR.</string>
+    <string name="push_valor"><font fgcolor='#34a503'>0,00</font></string>
 
 </resources>
