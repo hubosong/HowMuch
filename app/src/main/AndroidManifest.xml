@@ -12,9 +12,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/filtrapreco_g"
+        android:icon="@drawable/logo_gasto_pouco"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/filtrapreco_g"
+        android:roundIcon="@drawable/logo_gasto_pouco"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
