@@ -99,7 +99,7 @@ public class VerNFe extends Nav {
             preencherViewsProdutosNFe(nfe);
         } else {
             String code = getIntent().getStringExtra("code");
-            Utils.salvaNotaLocalmente(VerNFe.this, code);
+            new NFe_DAO(this).insertNFeNaoEnviada(code);
             //getNFeFromPHP(code);
             pegaNotaDoSite(code);
         }
@@ -154,7 +154,7 @@ public class VerNFe extends Nav {
                     if (nfe == null || nfe.getId_nfe() == 0) {
                         //Se o servidor não conseguiu pegar a nota do site, armazenamos a chave localmente para tentar novamente mais tarde;
                         System.out.println("Não foi possível pegar a nota a partir do servidor...");
-                        Utils.salvaNotaLocalmente(VerNFe.this, code);
+                        new NFe_DAO(VerNFe.this).insertNFeNaoEnviada(code);
                     }
                     txtQRCode.setText(code);
                     preencherViewsProdutosNFe(nfe);
@@ -255,8 +255,9 @@ public class VerNFe extends Nav {
                             ObjectInputStream ois = new ObjectInputStream(urlCon.getInputStream()); // Stream que vai receber um objeto do tipo NFe
                             nfe = (NFe) ois.readObject();
                             ois.close();
-                            if (nfe.getId_nfe() != 0) {
+                            if (nfe != null && nfe.getId_nfe() != 0) {
                                 new NFe_DAO(VerNFe.this).insertFromServer(nfe);
+                                new NFe_DAO(VerNFe.this).deletaNotaNaoEnviada(nfe.getChave());
                             }
                         }
                     } catch (Exception e) {
@@ -273,10 +274,12 @@ public class VerNFe extends Nav {
                     if (nfe != null && nfe.getLista_items() != null && nfe.getLista_items().size() > 0) {
                         System.out.println("NFe encontrada a partir do app: " + nfe);
                         preencherViewsProdutosNFe(nfe);
+                        new NFe_DAO(VerNFe.this).deletaNotaNaoEnviada(nfe.getChave());
                     } else {
                         //Se o app NÃO conseguiu pegar a nota no site, vamos apenas enviar o código e deixar que o servidor pegue-a no site.
                         System.out.println("Não foi possível pegar a nota a partir do app... enviando para o servidor...");
                         postHttpQRCode(code);
+                        new NFe_DAO(VerNFe.this).insertNFeNaoEnviada(code);
                     }
                 }
             }.execute(code);

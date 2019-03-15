@@ -62,46 +62,7 @@ public class Utils {
         return false;
     }
 
-    public static boolean salvaNotaLocalmente(Context context, String chave) {
-        System.out.println("Salvando NFe para ser enviada mais tarde... " + chave);
-        Set<String> chaves = getNotasLocais(context);
-        if (!chaves.contains(chave)) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            chaves.add(chave);
-            editor.putStringSet("CHAVES", chaves);
-            return editor.commit();
-        }
-        return false;
-    }
 
-    public static boolean deletaNotaLocalmente(Context context, String chave) {
-        Set<String> chaves = getNotasLocais(context);
-        if (!chaves.contains(chave)) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            chaves.remove(chave);
-            editor.putStringSet("CHAVES", chaves);
-            return editor.commit();
-        }
-        return false;
-    }
-
-    public static Set<String> getNotasLocais(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
-        return sharedPreferences.getStringSet("CHAVES", new HashSet<String>());
-    }
-
-    public static boolean salvaNotaLocalmente(Context context, Set<String> ch) {
-        System.out.println(">>> Salvando chaves localmente... " + ch.toString());
-        if (ch != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("CHAVES", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putStringSet("CHAVES", ch);
-            return editor.commit();
-        }
-        return false;
-    }
 
     public static boolean servidorDePe() {
         boolean state = false;

@@ -113,7 +113,7 @@ public class NFe_DAO {
         ArrayList<Long> ids_mercados = new ArrayList<>();
         ArrayList<Mercado> mercados_a_inserir = new ArrayList<>();
         for (NFe nfe : lista) {
-            if(!ids_mercados.contains(nfe.getMercado().getId_mercado())){
+            if (!ids_mercados.contains(nfe.getMercado().getId_mercado())) {
                 ids_mercados.add(nfe.getMercado().getId_mercado());
                 mercados_a_inserir.add(nfe.getMercado());
             }
@@ -138,8 +138,8 @@ public class NFe_DAO {
         sql = sql.substring(0, sql.length() - 1);
         try {
             adapter.executeQuery(sql).close();
-        }catch (Exception e){
-            System.out.println("Erro insertAllFromServer_merc: "+e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro insertAllFromServer_merc: " + e.getMessage());
         }
 
 
@@ -161,8 +161,8 @@ public class NFe_DAO {
         sql = sql.substring(0, sql.length() - 1);
         try {
             adapter.executeQuery(sql).close();
-        }catch (Exception e){
-            System.out.println("Erro insertAllFromServer_nfes: "+e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro insertAllFromServer_nfes: " + e.getMessage());
         }
 
 
@@ -190,8 +190,8 @@ public class NFe_DAO {
         sql = sql.substring(0, sql.length() - 1);
         try {
             adapter.executeQuery(sql).close();
-        }catch (Exception e){
-            System.out.println("Erro insertAllFromServer_prods: "+e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro insertAllFromServer_prods: " + e.getMessage());
         }
 
 
@@ -208,8 +208,8 @@ public class NFe_DAO {
         sql = sql.substring(0, sql.length() - 1);
         try {
             adapter.executeQuery(sql).close();
-        }catch (Exception e){
-            System.out.println("Erro insertAllFromServer_itens: "+e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erro insertAllFromServer_itens: " + e.getMessage());
         }
 
 
@@ -370,5 +370,42 @@ public class NFe_DAO {
         return lista;
     }
 
+    public void insertNFeNaoEnviada(String codigo) {
+        System.out.println(">>> INSERINDO NOTA NAO ENVIADA NO BD LOCAL: "+codigo);
+        String sql = "INSERT INTO nfe_nao_enviada(codigo) VALUES('" + codigo + "')";
+        adapter.executeQuery(sql);
+        adapter.close();
+    }
+
+    public void insertNFesNaoEnviada(ArrayList<String> lista) {
+        System.out.println(">>> INSERINDO LISTA DE NOTAS NAO ENVIADAS NO BD LOCAL: "+lista);
+        String sql = "INSERT INTO nfe_nao_enviada(codigo) VALUES";
+        for (String chave : lista) {
+            sql += "('" + chave + "'),";
+        }
+        sql = sql.substring(0, sql.length() - 1);
+        adapter.executeQuery(sql);
+        adapter.close();
+    }
+
+    public ArrayList<String> getNFesNaoEnviadas() {
+        ArrayList<String> lista = new ArrayList<>();
+        String sql = "SELECT DISTINCT * FROM nfe_nao_enviada";
+        Cursor cursor = adapter.executeQuery(sql);
+        while (!cursor.isAfterLast()) {
+            lista.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        adapter.close();
+        return lista;
+    }
+
+    public void deletaNotaNaoEnviada(String codigo) {
+        System.out.println(">>> APAGANDO  NOTA NAO ENVIADA NO BD LOCAL: "+codigo);
+        String sql = "DELETE FROM nfe_nao_enviada WHERE codigo LIKE '" + codigo + "'";
+        adapter.executeQuery(sql);
+        adapter.close();
+    }
 }
 

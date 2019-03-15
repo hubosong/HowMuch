@@ -62,6 +62,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import dao.NFe_DAO;
 import entidade.Item_NFe;
 import entidade.Lista;
 import entidade.Produto;
@@ -146,7 +147,7 @@ public class Descontos extends Nav {
 
     @SuppressLint("StaticFieldLeak")
     private void tentaEnviarNFesPendentes() {
-        final Set<String> chavess = Utils.getNotasLocais(this);
+        final ArrayList<String> chavess = new NFe_DAO(this).getNFesNaoEnviadas();
         if (!chavess.isEmpty()) {
             System.out.println(">>> ENVIANDO CHAVES NÃO ENVIADAS: " + chavess);
             try {
@@ -191,11 +192,18 @@ public class Descontos extends Nav {
                                     }
                                     String s = sb.toString();
                                     response_json = new JSONObject(s);
+                                    NFe_DAO nFe_dao = new NFe_DAO(Descontos.this);
+                                    for(String c : chavess){
+                                        if(s.contains(c)){
+                                            nFe_dao.deletaNotaNaoEnviada(c);
+                                        }
+                                    }
                                 } finally {
                                     is.close();
                                 }
                             } else if (urlCon.getResponseCode() == 204) { //204 = No Content. Ou seja, se não tem conteúdo, é porque conseguiu gravar tudo. Senão, alguma chave não gravou...
                                 response_json = new JSONObject();
+                                new NFe_DAO(Descontos.this).deletaNotaNaoEnviada("%");
                             }
                         } catch (Exception e) {
                             System.out.println(">>> Erro tentando enviar nfes não lidas_1: " + e.getMessage());
@@ -209,7 +217,7 @@ public class Descontos extends Nav {
                     protected void onPostExecute(JSONObject response_json) {
                         System.out.println(">>>> RESPONSE_JSON2: "+response_json);
                         if (response_json != null) {
-                            Set<String> lista_nfes_nao_salvas = new HashSet<>();
+                            ArrayList<String> lista_nfes_nao_salvas = new ArrayList<>();
                             Iterator<String> keys = response_json.keys();
                             try {
                                 while (keys.hasNext()) {
@@ -219,7 +227,7 @@ public class Descontos extends Nav {
                                 System.out.println(">>> Erro tentando transformar response_json em lista_nfes_nao_salvas...");
                             }
                             System.out.println(">>> KASDJKASJD:> " + lista_nfes_nao_salvas.toString());
-                            Utils.salvaNotaLocalmente(Descontos.this, lista_nfes_nao_salvas);
+                            new NFe_DAO(Descontos.this).insertNFesNaoEnviada(lista_nfes_nao_salvas);
                         } else {
                             System.out.println(">>> Erro enviando notas não salvas para o servidor (response json == null).");
                         }
