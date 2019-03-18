@@ -217,17 +217,17 @@ public class Descontos extends Nav {
                     protected void onPostExecute(JSONObject response_json) {
                         System.out.println(">>>> RESPONSE_JSON2: "+response_json);
                         if (response_json != null) {
-                            ArrayList<String> lista_nfes_nao_salvas = new ArrayList<>();
-                            Iterator<String> keys = response_json.keys();
                             try {
+                                ArrayList<String> lista_nfes_nao_salvas = new ArrayList<>();
+                                Iterator<String> keys = response_json.keys();
                                 while (keys.hasNext()) {
                                     lista_nfes_nao_salvas.add((String) response_json.get(keys.next()));
                                 }
+                                System.out.println(">>> KASDJKASJD:> " + lista_nfes_nao_salvas.toString());
+                                new NFe_DAO(Descontos.this).insertNFesNaoEnviada(lista_nfes_nao_salvas);
                             } catch (Exception e) {
                                 System.out.println(">>> Erro tentando transformar response_json em lista_nfes_nao_salvas...");
                             }
-                            System.out.println(">>> KASDJKASJD:> " + lista_nfes_nao_salvas.toString());
-                            new NFe_DAO(Descontos.this).insertNFesNaoEnviada(lista_nfes_nao_salvas);
                         } else {
                             System.out.println(">>> Erro enviando notas não salvas para o servidor (response json == null).");
                         }
