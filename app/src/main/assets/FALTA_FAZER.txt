@@ -6,7 +6,7 @@ Falta fazer:
     -- Problema a ser resolvido: Supondo que existam dois produtos, ambos sem código de barra, a "Cerveja Boa Tarde" e o "Cereal Boa Manhã", e que existem dois mercados, M1 e M2.
         M1 vende apenas a cerveja, e no cupom a cadastra como "CER BOA" e M2 vende apenas o cereal também como "CER BOA". Como distinguir entre estes produtos na hora de comparar os preços nos mercados?
 
-    - Definir nome e domínio do app
+    ++ Definir nome e domínio do app
 	-- Tela para atualizar dados de cadastro de usuário
 
     ++ Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
