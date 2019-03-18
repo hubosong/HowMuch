@@ -19,10 +19,11 @@ public class NCM_DAO {
     }
 
     public NCM getByNCM(long cod_ncm) {
-        String sql = "SELECT * FROM ncm WHERE ncm = " + cod_ncm;
-        NCM ncm = new NCM();
+        String sql = "SELECT * FROM tabela_ncm WHERE ncm = " + cod_ncm;
+        NCM ncm = null;
         Cursor cursor = adapter.executeQuery(sql);
         if (!cursor.isAfterLast()) {
+            ncm = new NCM();
             ncm.setNcm(cursor.getLong(0));
             ncm.setCategoria(cursor.getString(1));
             ncm.setDescricao(cursor.getString(2));
@@ -33,7 +34,7 @@ public class NCM_DAO {
     }
 
     public ArrayList<NCM> getByDescricao(String descricao) {
-        String sql = "SELECT * FROM ncm WHERE descricao LIKE '%" + descricao + "%'";
+        String sql = "SELECT * FROM tabela_ncm WHERE descricao LIKE '%" + descricao + "%'";
         ArrayList<NCM> lista = new ArrayList<>();
         Cursor cursor = adapter.executeQuery(sql);
         if (!cursor.isAfterLast()) {
@@ -49,7 +50,7 @@ public class NCM_DAO {
     }
 
     public ArrayList<NCM> getByCategoria(String categoria) {
-        String sql = "SELECT * FROM ncm WHERE descricao LIKE '" + categoria + "%'";
+        String sql = "SELECT * FROM tabela_ncm WHERE descricao LIKE '" + categoria + "%'";
         ArrayList<NCM> lista = new ArrayList<>();
         Cursor cursor = adapter.executeQuery(sql);
         if (!cursor.isAfterLast()) {

@@ -21,7 +21,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dao.NCM_DAO;
 import entidade.Item_NFe;
+import entidade.NCM;
 import entidade.Produto_Detalhado;
 import entidade.Usuario;
 import entidade.Utils;
@@ -29,11 +31,14 @@ import entidade.Utils;
 public class VerProduto extends Nav {
 
     private Produto_Detalhado produto;
+    private NCM ncm;
     private Usuario usuario;
     private TextView tv_descricao_produto;
     private TextView tv_unidade_comercial;
     private TextView tv_codigo_ncm;
     private TextView tv_codigo_ean;
+    private TextView tv_categoria;
+    private TextView tv_descricao;
     private LinearLayout layout_precos_mercado;
 
 
@@ -55,6 +60,8 @@ public class VerProduto extends Nav {
         tv_unidade_comercial = findViewById(R.id.unidade_comercial);
         tv_codigo_ncm = findViewById(R.id.codigo_ncm);
         tv_codigo_ean = findViewById(R.id.cod_EAN_comercial);
+        tv_categoria = findViewById(R.id.categoria);
+        tv_descricao = findViewById(R.id.descricao);
         layout_precos_mercado = findViewById(R.id.layout_precos_mercados);
 
         usuario = Utils.loadFromSharedPreferences(this);
@@ -63,6 +70,9 @@ public class VerProduto extends Nav {
         if (produto == null) {
             getDetalhesProduto(getIntent().getLongExtra("ID_PRODUTO", 0));
         } else {
+            if(produto.getCodigo_ncm() != 0){
+                ncm = new NCM_DAO(this).getByNCM(produto.getCodigo_ncm());
+            }
             renderizaProduto_Detalhado();
         }
     }
@@ -70,11 +80,16 @@ public class VerProduto extends Nav {
     @SuppressLint("SetTextI18n")
     private void renderizaProduto_Detalhado() {
         if (produto != null) {
+
             System.out.println(produto.toString());
             tv_descricao_produto.setText(produto.getDescricao());
             tv_codigo_ean.setText("" + produto.getCod_EAN_comercial());
             tv_codigo_ncm.setText("" + produto.getCodigo_ncm());
             tv_unidade_comercial.setText(produto.getUnidade_comercial());
+            if(ncm != null){
+                tv_categoria.setText(ncm.getCategoria());
+                tv_descricao.setText(ncm.getDescricao());
+            }
             layout_precos_mercado.removeAllViews();
             try {
                 for (Item_NFe item : produto.getLista_itens_nfe()) {
@@ -136,6 +151,9 @@ public class VerProduto extends Nav {
             protected void onPostExecute(Produto_Detalhado prod) {
                 produto = prod;
                 if (produto != null) {
+                    if(produto.getCodigo_ncm() != 0){
+                        ncm = new NCM_DAO(VerProduto.this).getByNCM(produto.getCodigo_ncm());
+                    }
                     renderizaProduto_Detalhado();
                 }
             }
