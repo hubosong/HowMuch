@@ -18,10 +18,12 @@ public class Mercado implements Serializable {
     private String inscricao_estadual;
     private String cod_regime_tributario;
     private String horarios_funcionamento;
+    private String latitude;
+    private String longitude;
 
     @Override
     public String toString() {
-        return "Mercado{" + "id_mercado=" + id_mercado + ", nome=" + nome + ", nome_fantasia=" + nome_fantasia + ", cnpj=" + cnpj + ", endereco=" + endereco + ", bairro=" + bairro + ", cep=" + cep + ", municipio=" + municipio + ", telefone=" + telefone + ", uf=" + uf + ", pais=" + pais + ", inscricao_estadual=" + inscricao_estadual + ", cod_regime_tributario=" + cod_regime_tributario + '}';
+        return "Mercado{" + "id_mercado=" + id_mercado + ", nome=" + nome + ", nome_fantasia=" + nome_fantasia + ", cnpj=" + cnpj + ", endereco=" + endereco + ", bairro=" + bairro + ", cep=" + cep + ", municipio=" + municipio + ", uf=" + uf + ", latitude=" + latitude + ", longitude=" + longitude + '}';
     }
 
     public String getHorarios_funcionamento() {
@@ -134,6 +136,22 @@ public class Mercado implements Serializable {
 
     public void setCod_regime_tributario(String cod_regime_tributario) {
         this.cod_regime_tributario = cod_regime_tributario;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
 }

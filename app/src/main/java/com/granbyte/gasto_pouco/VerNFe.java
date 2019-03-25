@@ -46,7 +46,6 @@ import entidade.Item_NFe;
 import entidade.Mercado;
 import entidade.NFe;
 import entidade.Produto;
-import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 
@@ -492,7 +491,7 @@ public class VerNFe extends Nav {
                 m.setNome_fantasia(getSpanContent(e.toString()));
             }
             if (e.toString().contains("<label>CNPJ</label>")) {
-                m.setCnpj(getSpanContent(e.toString()));
+                m.setCnpj(getSpanContent(e.toString().replace("/", "").replace("-", "").replace(".", "")));
             }
             if (e.toString().contains("<label>Endereço</label>")) {
                 m.setEndereco(getSpanContent(e.toString()));
@@ -535,7 +534,7 @@ public class VerNFe extends Nav {
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
             return;
         }

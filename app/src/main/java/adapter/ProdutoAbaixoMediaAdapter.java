@@ -30,7 +30,6 @@ import java.util.List;
 
 import entidade.Lista;
 import entidade.Produto;
-import entidade.ProdutoAbaixoMedia;
 import entidade.Usuario;
 import entidade.Utils;
 import com.granbyte.gasto_pouco.Criar_lista_Compras;
