@@ -7,19 +7,23 @@ Falta fazer:
         M1 vende apenas a cerveja, e no cupom a cadastra como "CER BOA" e M2 vende apenas o cereal também como "CER BOA". Como distinguir entre estes produtos na hora de comparar os preços nos mercados?
 
     ++ Definir nome e domínio do app
-    -- Remover TODOS os adapters
-	-- Tela para atualizar dados de cadastro de usuário
-	-- Quando for excluir lista de compras, pedir confirmação
-	-- Ao ver NFe, quando clicar em um produto ir para a tela do "VerProduto..."
-	-- Na tela de Descontos, ajustar para 2 o número de casas decimais
-	-- Criar um "Map_Utils" e uma função que calcula as distâncias entre dois pontos (A classe Mercado agora tem "latitude" e "longitude"
-	-- Colocar as animações de espera durante os AsynTasks
+    
+    	-- Remover TODOS os adapters
+	-- Criar tela para atualizar dados de cadastro de usuário (município, endereço etc...).
+	-- Quando for excluir lista de compras, pedir confirmação.
+	-- Ao ver NFe, quando clicar em um produto ir para a tela do "VerProduto"...
+	-- Na tela de Descontos, ajustar para 2 o número de casas decimais dos valores
+	-- Criar um "Map_Utils" que tenha uma função que calcula as distâncias entre dois pontos (A classe Mercado agora tem "latitude" e "longitude"). Também verificar se é possível pegar a latitude/longitude a partir de um endereço.
+	-- Colocar as animações de espera durante a execução dos AsynTasks 
 	-- Achar um lugar para o botão de ordenar no "Criar Lista" (pra ordenar os itens da lista), "Minhas NFes" (pra ordenars as nfes) e "Minhas Listas" (pra ordenar as listas)
-	-- No "Comparar listas" deve ser possível comparar as listas também pela distância do ponto atual (pego do gps do celular) até os mercados
+	-- No "Comparar listas" deve ser possível comparar as listas também pela distância do ponto atual (pegar o ponto atual do gps do celular) até os mercados.
 	-- Em "Detalhes do produto" informar também a distância até o mercado
-	-- No criar lista, ao pesquisar um produto, precisa tirar a busca em tempo real (a medida que se vai escrevendo), e colocar um botão "Pesquisar" o qual dispara a busca
-	-- Fazer a busca por descontos apenas uma vez, e armazená-los no celular. Se 30 minutos desde a ultima requisição o usuario clicar em Descontos novamente, pode ser feita outra requisição...
-	    -- O mesmo para NFes e Listas.
+	-- No criar lista, ao pesquisar um produto, precisa tirar a busca em tempo real (a medida que se vai escrevendo), e colocar um botão "Pesquisar" ou com uma lupa, o qual dispara a busca.
+	
+	IMPORTANTÍSSIMO:
+	-- Fazer a busca por descontos apenas uma vez (da pra fazer enquanto exibe o splash screen), e armazená-los no celular. Se 30 minutos desde a ultima requisição o usuario clicar em Descontos novamente, pode ser feita outra requisição. Para isso, acho válido usar o banco de dados do próprio app (na pasta assets tem o arquivo "database.db", que é um banco de dados em sqlite e pode ser aberto/modificado com o SQLiteStudio (para windows e unix). Já tem quase toda parte de interface criada (conexão, daos, etc...) no próprio app, então falta bem pouca coisa.
+	    -- Fazer o mesmo para NFes e Listas, isto é, armazenar no app e só atualizar quando a busca ocorrer em intervalos maiores que 30 minutos.
+	    
 
 
 
