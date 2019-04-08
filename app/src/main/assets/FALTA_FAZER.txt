@@ -7,7 +7,22 @@ Falta fazer:
         M1 vende apenas a cerveja, e no cupom a cadastra como "CER BOA" e M2 vende apenas o cereal também como "CER BOA". Como distinguir entre estes produtos na hora de comparar os preços nos mercados?
 
     ++ Definir nome e domínio do app
+    -- Remover TODOS os adapters
 	-- Tela para atualizar dados de cadastro de usuário
+	-- Quando for excluir lista de compras, pedir confirmação
+	-- Ao ver NFe, quando clicar em um produto ir para a tela do "VerProduto..."
+	-- Na tela de Descontos, ajustar para 2 o número de casas decimais
+	-- Criar um "Map_Utils" e uma função que calcula as distâncias entre dois pontos (A classe Mercado agora tem "latitude" e "longitude"
+	-- Colocar as animações de espera durante os AsynTasks
+	-- Achar um lugar para o botão de ordenar no "Criar Lista" (pra ordenar os itens da lista), "Minhas NFes" (pra ordenars as nfes) e "Minhas Listas" (pra ordenar as listas)
+	-- No "Comparar listas" deve ser possível comparar as listas também pela distância do ponto atual (pego do gps do celular) até os mercados
+	-- Em "Detalhes do produto" informar também a distância até o mercado
+	-- No criar lista, ao pesquisar um produto, precisa tirar a busca em tempo real (a medida que se vai escrevendo), e colocar um botão "Pesquisar" o qual dispara a busca
+	-- Fazer a busca por descontos apenas uma vez, e armazená-los no celular. Se 30 minutos desde a ultima requisição o usuario clicar em Descontos novamente, pode ser feita outra requisição...
+	    -- O mesmo para NFes e Listas.
+
+
+
 
     ++ Opção de informar o código da nota manualmente (as vezes o qrcode sai mal impresso)
     ++ colocar de volta a animação de espera quando realiza uma asynctask
@@ -15,7 +30,6 @@ Falta fazer:
     ++ nova lista adicionar produto pegar xml o layout
     ++ Icones de launcher OK
     ++ Em "Descontos", ao lado do Edittext de pesquisar, criar um botão para ordenar a lista. Quando clica no botão abre um dialog perguntando o critério (menor/maior preço, data, mercado etc..)
-        - Também achar um lugar para o botão de ordenar no "Criar Lista" (pra ordenar os itens da lista), "Minhas NFes" (pra ordenars as nfes) e "Minhas Listas" (pra ordenar as listas)
     ++ Ver o layout da activity de descrição/histórico de um produto (caminho: Descontos->clicar em um produto->ver detalhes/histórico de preços)
         ++ Em cada item colocar também a data. Por exemplo, "Menor valor Registrado, Preço X, Mercado Y, Data Z".
         ++ Em "Propriedades do produto", colocar o restante das informações do produto.
