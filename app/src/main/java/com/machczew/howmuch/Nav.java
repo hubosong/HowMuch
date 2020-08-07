@@ -1,4 +1,4 @@
-package com.granbyte.gasto_pouco;
+package com.machczew.howmuch;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -82,6 +82,7 @@ public class Nav extends AppCompatActivity {
 
         navEmail = headerView.findViewById(R.id.txtEmail);
         navNome = headerView.findViewById(R.id.txtNome);
+        /*
         if (usuario.getId_usuario() != 0) {
             navNome.setText(usuario.getNome());
             navEmail.setText(usuario.getEmail());
@@ -97,6 +98,17 @@ public class Nav extends AppCompatActivity {
             nav_menu.findItem(R.id.nav_logout).setIcon(R.drawable.ic_access);
 
         }
+
+         */
+        navNome.setVisibility(View.VISIBLE);
+        navEmail.setVisibility(View.VISIBLE);
+        Menu nav_menu = navigationView.getMenu();
+        nav_menu.findItem(R.id.nav_my_buy).setVisible(true);
+        nav_menu.findItem(R.id.nav_my_nfe).setVisible(true);
+        nav_menu.findItem(R.id.nav_alertas).setVisible(true);
+        nav_menu.findItem(R.id.nav_financas).setVisible(true);
+        nav_menu.findItem(R.id.nav_logout).setTitle("Realizar LOGIN");
+        nav_menu.findItem(R.id.nav_logout).setIcon(R.drawable.ic_access);
 
     }
 

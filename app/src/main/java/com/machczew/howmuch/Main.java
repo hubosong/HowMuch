@@ -1,9 +1,10 @@
-package com.granbyte.gasto_pouco;
+package com.machczew.howmuch;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -37,7 +38,7 @@ public class Main extends AppCompatActivity {
         //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         overridePendingTransition(R.anim.right_in, R.anim.right_out);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
 
         //verify user login
@@ -89,6 +90,13 @@ public class Main extends AppCompatActivity {
     }
 
 
+    public void btnRegister(View view) {
+        Intent register = new Intent(Main.this, Cadastrar_Usuario.class);
+        startActivityForResult(register, 55);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+
     public void contact(View view) {
         LayoutInflater inflaterAbout = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View aboutView = inflaterAbout.inflate(R.layout.layout_sobre, null);
@@ -106,8 +114,24 @@ public class Main extends AppCompatActivity {
     }
     public void phone(View view) {
         //gerar um sair do app 哈哈
-        Intent user = new Intent(this, Nav.class);
-        finish();
+        //Intent user = new Intent(this, Nav.class);
+        //finish();
+
+        //http://api.whatsapp.com/send?1=pt_BR&phone=5555991993356
+
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+
+        try {
+            String url = "http://api.whatsapp.com/send?1=pt_BR&phone=5555991993356";
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(url));
+            if (i.resolveActivity(packageManager) != null) {
+                getApplicationContext().startActivity(i);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

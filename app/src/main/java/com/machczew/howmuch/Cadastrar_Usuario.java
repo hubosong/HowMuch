@@ -1,4 +1,4 @@
-package com.granbyte.gasto_pouco;
+package com.machczew.howmuch;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

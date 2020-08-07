@@ -1,4 +1,4 @@
-package com.granbyte.gasto_pouco;
+package com.machczew.howmuch;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         mCtx = this;
 
         //basic config
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 

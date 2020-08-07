@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/nav_color"
-    tools:context="com.granbyte.gasto_pouco.Minhas_NFes">
+    tools:context="com.machczew.howmuch.Minhas_NFes">
 
     <RelativeLayout
         android:id="@+id/layout_principal"

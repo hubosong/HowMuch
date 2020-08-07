@@ -1,4 +1,4 @@
-package com.granbyte.gasto_pouco;
+package com.machczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -13,6 +13,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -63,12 +65,15 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 
+import adapter.ProductQRCodeAdapter;
+import adapter.ProdutoAbaixoMediaAdapter;
 import dao.NFe_DAO;
 import entidade.Desconto;
 import entidade.Item_NFe;
 import entidade.Lista;
 import entidade.Mercado;
 import entidade.Produto;
+import entidade.ProdutoAbaixoMedia;
 import entidade.Produto_Detalhado;
 import entidade.Usuario;
 import entidade.Utils;
@@ -94,6 +99,7 @@ public class Descontos extends Nav {
     private SimpleDateFormat sdf_bd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private SimpleDateFormat sdf_exibicao = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
+    private RecyclerView recyclerView;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -114,7 +120,7 @@ public class Descontos extends Nav {
 
         progWait = findViewById(R.id.progWait);
         txtWait = findViewById(R.id.txtWait);
-        layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
+        //layout_produtos_desconto = findViewById(R.id.layout_prods_desconto);
         tv_quant_prods_desconto = findViewById(R.id.tv_quant_prods_abaixo_media);
         txt_pesquisa_produtos = findViewById(R.id.editText);
 
@@ -123,7 +129,15 @@ public class Descontos extends Nav {
         if (!Utils.estaConectado(this)) {
             Toast.makeText(this, "Sem conexão", Toast.LENGTH_LONG).show();
         } else {
-            pegaProdutosComDescontoDoServidor();
+            //pegaProdutosComDescontoDoServidor();
+            //recyclerview
+            recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+            ProdutoAbaixoMediaAdapter tmp_adapter = new ProdutoAbaixoMediaAdapter(this, new ArrayList<ProdutoAbaixoMedia>());
+            recyclerView.setAdapter(tmp_adapter);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            rvlistTeste();
+
         }
 
         setaOrdenacoesListas();
@@ -145,6 +159,30 @@ public class Descontos extends Nav {
         });
 
         tentaEnviarNFesPendentes();
+
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void rvlistTeste(){
+        new AsyncTask<String, Void, ArrayList<ProductQRCode>>() {
+            @Override
+            protected ArrayList<ProductQRCode> doInBackground(String... strings) {
+                ArrayList<ProductQRCode>productList = new ArrayList<>();
+                productList.add( new ProductQRCode( 1,"Vinho Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Cerveja Hu", "Mercado Bo",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Arroz Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",300.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Massa Hu", "Mercado Hu",190.00,"10/09/2018 00:00:00",500.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Picanha Hu", "Mercado Song",220.00,"10/09/2018 00:00:00",100.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Agua Hu", "Mercado Hu",220.00,"10/09/2018 00:00:00",200.00, R.drawable.market_carrefour, 1, 1));
+                productList.add( new ProductQRCode( 1,"Refrigerante Hu", "Mercado Bo",100.00,"10/09/2018 00:00:00",250.00, R.drawable.market_carrefour, 1, 1));
+
+                ProductQRCodeAdapter adapter = new ProductQRCodeAdapter(Descontos.this, productList);
+                recyclerView.setAdapter(adapter);
+
+                return null;
+            }
+        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -284,6 +322,7 @@ public class Descontos extends Nav {
         }
 
     }
+
 
 
     /**

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/nav_color"
-    tools:context="com.granbyte.gasto_pouco.Nav">
+    tools:context="com.machczew.howmuch.Nav">
 
     <FrameLayout
         android:id="@+id/toolbar_container"

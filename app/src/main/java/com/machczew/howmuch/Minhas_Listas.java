@@ -1,4 +1,4 @@
-package com.granbyte.gasto_pouco;
+package com.machczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

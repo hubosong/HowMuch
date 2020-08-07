@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.granbyte.gasto_pouco">
+    package="com.machczew.howmuch">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,9 +12,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logo_gasto_pouco"
+        android:icon="@drawable/filtrapreco_g"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo_gasto_pouco"
+        android:roundIcon="@drawable/filtrapreco_g"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
@@ -24,7 +24,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.granbyte.gasto_pouco.SplashActivity"
+            android:name="com.machczew.howmuch.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
@@ -34,60 +34,60 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.granbyte.gasto_pouco.Main"
+            android:name="com.machczew.howmuch.Main"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.Login"
+            android:name="com.machczew.howmuch.Login"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.Cadastrar_Usuario"
+            android:name="com.machczew.howmuch.Cadastrar_Usuario"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.Descontos"
+            android:name="com.machczew.howmuch.Descontos"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.Minhas_Listas"
+            android:name="com.machczew.howmuch.Minhas_Listas"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.Minhas_NFes"
+            android:name="com.machczew.howmuch.Minhas_NFes"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.Editar_Cadastros"
+            android:name="com.machczew.howmuch.Editar_Cadastros"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.VerNFe"
+            android:name="com.machczew.howmuch.VerNFe"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.VerComparacaoLista"
+            android:name="com.machczew.howmuch.VerComparacaoLista"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.VerProduto"
+            android:name="com.machczew.howmuch.VerProduto"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.VerMercado"
+            android:name="com.machczew.howmuch.VerMercado"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.VerSimulacaoListaEmMercado"
+            android:name="com.machczew.howmuch.VerSimulacaoListaEmMercado"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.granbyte.gasto_pouco.Criar_lista_Compras"
+            android:name="com.machczew.howmuch.Criar_lista_Compras"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name="com.granbyte.gasto_pouco.Alerta"
+            android:name="com.machczew.howmuch.Alerta"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden"/>
 

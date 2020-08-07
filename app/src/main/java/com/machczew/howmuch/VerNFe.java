@@ -1,4 +1,4 @@
-package com.granbyte.gasto_pouco;
+package com.machczew.howmuch;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -89,8 +89,8 @@ public class VerNFe extends Nav {
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        ProdutoAbaixoMediaAdapter tmp_adapter = new ProdutoAbaixoMediaAdapter(this, new ArrayList<ProdutoAbaixoMedia>());
-        recyclerView.setAdapter(tmp_adapter);
+        //ProdutoAbaixoMediaAdapter tmp_adapter = new ProdutoAbaixoMediaAdapter(this, new ArrayList<ProdutoAbaixoMedia>());
+        //recyclerView.setAdapter(tmp_adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
