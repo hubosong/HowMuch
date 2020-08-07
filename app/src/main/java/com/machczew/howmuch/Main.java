@@ -113,12 +113,6 @@ public class Main extends AppCompatActivity {
         t.show();
     }
     public void phone(View view) {
-        //gerar um sair do app 哈哈
-        //Intent user = new Intent(this, Nav.class);
-        //finish();
-
-        //http://api.whatsapp.com/send?1=pt_BR&phone=5555991993356
-
         PackageManager packageManager = getApplicationContext().getPackageManager();
         Intent i = new Intent(Intent.ACTION_VIEW);
 
