@@ -117,7 +117,7 @@ public class Main extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_VIEW);
 
         try {
-            String url = "http://api.whatsapp.com/send?1=pt_BR&phone=5555991993356";
+            String url = "http://api.whatsapp.com/send?1=pt_BR&phone=phonenumber";
             i.setPackage("com.whatsapp");
             i.setData(Uri.parse(url));
             if (i.resolveActivity(packageManager) != null) {
