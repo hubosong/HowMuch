@@ -613,10 +613,10 @@ public class Descontos extends Nav {
             protected ArrayList<Desconto> doInBackground(String... params) {
                 ArrayList<Desconto> list = null;
                 try {
-                    URL url = new URL("http://177.143.221.144:8085/GranByte/descontos");
+                    URL url = new URL("--");
                     HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
                     urlCon.setRequestMethod("GET");
-                    urlCon.setRequestProperty("Authentication", "X1ri3lP12YkV531GwTiVKBnyJu89bcZeC5xK6MwNQCeReK4A0Cg0H6wcaZFjqnWNNfQPKEOvaL2B37b2Vim5fy17mV1Bi5pafNs7pgIqzVK32ZKb6yuGCf1GLZrhJDet");
+                    urlCon.setRequestProperty("Authentication", "--");
                     urlCon.setDoInput(true);
                     if (urlCon.getResponseCode() == 200) {
                         InputStream in = new BufferedInputStream(urlCon.getInputStream());
